@@ -2,6 +2,7 @@ from typing import TypedDict, NamedTuple, get_type_hints
 from pathlib import Path
 from functools import partial
 from operator import itemgetter
+from pprint import pprint
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -175,7 +176,8 @@ def plot_figures_from_parameters(
     return lst_fig, _cache
 
 def main():
-    print(f"{get_type_hints(Config)=}")
+    print("Final Config:")
+    pprint(get_type_hints(Config))
 
 if __name__ == '__main__':
     main()
