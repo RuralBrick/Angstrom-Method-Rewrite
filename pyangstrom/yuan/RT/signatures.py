@@ -37,4 +37,3 @@ class TheorConfig(TypedDict):
     cp: float
     rho: float
     f_heating: float
-
