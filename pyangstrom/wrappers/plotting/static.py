@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 
-from pyangstrom.yuan.signatures import HtAmpPhaseConfig
+from pyangstrom.yuan.HT import HtAmpPhaseConfig
 from pyangstrom.wrappers.caching import (
     FigCacheConfig,
     FigCache,

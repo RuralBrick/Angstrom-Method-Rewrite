@@ -21,7 +21,10 @@ class McmcConfig(TypedDict):
     rho: float
     x0_pixels: int
     y0_pixels: int
+    R0_pixels: int
+    R_analysis_pixels: int
     gap_pixels: int
+    anguler_range: str
     f_heating: float
     exp_amp_phase_extraction_method: str
     N_sample: int
