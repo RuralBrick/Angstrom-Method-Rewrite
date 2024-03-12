@@ -6,6 +6,7 @@ import pyangstromRT.blmcmc
 from pyangstromRT.blmcmc import calculate_theoretical_results
 
 from pyangstrom.yuan.RT.signatures import (
+    RtFileConfig,
     RtAmpPhaseConfig,
     LsrConfig,
     TheorConfig,
