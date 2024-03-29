@@ -11,6 +11,8 @@ TEMPERATURE_OFFSET = {
 class Region:
     def __init__(self) -> None:
         """Always in absolute temperature (expect Kelvin)"""
+        self.time: pd.DatetimeIndex = None
+        self.temps: np.ndarray = None
         self.margins: NamedTuple = None # Should be in (dist, ..., time) order
 
 class Geometry:
