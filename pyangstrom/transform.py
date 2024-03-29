@@ -79,6 +79,7 @@ def extract_polar_region(
         df_recording.index,
         temps_trans,
         (
+            ...,
             geometry.max_r - geometry.min_r,
             geometry.max_theta - geometry.min_theta,
         ),
