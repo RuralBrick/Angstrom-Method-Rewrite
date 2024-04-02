@@ -2,6 +2,7 @@ import logging
 
 import numpy as np
 import pandas as pd
+from matplotlib.animation import Animation
 
 
 logger = logging.getLogger('io')
@@ -47,3 +48,7 @@ def load_recording_cache(p_cache, name):
     logger.debug(f"Loading {p_file}")
     df = pd.read_pickle(p_file)
     return df
+
+def save_animation(anim: Animation, p_directory, name):
+    p_file = p_directory / f'{name}.mp4'
+    anim.save(p_file, dpi=300)
