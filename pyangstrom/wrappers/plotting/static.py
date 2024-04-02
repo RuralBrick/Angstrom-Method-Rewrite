@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.patches import Wedge
 
-from pyangstrom.yuan.HT import HtAmpPhaseConfig
+from pyangstrom.hu.HT import HtAmpPhaseConfig
 from pyangstrom.wrappers.caching import (
     FigCacheConfig,
     FigCache,

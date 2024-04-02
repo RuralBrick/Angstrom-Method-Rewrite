@@ -5,7 +5,7 @@ from pyangstromHT.high_T_angstrom_method import (
     parallel_temperature_average_batch_experimental_results,
 )
 
-from pyangstrom.yuan.HT.signatures import HtAmpPhaseConfig
+from pyangstrom.hu.HT.signatures import HtAmpPhaseConfig
 
 
 @overload
