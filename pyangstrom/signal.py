@@ -24,17 +24,13 @@ def fft_signal_processing(
     freq = np.fft.fft(region.temps, axis=0)[window_start:window_end]
 
     amps = np.abs(freq)
-    target_idx = amps.argmax(axis=0, keepdims=True)
-    amps = np.take_along_axis(amps, target_idx, axis=0).squeeze(axis=0)
+    target_idx = (amps.reshape(freq.shape[0], -1)
+                      .sum(axis=1)
+                      .argmax())
+    amps = amps[target_idx]
     amp_ratio = amps / amps[0]
 
-    freq = np.take_along_axis(freq, target_idx, axis=0).squeeze(axis=0)
-    phases = np.angle(freq)
-    phase_diff = np.mod(np.abs(phases - phases[0]), np.pi)
-    phase_diff = np.where(
-        phase_diff > np.pi / 2.0,
-        np.pi - phase_diff,
-        phase_diff,
-    )
+    phases = np.angle(freq[target_idx])
+    phase_diff = phases[0] - phases
 
     return SignalProperties(amp_ratio, phase_diff)

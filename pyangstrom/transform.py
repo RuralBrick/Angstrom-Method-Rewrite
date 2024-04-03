@@ -92,7 +92,7 @@ def extract_cartesian_region(
             displacement_coverage = geometry.max_y - geometry.min_y
             span_coverage = geometry.max_x - geometry.min_x
 
-    temps = np.moveaxis(temps, [0, 1], [-2, -1]) # (time, displacement, span)
+    temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, displacement, span)
     temps = add_temperature_offset(df_recording, temps)
 
     region = Region(
@@ -139,10 +139,10 @@ def extract_polar_region(
     upper_y_weight = (y_coord - y_coord_floor) / (y_coord_floorp1 - y_coord_floor)
 
     # (time, radius, angle)
-    lxly_temps = np.moveaxis(temps[x_coord_floor, y_coord_floor], [0, 1], [-2, -1]) * lower_x_weight * lower_y_weight
-    lxuy_temps = np.moveaxis(temps[x_coord_floor, y_coord_floorp1], [0, 1], [-2, -1]) * lower_x_weight * upper_y_weight
-    uxly_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floor], [0, 1], [-2, -1]) * upper_x_weight * lower_y_weight
-    uxuy_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floorp1], [0, 1], [-2, -1]) * upper_x_weight * upper_y_weight
+    lxly_temps = np.moveaxis(temps[x_coord_floor, y_coord_floor], [0, 1], [1, 2]) * lower_x_weight * lower_y_weight
+    lxuy_temps = np.moveaxis(temps[x_coord_floor, y_coord_floorp1], [0, 1], [1, 2]) * lower_x_weight * upper_y_weight
+    uxly_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floor], [0, 1], [1, 2]) * upper_x_weight * lower_y_weight
+    uxuy_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floorp1], [0, 1], [1, 2]) * upper_x_weight * upper_y_weight
 
     temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
     temps_trans = add_temperature_offset(df_recording, temps_trans)

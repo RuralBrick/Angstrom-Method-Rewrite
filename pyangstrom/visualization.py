@@ -5,7 +5,12 @@ from matplotlib.patches import Rectangle, Wedge, Circle
 import matplotlib.pyplot as plt
 from matplotlib.animation import Animation, FuncAnimation
 
-from pyangstrom.transform import Direction, CartesianGeometry, PolarGeometry
+from pyangstrom.transform import (
+    Direction,
+    CartesianGeometry,
+    PolarGeometry,
+    Region,
+)
 
 
 def plot_recording(ax: Axes, df_recording: pd.DataFrame) -> Axes:
@@ -114,6 +119,35 @@ def animate_recording(df_recording: pd.DataFrame) -> Animation:
         fig,
         update,
         df_recording['Samples'].items(),
+        interval=interval,
+        repeat=False,
+        cache_frame_data=False,
+    )
+    return anim
+
+def animate_region(region: Region) -> Region:
+    fig, ax = plt.subplots()
+    num_frames, num_disp, *_ = region.temps.shape
+    disp = np.linspace(0, region.margins[1], num_disp)
+    condensed_temps = (region.temps
+                             .reshape((num_frames, num_disp, -1))
+                             .mean(axis=2))
+    ln, = ax.plot(disp, condensed_temps[0])
+    ax.set_ylim(condensed_temps.min(), condensed_temps.max())
+    def update(temps):
+        ln.set_data(disp, temps)
+    interval = 1e3 * (
+        region.time
+              .to_series()
+              .diff()
+              .mode()
+              .item()
+              .total_seconds()
+    )
+    anim = FuncAnimation(
+        fig,
+        update,
+        iter(condensed_temps),
         interval=interval,
         repeat=False,
         cache_frame_data=False,
