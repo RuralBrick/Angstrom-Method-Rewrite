@@ -16,16 +16,19 @@ def fft_signal_processing(
         tol=2,
 ) -> SignalProperties:
 
-    fundamental_freq = 1.0 / region.margins[-1]
+    fundamental_freq = 1.0 / region.margins[0].total_seconds()
     target_harmonic = int(setup['heating_frequency'] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
     window_end = min(target_harmonic + tol, region.time.size)
 
-    freq = np.fft.fft(region.temps, axis=-1)
+    freq = np.fft.fft(region.temps, axis=0)[window_start:window_end]
 
     amps = np.abs(freq)
+    target_idx = amps.argmax(axis=0, keepdims=True)
+    amps = np.take_along_axis(amps, target_idx, axis=0).squeeze(axis=0)
     amp_ratio = amps / amps[0]
 
+    freq = np.take_along_axis(freq, target_idx, axis=0).squeeze(axis=0)
     phases = np.angle(freq)
     phase_diff = np.mod(np.abs(phases - phases[0]), np.pi)
     phase_diff = np.where(

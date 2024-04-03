@@ -46,7 +46,7 @@ class Region:
     """Always in absolute temperature (expect Kelvin)"""
     time: pd.DatetimeIndex
     temps: np.ndarray
-    margins: NamedTuple # Should be in (time, dist, ...) order
+    margins: NamedTuple # Should be in (time, displacement, ...) order
 
 
 def add_temperature_offset(
@@ -66,15 +66,14 @@ def extract_cartesian_region(
         df_recording: pd.DataFrame,
         geometry: CartesianGeometry,
 ) -> Region:
-    temps = np.stack(df_recording['Samples']) # (time, ..., height, width)
-    # TODO: Update
-    temps = np.moveaxis(temps, [0, -1, -2], [-1, 0, 1]) # (width, height, ..., time)
+    temps = np.stack(df_recording['Samples']) # (time, height, width)
+    temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
     temps = temps[
         geometry.min_x : geometry.max_x + 1,
         geometry.min_y : geometry.max_y + 1,
     ]
 
-    # (displacement, span, ..., time)
+    # (displacement, span, time)
     match geometry.heat_source:
         case Direction.LESSER_X:
             displacement_coverage = geometry.max_x - geometry.min_x
@@ -93,16 +92,16 @@ def extract_cartesian_region(
             displacement_coverage = geometry.max_y - geometry.min_y
             span_coverage = geometry.max_x - geometry.min_x
 
+    temps = np.moveaxis(temps, [0, 1], [-2, -1]) # (time, displacement, span)
     temps = add_temperature_offset(df_recording, temps)
 
     region = Region(
         df_recording.index,
         temps,
         (
+            df_recording.index.max() - df_recording.index.min(),
             displacement_coverage,
             span_coverage,
-            ...,
-            df_recording.index.max() - df_recording.index.min(),
         ),
     )
     return region
@@ -111,9 +110,8 @@ def extract_polar_region(
         df_recording: pd.DataFrame,
         geometry: PolarGeometry,
 ) -> Region:
-    temps = np.stack(df_recording['Samples']) # (time, ..., height, width)
-    # TODO: Update
-    temps = np.moveaxis(temps, [0, -1, -2], [-1, 0, 1]) # (width, height, ..., time)
+    temps = np.stack(df_recording['Samples']) # (time, height, width)
+    temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
 
     r = np.linspace(
         geometry.min_r,
@@ -140,24 +138,22 @@ def extract_polar_region(
     lower_y_weight = (y_coord_floorp1 - y_coord) / (y_coord_floorp1 - y_coord_floor)
     upper_y_weight = (y_coord - y_coord_floor) / (y_coord_floorp1 - y_coord_floor)
 
-    # (..., time, radius, angle)
+    # (time, radius, angle)
     lxly_temps = np.moveaxis(temps[x_coord_floor, y_coord_floor], [0, 1], [-2, -1]) * lower_x_weight * lower_y_weight
     lxuy_temps = np.moveaxis(temps[x_coord_floor, y_coord_floorp1], [0, 1], [-2, -1]) * lower_x_weight * upper_y_weight
     uxly_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floor], [0, 1], [-2, -1]) * upper_x_weight * lower_y_weight
     uxuy_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floorp1], [0, 1], [-2, -1]) * upper_x_weight * upper_y_weight
 
     temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
-    temps_trans = np.moveaxis(temps_trans, [-2, -1], [0, 1]) # (radius, angle, ..., time)
     temps_trans = add_temperature_offset(df_recording, temps_trans)
 
     region = Region(
         df_recording.index,
         temps_trans,
         (
+            df_recording.index.max() - df_recording.index.min(),
             geometry.max_r - geometry.min_r,
             geometry.max_theta - geometry.min_theta,
-            ...,
-            df_recording.index.max() - df_recording.index.min(),
         ),
     )
     return region
