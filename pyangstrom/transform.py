@@ -46,7 +46,7 @@ class Region:
     """Always in absolute temperature (expect Kelvin)"""
     time: pd.DatetimeIndex
     temps: np.ndarray
-    margins: NamedTuple # Should be in (dist, ..., time) order
+    margins: NamedTuple # Should be in (time, dist, ...) order
 
 
 def add_temperature_offset(
@@ -67,6 +67,7 @@ def extract_cartesian_region(
         geometry: CartesianGeometry,
 ) -> Region:
     temps = np.stack(df_recording['Samples']) # (time, ..., height, width)
+    # TODO: Update
     temps = np.moveaxis(temps, [0, -1, -2], [-1, 0, 1]) # (width, height, ..., time)
     temps = temps[
         geometry.min_x : geometry.max_x + 1,
@@ -111,6 +112,7 @@ def extract_polar_region(
         geometry: PolarGeometry,
 ) -> Region:
     temps = np.stack(df_recording['Samples']) # (time, ..., height, width)
+    # TODO: Update
     temps = np.moveaxis(temps, [0, -1, -2], [-1, 0, 1]) # (width, height, ..., time)
 
     r = np.linspace(
