@@ -24,42 +24,41 @@ def plot_cartesian_geometry(
 ) -> Axes:
     ax = plot_recording(ax, df_recording)
     ax.add_patch(Rectangle(
-        (geometry.min_x, geometry.min_y),
-        geometry.max_x - geometry.min_x,
-        geometry.max_y - geometry.min_y,
+        (geometry['min_x'], geometry['min_y']),
+        geometry['max_x'] - geometry['min_x'],
+        geometry['max_y'] - geometry['min_y'],
         hatch='..',
         edgecolor='red',
         facecolor='none',
     ))
-    match geometry.heat_source:
-        case Direction.LESSER_X:
-            ax.plot(
-                [geometry.min_x, geometry.min_x],
-                [geometry.min_y, geometry.max_y],
-                linewidth=2,
-                color='blue',
-            )
-        case Direction.GREATER_X:
-            ax.plot(
-                [geometry.max_x, geometry.max_x],
-                [geometry.min_y, geometry.max_y],
-                linewidth=2,
-                color='blue',
-            )
-        case Direction.LESSER_Y:
-            ax.plot(
-                [geometry.min_x, geometry.max_x],
-                [geometry.min_y, geometry.min_y],
-                linewidth=2,
-                color='blue',
-            )
-        case Direction.GREATER_Y:
-            ax.plot(
-                [geometry.min_x, geometry.max_x],
-                [geometry.max_y, geometry.max_y],
-                linewidth=2,
-                color='blue',
-            )
+    if geometry['heat_source'] in Direction.LESSER_X:
+        ax.plot(
+            [geometry['min_x'], geometry['min_x']],
+            [geometry['min_y'], geometry['max_y']],
+            linewidth=2,
+            color='blue',
+        )
+    elif geometry['heat_source'] in Direction.GREATER_X:
+        ax.plot(
+            [geometry['max_x'], geometry['max_x']],
+            [geometry['min_y'], geometry['max_y']],
+            linewidth=2,
+            color='blue',
+        )
+    elif geometry['heat_source'] in Direction.LESSER_Y:
+        ax.plot(
+            [geometry['min_x'], geometry['max_x']],
+            [geometry['min_y'], geometry['min_y']],
+            linewidth=2,
+            color='blue',
+        )
+    elif geometry['heat_source'] in Direction.GREATER_Y:
+        ax.plot(
+            [geometry['min_x'], geometry['max_x']],
+            [geometry['max_y'], geometry['max_y']],
+            linewidth=2,
+            color='blue',
+        )
     return ax
 
 def plot_polar_geometry(
@@ -69,25 +68,25 @@ def plot_polar_geometry(
 ) -> Axes:
     ax = plot_recording(ax, df_recording)
     ax.add_patch(Wedge(
-        (geometry.center.x, geometry.center.y),
-        geometry.max_r,
-        geometry.min_theta,
-        geometry.max_theta,
+        (geometry['center']['x'], geometry['center']['y']),
+        geometry['max_r'],
+        geometry['min_theta'],
+        geometry['max_theta'],
         hatch='..',
         edgecolor='red',
         facecolor='none',
     ))
     ax.add_patch(Circle(
-        (geometry.center.x, geometry.center.y),
-        geometry.min_r,
+        (geometry['center']['x'], geometry['center']['y']),
+        geometry['min_r'],
         linewidth=2,
         edgecolor='r',
         linestyle='solid',
         facecolor='none',
     ))
     ax.add_patch(Circle(
-        (geometry.center.x, geometry.center.y),
-        geometry.max_r,
+        (geometry['center']['x'], geometry['center']['y']),
+        geometry['max_r'],
         linewidth=2,
         edgecolor='r',
         linestyle='solid',

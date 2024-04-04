@@ -1,11 +1,18 @@
 import logging
 
+import yaml
 import numpy as np
 import pandas as pd
 from matplotlib.animation import Animation
 
+from pyangstrom.config import Config
+
 
 logger = logging.getLogger('io')
+
+def load_config(p_config) -> Config:
+    with open(p_config) as f:
+        return yaml.safe_load(f)
 
 def iter_recording_path(p_rec):
     return sorted(p_rec.iterdir(), key=lambda p: int(p.stem.split('_')[-1]))
