@@ -1,5 +1,11 @@
 import numpy as np
 
+from config import ExperimentalSetup, MaterialProperties
+
+
+class LopezBaezaShortParameters(ExperimentalSetup, MaterialProperties):
+    r: float
+    length: float
 
 def wavenumber(
         angular_frequency,
