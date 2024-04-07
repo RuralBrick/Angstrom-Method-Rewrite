@@ -3,7 +3,7 @@ from typing import NamedTuple
 import numpy as np
 
 from pyangstrom.transform import Region
-from pyangstrom.config import ExperimentalSetup
+from pyangstrom.exp_setup import ExperimentalSetup
 
 
 class SignalProperties(NamedTuple):

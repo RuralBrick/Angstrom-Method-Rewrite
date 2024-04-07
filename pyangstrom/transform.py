@@ -1,8 +1,11 @@
 from typing import TypedDict, NamedTuple
 from dataclasses import dataclass
+from collections import namedtuple
 
 import pandas as pd
 import numpy as np
+
+from pyangstrom.exp_setup import ExperimentalSetup
 
 
 TEMPERATURE_OFFSET = {
@@ -37,17 +40,19 @@ class PolarGeometry(TypedDict):
 
 Geometry = CartesianGeometry | PolarGeometry
 
+Margins = NamedTuple
+
 @dataclass
 class Region:
     """Always in absolute temperature (expect Kelvin)"""
     time: pd.DatetimeIndex
     temps: np.ndarray
-    margins: NamedTuple # Should be in (time, displacement, ...) order
+    margins: Margins # Should be in (time, displacement, ...) order
 
 
 def add_temperature_offset(
         df_recording: pd.DataFrame,
-        arr_temps: np.ndarray
+        arr_temps: np.ndarray,
 ) -> np.ndarray:
     try:
         return arr_temps + TEMPERATURE_OFFSET[df_recording['Units'].unique().item()]
@@ -61,6 +66,7 @@ def add_temperature_offset(
 def extract_cartesian_region(
         df_recording: pd.DataFrame,
         geometry: CartesianGeometry,
+        setup: ExperimentalSetup,
 ) -> Region:
     temps = np.stack(df_recording['Samples']) # (time, height, width)
     temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
@@ -68,42 +74,63 @@ def extract_cartesian_region(
         geometry['min_x'] : geometry['max_x'] + 1,
         geometry['min_y'] : geometry['max_y'] + 1,
     ]
+    temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, width, height)
 
-    # (displacement, span, time)
+    # (time, displacement, span)
     if geometry['heat_source'] in Direction.LESSER_X:
-        displacement_coverage = geometry['max_x'] - geometry['min_x']
-        span_coverage = geometry['max_y'] - geometry['min_y']
+        margins = namedtuple(
+            'XAlignedCartesianMargins',
+            'time_span x_range y_range',
+        )(
+            df_recording.index.max() - df_recording.index.min(),
+            (geometry['max_x'] - geometry['min_x']) * setup['meters_per_pixel'],
+            (geometry['max_y'] - geometry['min_y']) * setup['meters_per_pixel'],
+        )
     elif geometry['heat_source'] in Direction.GREATER_X:
-        temps = np.flip(temps, axis=0)
-        displacement_coverage = geometry['max_x'] - geometry['min_x']
-        span_coverage = geometry['max_y'] - geometry['min_y']
+        temps = np.flip(temps, axis=1)
+        margins = namedtuple(
+            'XAlignedCartesianMargins',
+            'time_span x_range y_range',
+        )(
+            df_recording.index.max() - df_recording.index.min(),
+            (geometry['max_x'] - geometry['min_x']) * setup['meters_per_pixel'],
+            (geometry['max_y'] - geometry['min_y']) * setup['meters_per_pixel'],
+        )
     elif geometry['heat_source'] in Direction.LESSER_Y:
-        temps = np.swapaxes(temps, 0, 1)
-        displacement_coverage = geometry['max_y'] - geometry['min_y']
-        span_coverage = geometry['max_x'] - geometry['min_x']
+        temps = np.swapaxes(temps, 1, 2)
+        margins = namedtuple(
+            'YAlignedCartesianMargins',
+            'time_span y_range x_range',
+        )(
+            df_recording.index.max() - df_recording.index.min(),
+            (geometry['max_y'] - geometry['min_y']) * setup['meters_per_pixel'],
+            (geometry['max_x'] - geometry['min_x']) * setup['meters_per_pixel'],
+        )
     elif geometry['heat_source'] in Direction.GREATER_Y:
-        temps = np.swapaxes(temps, 0, 1)
-        temps = np.flip(temps, axis=0)
-        displacement_coverage = geometry['max_y'] - geometry['min_y']
-        span_coverage = geometry['max_x'] - geometry['min_x']
+        temps = np.swapaxes(temps, 1, 2)
+        temps = np.flip(temps, axis=1)
+        margins = namedtuple(
+            'YAlignedCartesianMargins',
+            'time_span y_range x_range',
+        )(
+            df_recording.index.max() - df_recording.index.min(),
+            (geometry['max_y'] - geometry['min_y']) * setup['meters_per_pixel'],
+            (geometry['max_x'] - geometry['min_x']) * setup['meters_per_pixel'],
+        )
 
-    temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, displacement, span)
     temps = add_temperature_offset(df_recording, temps)
 
     region = Region(
         df_recording.index,
         temps,
-        (
-            df_recording.index.max() - df_recording.index.min(),
-            displacement_coverage,
-            span_coverage,
-        ),
+        margins,
     )
     return region
 
 def extract_polar_region(
         df_recording: pd.DataFrame,
         geometry: PolarGeometry,
+        setup: ExperimentalSetup,
 ) -> Region:
     temps = np.stack(df_recording['Samples']) # (time, height, width)
     temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
@@ -142,13 +169,29 @@ def extract_polar_region(
     temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
     temps_trans = add_temperature_offset(df_recording, temps_trans)
 
+    margins = namedtuple('PolarMargins', 'time_span r_range theta_range')(
+        df_recording.index.max() - df_recording.index.min(),
+        (geometry['max_r'] - geometry['min_r']) * setup['meters_per_pixel'],
+        geometry['max_theta'] - geometry['min_theta'],
+    )
+
     region = Region(
         df_recording.index,
         temps_trans,
-        (
-            df_recording.index.max() - df_recording.index.min(),
-            geometry['max_r'] - geometry['min_r'],
-            geometry['max_theta'] - geometry['min_theta'],
-        ),
+        margins,
     )
     return region
+
+def collapse_region(region: Region) -> Region:
+    time_span, disp_range, *_ = region.margins
+    new_margins = namedtuple('BaseMargins', 'time_span displacement_range')(
+        time_span,
+        disp_range,
+    )
+    num_times, num_disp, *_ = region.temps.shape
+    new_region = Region(
+        region.time,
+        region.temps.reshape(num_times, num_disp, -1).mean(axis=2),
+        new_margins,
+    )
+    return new_region

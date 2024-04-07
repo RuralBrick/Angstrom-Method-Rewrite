@@ -1,28 +1,47 @@
-from typing import TypeVarTuple, Callable, Any
+from typing import Dict, Callable, Any, TypedDict
 from dataclasses import dataclass
 
+from pyangstrom.transform import Region
+from pyangstrom.exp_setup import ExperimentalSetup
 from pyangstrom.signal import SignalProperties
 
 
-Ts = TypeVarTuple('Ts')
-Unknowns = tuple[*Ts]
+Unknowns = Dict
+Parameters = Dict
+PropertiesCalculator = Callable[
+    [Unknowns, Region, ExperimentalSetup, Parameters],
+    SignalProperties,
+]
 ResidualsCallable = Callable[[Unknowns], Any]
 
 @dataclass
 class FittingResult:
-    solution_params: Unknowns
+    unknowns_solutions: Unknowns
+
+FitterCallable = Callable[[ResidualsCallable, Unknowns], FittingResult]
+
+class Solver(TypedDict):
+    name: str
+    parameters: Parameters
+
+class Fitter(TypedDict):
+    name: str
+    unknowns_guesses: Unknowns
+    parameters: Parameters
 
 def fit(
         props: SignalProperties,
-        calc_props: Callable[[Unknowns], SignalProperties],
-        fitter: Callable[[ResidualsCallable, Unknowns], FittingResult],
-        guess_params: Unknowns,
+        calc_props: PropertiesCalculator,
+        fitter: FitterCallable,
+        unknowns_guesses: Unknowns,
+        region: Region,
+        setup: ExperimentalSetup,
 ) -> FittingResult:
-    def residuals(params):
+    def residuals(unknowns):
         residuals = sum(
             prop - calc_prop for prop, calc_prop
-            in zip(props, calc_props(params))
+            in zip(props, calc_props(unknowns, region, setup))
         )
         return residuals
-    result = fitter(residuals, guess_params)
+    result = fitter(residuals, unknowns_guesses)
     return result
