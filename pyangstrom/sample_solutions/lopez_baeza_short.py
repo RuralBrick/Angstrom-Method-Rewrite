@@ -1,13 +1,12 @@
-from typing import TypedDict
+from typing import NamedTuple, TypedDict
 
 import numpy as np
 
 from pyangstrom.fit import Region, ExperimentalSetup, SignalProperties
-from pyangstrom.transform import collapse_region
 from pyangstrom.helpers import calc_thermal_conductivity
 
 
-class LopezBaezaShortUnknowns(TypedDict):
+class LopezBaezaShortUnknowns(NamedTuple):
     thermal_diffusivity: float
     thermal_transfer_coefficient: float
 
@@ -42,16 +41,14 @@ def calc_props(
         setup: ExperimentalSetup,
         params: LopezBaezaShortParameters,
 ) -> SignalProperties:
-    if len(region.margins) > 2:
-        region = collapse_region(region)
-
+    thermal_diffusivity, thermal_transfer_coefficient = unknowns
     wavenumber = calc_wavenumber(
         2 * np.pi * setup['heating_frequency'],
-        unknowns['thermal_diffusivity'],
-        unknowns['thermal_transfer_coefficient'],
+        thermal_diffusivity,
+        thermal_transfer_coefficient,
         params['r'],
         calc_thermal_conductivity(
-            unknowns['thermal_diffusivity'],
+            thermal_diffusivity,
             setup['material_properties']['specific_heat_capacity'],
             setup['material_properties']['density'],
         ),
