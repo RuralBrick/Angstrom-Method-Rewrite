@@ -7,22 +7,22 @@ from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class LopezBaezaShortUnknowns(NamedTuple):
-    thermal_diffusivity: float
-    thermal_transfer_coefficient: float
+    thermal_diffusivity_m2_s: float
+    thermal_transfer_coefficient_kg_s2_K_m2: float
 
 class LopezBaezaShortParameters(TypedDict):
-    r: float
-    length: float
+    r_meters: float
+    length_meters: float
 
 def calc_wavenumber(
-        angular_frequency,
-        thermal_diffusivity,
-        thermal_transfer_coefficient,
-        r,
-        thermal_conductivity,
+        angular_frequency_hertz,
+        thermal_diffusivity_m2_s,
+        thermal_transfer_coefficient_kg_s2_K_m2,
+        r_meters,
+        thermal_conductivity_W_m_K,
 ):
-    heat_conduction = angular_frequency / (2.0*thermal_diffusivity)
-    thermal_losses = thermal_transfer_coefficient / (r * thermal_conductivity)
+    heat_conduction = angular_frequency_hertz / (2.0*thermal_diffusivity_m2_s)
+    thermal_losses = thermal_transfer_coefficient_kg_s2_K_m2 / (r_meters * thermal_conductivity_W_m_K)
     temp_var1 = np.sqrt(thermal_losses**2.0 + heat_conduction**2.0)
     temp_var2 = np.sqrt(-thermal_losses + temp_var1)
     temp_var3 = 1.0j*np.sqrt(thermal_losses + temp_var1)
@@ -41,22 +41,22 @@ def calc_props(
         setup: ExperimentalSetup,
         params: LopezBaezaShortParameters,
 ) -> SignalProperties:
-    thermal_diffusivity, thermal_transfer_coefficient = unknowns
+    thermal_diffusivity_m2_s, thermal_transfer_coefficient_kg_s2_K_m2 = unknowns
     wavenumber = calc_wavenumber(
-        2 * np.pi * setup['heating_frequency'],
-        thermal_diffusivity,
-        thermal_transfer_coefficient,
-        params['r'],
+        2 * np.pi * setup['heating_frequency_hertz'],
+        thermal_diffusivity_m2_s,
+        thermal_transfer_coefficient_kg_s2_K_m2,
+        params['r_meters'],
         calc_thermal_conductivity(
-            thermal_diffusivity,
-            setup['material_properties']['specific_heat_capacity'],
-            setup['material_properties']['density'],
+            thermal_diffusivity_m2_s,
+            setup['material_properties']['specific_heat_capacity_J_kg_K'],
+            setup['material_properties']['density_kg_m3'],
         ),
     )
-    disp = np.linspace(0, region.margins[1], region.temps.shape[1])
+    disp = np.linspace(0, region.margins[1], region.temps_kelvin.shape[1])
     xi = calc_xi(
         wavenumber,
-        params['length'],
+        params['length_meters'],
         disp,
     )
 

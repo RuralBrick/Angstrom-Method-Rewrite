@@ -10,7 +10,7 @@ def fitter(
 ) -> FittingResult:
     result = least_squares(
         residuals,
-        tuple(unknowns_guesses.values()),
+        unknowns_guesses,
         **least_squares_kwargs,
     )
     return FittingResult(result.x)

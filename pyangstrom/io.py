@@ -1,4 +1,5 @@
 import logging
+import csv
 
 import yaml
 import numpy as np
@@ -10,9 +11,25 @@ from pyangstrom.config import Config
 
 logger = logging.getLogger('io')
 
+def load_exp_condition(p_exp_cond) -> list[dict]:
+    with open(p_exp_cond, newline='') as f:
+        reader = csv.reader(f)
+        keys = next(reader)
+        exp_cond = []
+        for row in reader:
+            record = {key: value for key, value in zip(keys, row)}
+            exp_cond.append(record)
+    return exp_cond
+
 def load_config(p_config) -> Config:
     with open(p_config) as f:
         return yaml.safe_load(f)
+
+def save_config(config: Config, p_directory, name):
+    p_file = p_directory / f'{name}.yaml'
+    with open(p_file, 'w') as f:
+        yaml.safe_dump(config, f)
+    logger.info(f"Saved config to {p_file}")
 
 def iter_recording_path(p_rec):
     return sorted(p_rec.iterdir(), key=lambda p: int(p.stem.split('_')[-1]))

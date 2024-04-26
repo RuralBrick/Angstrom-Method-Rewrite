@@ -17,11 +17,11 @@ def fft_signal_processing(
 ) -> SignalProperties:
 
     fundamental_freq = 1.0 / region.margins[0].total_seconds()
-    target_harmonic = int(setup['heating_frequency'] / fundamental_freq)
+    target_harmonic = int(setup['heating_frequency_hertz'] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
     window_end = min(target_harmonic + tol, region.time.size)
 
-    freq = np.fft.fft(region.temps, axis=0)[window_start:window_end]
+    freq = np.fft.fft(region.temps_kelvin, axis=0)[window_start:window_end]
 
     amps = np.abs(freq)
     target_idx = (amps.reshape(freq.shape[0], -1)

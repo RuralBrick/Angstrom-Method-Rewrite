@@ -1,0 +1,469 @@
+experimental_setup:
+  heating_frequency_hertz: 0.1
+  material_properties:
+    density_kg_m3: 8960.0
+    specific_heat_capacity_J_kg_K: 385.0
+  meters_per_pixel: 2.5e-05
+region_batch_transform:
+  average_over_regions: true
+region_information:
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 90.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 60
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 90.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 60
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 90.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 60
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 90.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 60
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 90.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 60
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 100.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 70
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 100.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 70
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 100.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 70
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 100.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 70
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 100.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 70
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 110.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 80
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 110.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 80
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 110.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 80
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 110.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 80
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 110.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 80
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 120.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 90
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 120.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 90
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 120.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 90
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 120.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 90
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 120.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 90
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 130.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 100
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 130.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 100
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 130.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 100
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 130.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 100
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 130.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 100
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 140.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 110
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 140.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 110
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 140.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 110
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 140.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 110
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 140.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 110
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 150.0
+    max_theta_degrees: 180.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 135.0
+    num_r: 120
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 150.0
+    max_theta_degrees: 225.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 180.0
+    num_r: 120
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 150.0
+    max_theta_degrees: 270.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 225.0
+    num_r: 120
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 150.0
+    max_theta_degrees: 315.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 270.0
+    num_r: 120
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+- geometry:
+    center:
+      x_pixels: 364.0
+      y_pixels: 202.0
+    max_r_pixels: 150.0
+    max_theta_degrees: 360.0
+    min_r_pixels: 30.0
+    min_theta_degrees: 315.0
+    num_r: 120
+    num_theta: 180
+  structure:
+    average_out_span: true
+    num_deinterleaving_groups: 5
+solver:
+  name: lopez-baeza
+  parameters:
+    length_meters: 0.0496
+    r_meters: 2.54e-05

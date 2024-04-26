@@ -24,38 +24,38 @@ def plot_cartesian_geometry(
 ) -> Axes:
     ax = plot_recording(ax, df_recording)
     ax.add_patch(Rectangle(
-        (geometry['min_x'], geometry['min_y']),
-        geometry['max_x'] - geometry['min_x'],
-        geometry['max_y'] - geometry['min_y'],
+        (geometry['min_x_pixels'], geometry['min_y_pixels']),
+        geometry['min_x_pixels'] - geometry['min_x_pixels'],
+        geometry['min_y_pixels'] - geometry['min_y_pixels'],
         hatch='..',
         edgecolor='red',
         facecolor='none',
     ))
     if geometry['heat_source'] in Direction.LESSER_X:
         ax.plot(
-            [geometry['min_x'], geometry['min_x']],
-            [geometry['min_y'], geometry['max_y']],
+            [geometry['min_x_pixels'], geometry['min_x_pixels']],
+            [geometry['min_y_pixels'], geometry['min_y_pixels']],
             linewidth=2,
             color='blue',
         )
     elif geometry['heat_source'] in Direction.GREATER_X:
         ax.plot(
-            [geometry['max_x'], geometry['max_x']],
-            [geometry['min_y'], geometry['max_y']],
+            [geometry['min_x_pixels'], geometry['min_x_pixels']],
+            [geometry['min_y_pixels'], geometry['min_y_pixels']],
             linewidth=2,
             color='blue',
         )
     elif geometry['heat_source'] in Direction.LESSER_Y:
         ax.plot(
-            [geometry['min_x'], geometry['max_x']],
-            [geometry['min_y'], geometry['min_y']],
+            [geometry['min_x_pixels'], geometry['min_x_pixels']],
+            [geometry['min_y_pixels'], geometry['min_y_pixels']],
             linewidth=2,
             color='blue',
         )
     elif geometry['heat_source'] in Direction.GREATER_Y:
         ax.plot(
-            [geometry['min_x'], geometry['max_x']],
-            [geometry['max_y'], geometry['max_y']],
+            [geometry['min_x_pixels'], geometry['min_x_pixels']],
+            [geometry['min_y_pixels'], geometry['min_y_pixels']],
             linewidth=2,
             color='blue',
         )
@@ -68,25 +68,25 @@ def plot_polar_geometry(
 ) -> Axes:
     ax = plot_recording(ax, df_recording)
     ax.add_patch(Wedge(
-        (geometry['center']['x'], geometry['center']['y']),
-        geometry['max_r'],
-        geometry['min_theta'],
-        geometry['max_theta'],
+        (geometry['center']['x_pixels'], geometry['center']['y_pixels']),
+        geometry['max_r_pixels'],
+        geometry['min_theta_degrees'],
+        geometry['max_theta_degrees'],
         hatch='..',
         edgecolor='red',
         facecolor='none',
     ))
     ax.add_patch(Circle(
-        (geometry['center']['x'], geometry['center']['y']),
-        geometry['min_r'],
+        (geometry['center']['x_pixels'], geometry['center']['y_pixels']),
+        geometry['min_r_pixels'],
         linewidth=2,
         edgecolor='r',
         linestyle='solid',
         facecolor='none',
     ))
     ax.add_patch(Circle(
-        (geometry['center']['x'], geometry['center']['y']),
-        geometry['max_r'],
+        (geometry['center']['x_pixels'], geometry['center']['y_pixels']),
+        geometry['max_r_pixels'],
         linewidth=2,
         edgecolor='r',
         linestyle='solid',
@@ -126,9 +126,9 @@ def animate_recording(df_recording: pd.DataFrame) -> Animation:
 
 def animate_region(region: Region) -> Region:
     fig, ax = plt.subplots()
-    num_frames, num_disp, *_ = region.temps.shape
+    num_frames, num_disp, *_ = region.temps_kelvin.shape
     disp = np.linspace(0, region.margins[1], num_disp)
-    condensed_temps = (region.temps
+    condensed_temps = (region.temps_kelvin
                              .reshape((num_frames, num_disp, -1))
                              .mean(axis=2))
     ln, = ax.plot(disp, condensed_temps[0])

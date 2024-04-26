@@ -13,13 +13,17 @@ PropertiesCalculator = Callable[
     [Unknowns, Region, ExperimentalSetup, Parameters],
     SignalProperties,
 ]
+UnknownsFormatter = Callable[..., Unknowns]
 ResidualsCallable = Callable[[Unknowns], Any]
 
 @dataclass
 class FittingResult:
     unknowns_solutions: Unknowns
 
-FitterCallable = Callable[[ResidualsCallable, Unknowns], FittingResult]
+FitterCallable = Callable[
+    [ResidualsCallable, Unknowns, Parameters],
+    FittingResult,
+]
 
 class Solver(TypedDict):
     name: str
@@ -34,6 +38,7 @@ def fit(
         props: SignalProperties,
         calc_props: PropertiesCalculator,
         solver_parameters: Parameters,
+        guess_converter: UnknownsFormatter,
         fitter: FitterCallable,
         fitter_parameters: Parameters,
         guesses: Guesses,
@@ -49,5 +54,5 @@ def fit(
             )
         )
         return residuals
-    result = fitter(residuals, guesses, fitter_parameters)
+    result = fitter(residuals, guess_converter(**guesses), fitter_parameters)
     return result
