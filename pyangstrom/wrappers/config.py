@@ -160,5 +160,5 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                 }
                 region_information.append(region_config)
             config['region_information'].extend(region_information)
-        config['region_batch_transform'] = {'average_over_regions': True}
+        config['region_batch_transform'] = {'average_over_regions': True} # FIXME: Should not average between records
     return dict(dd_config)
