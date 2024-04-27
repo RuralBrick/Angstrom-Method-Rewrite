@@ -1,4 +1,4 @@
-from typing import NamedTuple
+from typing import NamedTuple, TypedDict
 
 import numpy as np
 
@@ -9,6 +9,10 @@ from pyangstrom.exp_setup import ExperimentalSetup
 class SignalProperties(NamedTuple):
     amp_ratio: np.ndarray
     phase_diff: np.ndarray
+
+class SignalProcessor(TypedDict):
+    name: str
+    apply_filter: bool
 
 def fft_signal_processing(
         region: Region,

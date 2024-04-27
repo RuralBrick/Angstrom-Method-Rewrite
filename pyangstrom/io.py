@@ -62,6 +62,10 @@ def load_recording_csv(p_rec):
     df = df.set_index('Time')
     return df
 
+def recording_cache_exists(p_cache, name):
+    p_file = p_cache / f'{name}.pkl.gz'
+    return p_file.is_file()
+
 def save_recording_cache(df_rec, p_cache, name):
     p_file = p_cache / f'{name}.pkl.gz'
     df_rec.to_pickle(p_file)
