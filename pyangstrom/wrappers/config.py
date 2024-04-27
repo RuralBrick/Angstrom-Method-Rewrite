@@ -7,6 +7,7 @@ from collections import defaultdict
 
 from pyangstrom.config import Config
 from pyangstrom.transform import (
+    RegionConfig,
     CartesianGeometry,
     PolarGeometry,
     Point,
