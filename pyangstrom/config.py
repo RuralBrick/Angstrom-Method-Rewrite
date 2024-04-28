@@ -8,8 +8,7 @@ from pyangstrom.fit import Solver, Fitter
 
 class Config(TypedDict):
     experimental_setup: ExperimentalSetup
-    region_information: RegionConfig | list[RegionConfig]
-    region_batch_transform: NotRequired[RegionBatchConfig]
+    region_information: RegionConfig | RegionBatchConfig | list[RegionConfig] | list[RegionBatchConfig]
     signal_processor: NotRequired[SignalProcessor]
     solver: NotRequired[Solver]
     fitter: NotRequired[Fitter]

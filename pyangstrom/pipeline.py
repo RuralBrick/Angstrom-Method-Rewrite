@@ -29,15 +29,17 @@ def analyze_recording(
 
     Arguments
     ---------
-    recording_path: Path to the directory holding CSV IR camera data
-    config: All metadata needed to compute thermal conductivity
+    recording_path
+        Path to the directory holding CSV IR camera data
+    config
+        Path to a YAML config file or the deserialized config object itself
 
     Keyword Arguments
     -----------------
-    memory_cache: Holds intermediate results in memory, allowing for faster
-        reruns
-    recording_cache_path: Path to a directory in which cached IR camera data
-        will be saved
+    memory_cache
+        Holds intermediate results in memory, allowing for faster reruns
+    recording_cache_path
+        Path to a directory in which cached IR camera data will be saved
     """
     recording_path = Path(recording_path)
     if recording_cache_path:

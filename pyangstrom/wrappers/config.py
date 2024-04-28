@@ -6,12 +6,13 @@ import json
 from collections import defaultdict
 
 from pyangstrom.config import Config
+from pyangstrom.exp_setup import ExperimentalSetup
 from pyangstrom.transform import (
-    RegionConfig,
     CartesianGeometry,
     PolarGeometry,
     Point,
     RegionStructure,
+    RegionBatchConfig,
 )
 from pyangstrom.fit import Solver
 from pyangstrom.sample_solutions.lopez_baeza_short import LopezBaezaShortParameters
@@ -19,6 +20,17 @@ from pyangstrom.sample_solutions.lopez_baeza_short import LopezBaezaShortParamet
 
 logger = logging.getLogger('config')
 
+
+def create_config() -> Config:
+    setup: ExperimentalSetup = {
+        'meters_per_pixel': 25e-6,
+        'material_properties': {},
+    }
+    config: Config = {
+        'experimental_setup': setup,
+        'region_information': [],
+    }
+    return config
 
 def record_to_cartesian_geometry(record) -> Optional[CartesianGeometry]:
     try:
@@ -102,8 +114,8 @@ def record_to_lopez_baeza_short(record) -> Optional[Solver]:
         return None
 
 def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
-    """Output: dict[rec_name] -> config"""
-    dd_config = defaultdict(dict)
+    """Output: dict[recording_name] -> config"""
+    dd_config = defaultdict(create_config)
     for record in exp_condition:
         if 'rec_name' in record:
             config: Config = dd_config[record['rec_name']]
@@ -114,12 +126,6 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                 "No recording identification field found in exp_condition"
             )
             continue
-        if 'experimental_setup' not in config:
-            config['experimental_setup'] = {}
-        if 'material_properties' not in config['experimental_setup']:
-            config['experimental_setup']['material_properties'] = {}
-        if 'region_information' not in config:
-            config['region_information'] = []
         geometries = None
         structure: RegionStructure = {'average_out_span': True}
         for key, value in record.items():
@@ -149,17 +155,10 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                         config['solver'] = record_to_lopez_baeza_short(record)
                 case _:
                     logger.warn(f"Unrecognized field: {key} -> {value}")
-        config['experimental_setup']['meters_per_pixel'] = 25e-6
-        if 'num_deinterleaving_groups' not in structure:
-            structure['num_deinterleaving_groups'] = 1
-        if geometries:
-            region_information = []
-            for geometry in geometries:
-                region_config: RegionConfig = {
-                    'geometry': geometry,
-                    'structure': copy(structure),
-                }
-                region_information.append(region_config)
-            config['region_information'].extend(region_information)
-        config['region_batch_transform'] = {'average_over_regions': True} # FIXME: Should not average between records
+        batch_config: RegionBatchConfig = {
+            'geometries': geometries,
+            'structure': structure,
+            'average_over_regions': True,
+        }
+        config['region_information'].append(batch_config)
     return dict(dd_config)

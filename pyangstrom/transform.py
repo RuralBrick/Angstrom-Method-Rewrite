@@ -50,6 +50,8 @@ class RegionConfig(TypedDict):
     structure: RegionStructure
 
 class RegionBatchConfig(TypedDict):
+    geometries: list[Geometry]
+    structure: RegionStructure
     average_over_regions: bool
 
 
