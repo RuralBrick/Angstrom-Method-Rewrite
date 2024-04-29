@@ -1,4 +1,5 @@
-from typing import TypedDict, NotRequired, NamedTuple
+import warnings
+from typing import TypedDict, NotRequired, NamedTuple, Iterable
 from dataclasses import dataclass
 from collections import namedtuple
 
@@ -198,6 +199,17 @@ def extract_polar_region(
     )
     return region
 
+def geometry_to_region(
+        df_recording: pd.DataFrame,
+        geometry: Geometry,
+        setup: ExperimentalSetup,
+) -> Region:
+    match geometry:
+        case {'heat_source': _}:
+            return extract_cartesian_region(df_recording, geometry, setup)
+        case {'center': _}:
+            return extract_polar_region(df_recording, geometry, setup)
+
 def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
     new_time = region.time
     if axis == 0:
@@ -215,20 +227,6 @@ def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
     new_region = Region(
         new_time,
         new_temps,
-        new_margins,
-    )
-    return new_region
-
-def collapse_region(region: Region) -> Region:
-    time_span, disp_range, *_ = region.margins
-    new_margins = namedtuple('BaseMargins', 'time_span displacement_range_meters')(
-        time_span,
-        disp_range,
-    )
-    num_times, num_disp, *_ = region.temps_kelvin.shape
-    new_region = Region(
-        region.time,
-        region.temps_kelvin.reshape(num_times, num_disp, -1).mean(axis=2),
         new_margins,
     )
     return new_region
@@ -271,16 +269,18 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
         )
     return region
 
-def geometry_to_region(
-        df_recording: pd.DataFrame,
-        geometry: Geometry,
-        setup: ExperimentalSetup,
-) -> Region:
-    match geometry:
-        case {'heat_source': _}:
-            return extract_cartesian_region(df_recording, geometry, setup)
-        case {'center': _}:
-            return extract_polar_region(df_recording, geometry, setup)
+def all_temps_same_shape(regions: Iterable[Region]) -> bool:
+    dim_sizes = zip(*(r.temps_kelvin.shape for r in regions))
+    size_counts = [set(s) for s in dim_sizes]
+    return all(len(c) == 1 for c in size_counts)
+
+def min_temps_shape(regions: Iterable[Region]) -> tuple:
+    dim_sizes = zip(*(r.temps_kelvin.shape for r in regions))
+    min_shape = tuple(min(s) for s in dim_sizes)
+    return min_shape
+
+def trim_regions(regions: Iterable[Region]) -> list[Region]:
+    raise NotImplementedError()
 
 def fully_extract_region(
         df_recording: pd.DataFrame,
@@ -308,8 +308,29 @@ def fully_extract_region(
                     restructure_region(r, information['structure'])
                     for r in regions
                 ]
-            # TODO: Aggregate regions; warn if truncate
-            raise NotImplementedError()
+            if ('average_over_regions' not in information
+                or not information['average_over_regions']):
+                return regions
+            if not all_temps_same_shape(regions):
+                warnings.warn(
+                    "Not all regions have the same number of samples. Trimming "
+                    "regions to match minimum shape."
+                )
+                regions = trim_regions(regions)
+            assert len({r.time.shape for r in regions}) == 1
+            new_temps = np.stack([r.temps_kelvin for r in regions], axis=2)
+            new_temps = new_temps.mean(axis=2)
+            if len({r.margins for r in regions}) != 1:
+                warnings.warn(
+                    "Not all regions have the same margins. Using the margins "
+                    "of the first region."
+                )
+            new_region = Region(
+                regions[0].time,
+                new_temps,
+                regions[0].margins,
+            )
+            return new_region
         case [*region_configs]:
             regions = [
                 fully_extract_region(df_recording, c, setup)
@@ -318,3 +339,17 @@ def fully_extract_region(
             return regions
         case _:
             raise ValueError(f"Invalid information format: {information}")
+
+def collapse_region(region: Region) -> Region:
+    time_span, disp_range, *_ = region.margins
+    new_margins = namedtuple('BaseMargins', 'time_span displacement_range_meters')(
+        time_span,
+        disp_range,
+    )
+    num_times, num_disp, *_ = region.temps_kelvin.shape
+    new_region = Region(
+        region.time,
+        region.temps_kelvin.reshape(num_times, num_disp, -1).mean(axis=2),
+        new_margins,
+    )
+    return new_region
