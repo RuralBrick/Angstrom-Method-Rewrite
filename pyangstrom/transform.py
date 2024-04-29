@@ -280,7 +280,17 @@ def min_temps_shape(regions: Iterable[Region]) -> tuple:
     return min_shape
 
 def trim_regions(regions: Iterable[Region]) -> list[Region]:
-    raise NotImplementedError()
+    min_shape = min_temps_shape(regions)
+    new_regions = []
+    for region in regions:
+        for axis, size in enumerate(min_shape):
+            region = truncate_region(
+                region,
+                region.temps_kelvin.shape[axis] - size,
+                axis,
+            )
+            new_regions.append(region)
+    return new_regions
 
 def fully_extract_region(
         df_recording: pd.DataFrame,
@@ -311,13 +321,13 @@ def fully_extract_region(
             if ('average_over_regions' not in information
                 or not information['average_over_regions']):
                 return regions
+            assert len({r.time.shape for r in regions}) == 1
             if not all_temps_same_shape(regions):
                 warnings.warn(
                     "Not all regions have the same number of samples. Trimming "
                     "regions to match minimum shape."
                 )
                 regions = trim_regions(regions)
-            assert len({r.time.shape for r in regions}) == 1
             new_temps = np.stack([r.temps_kelvin for r in regions], axis=2)
             new_temps = new_temps.mean(axis=2)
             if len({r.margins for r in regions}) != 1:
