@@ -1,4 +1,6 @@
+import warnings
 from typing import Optional
+from dataclasses import dataclass
 from pathlib import Path
 
 from pyangstrom.config import Config
@@ -9,14 +11,34 @@ from pyangstrom.io import (
     save_recording_cache,
     load_recording_cache,
 )
-from pyangstrom.transform import extract_cartesian_region, extract_polar_region
+from pyangstrom.transform import fully_extract_region
 from pyangstrom.signal import fft_signal_processing
-from pyangstrom.fit import fit
+from pyangstrom.fit import PropertiesCalculator, UnknownsFormatter, fit
 import pyangstrom.sample_solutions.lopez_baeza_short as lopez_baeza_short
 import pyangstrom.sample_solutions.hu_high_temp as hu_high_temp
 import pyangstrom.fitting_methods.lsr as lsr
 import pyangstrom.fitting_methods.mcmc as mcmc
 
+
+@dataclass
+class Solution:
+    solver: PropertiesCalculator
+    unknowns_formatter: UnknownsFormatter
+
+SIGNAL_PROCESSORS = {
+    'fft': fft_signal_processing,
+}
+
+SOLUTIONS = {
+    'lopez-baeza': Solution(
+        lopez_baeza_short.calc_props,
+        lopez_baeza_short.LopezBaezaShortUnknowns,
+    ),
+}
+
+FITTERS = {
+    'lsr': lsr.fitter,
+}
 
 def analyze_recording(
         recording_path: str | Path,
@@ -58,4 +80,62 @@ def analyze_recording(
             )
     else:
         df_recording = load_recording_csv(recording_path)
-    ...
+    region_result = fully_extract_region(
+        df_recording,
+        config['region_information'],
+        config['experimental_setup'],
+    )
+    if 'signal_processor' not in config:
+        return region_result
+    try:
+        # TODO: apply_filter
+        signal_processor = SIGNAL_PROCESSORS[config['signal_processor']['name']]
+        if isinstance(region_result, list):
+            props = [
+                signal_processor(r, config['experimental_setup'])
+                for r in region_result
+            ]
+        else:
+            props = signal_processor(
+                region_result,
+                config['experimental_setup'],
+            )
+    except KeyError as e:
+        warnings.warn(f"Signal processor {e} not found.")
+        return region_result
+    # TODO: Custom solver
+    if 'solver' not in config or 'fitter' not in config:
+        return props
+    try:
+        if isinstance(props, list):
+            fitting_result = [
+                fit(
+                    p,
+                    SOLUTIONS[config['solver']['name']].solver,
+                    config['solver']['parameters'],
+                    SOLUTIONS[config['solver']['name']].unknowns_formatter,
+                    FITTERS[config['fitter']['name']],
+                    config['fitter']['parameters'],
+                    config['fitter']['guesses'],
+                    r,
+                    config['experimental_setup'],
+                )
+                for p, r in zip(props, region_result)
+            ]
+        else:
+            fitting_result = fit(
+                props,
+                SOLUTIONS[config['solver']['name']].solver,
+                config['solver']['parameters'],
+                SOLUTIONS[config['solver']['name']].unknowns_formatter,
+                FITTERS[config['fitter']['name']],
+                config['fitter']['parameters'],
+                config['fitter']['guesses'],
+                region_result,
+                config['experimental_setup'],
+            )
+    except KeyError as e:
+        warnings.warn(f"Solver or fitter {e} not found.")
+        return props
+    return fitting_result
+    # TODO: Automatic visualizations/better formatted return

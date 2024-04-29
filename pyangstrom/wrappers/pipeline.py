@@ -62,11 +62,13 @@ def hu_batch_process(
         config_directory_path = Path(config_directory_path)
         for recording_name, config in dict_config.items():
             save_config(config, config_directory_path, recording_name)
-    for recording_name, config in dict_config.items():
+    results = [
         analyze_recording(
             data_directory / recording_name,
             config,
             memory_cache=memory_cache,
             recording_cache_path=recording_cache_path,
         )
-    # TODO: Return analyze_recording result
+        for recording_name, config in dict_config.items()
+    ]
+    return results
