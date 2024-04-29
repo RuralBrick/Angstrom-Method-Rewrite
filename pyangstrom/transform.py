@@ -256,9 +256,14 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
             axis=1,
         )
         new_temps = np.stack(lst_groups, axis=2)
-        # HACK
-        new_margins = None
-        # end HACK
+        new_field_names = list(region.margins._fields)
+        new_field_names.insert(2, 'num_deinterleaved_groups')
+        new_field_values = list(region.margins)
+        new_field_values.insert(2, structure['num_deinterleaving_groups'])
+        new_margins = namedtuple(
+            f'{type(region.margins).__name__}Deinterleaved',
+            new_field_names,
+        )._make(new_field_values)
         region = Region(
             region.time,
             new_temps,
