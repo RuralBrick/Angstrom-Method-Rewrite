@@ -1,4 +1,4 @@
-from typing import TypedDict, NamedTuple
+from typing import TypedDict, NotRequired, NamedTuple
 from dataclasses import dataclass
 from collections import namedtuple
 
@@ -42,17 +42,19 @@ class PolarGeometry(TypedDict):
 Geometry = CartesianGeometry | PolarGeometry
 
 class RegionStructure(TypedDict):
-    average_out_span: bool
-    num_deinterleaving_groups: int
+    average_out_span: NotRequired[bool]
+    num_deinterleaving_groups: NotRequired[int]
 
 class RegionConfig(TypedDict):
     geometry: Geometry
-    structure: RegionStructure
+    structure: NotRequired[RegionStructure]
 
 class RegionBatchConfig(TypedDict):
     geometries: list[Geometry]
-    structure: RegionStructure
-    average_over_regions: bool
+    structure: NotRequired[RegionStructure]
+    average_over_regions: NotRequired[bool]
+
+RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list[RegionBatchConfig]
 
 
 Margins = NamedTuple
@@ -196,6 +198,27 @@ def extract_polar_region(
     )
     return region
 
+def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
+    new_time = region.time
+    if axis == 0:
+        new_time = region.time[:-num_truncate]
+
+    new_temps = np.moveaxis(region.temps_kelvin, axis, 0)
+    new_temps = new_temps[:-num_truncate]
+    new_temps = np.moveaxis(new_temps, 0, axis)
+
+    disp_range = region.margins[1]
+    disp_range *= new_temps.shape[1] / region.temps_kelvin.shape[1]
+    new_field = {region.margins._fields[1]: disp_range}
+    new_margins = region.margins._replace(**new_field)
+
+    new_region = Region(
+        new_time,
+        new_temps,
+        new_margins,
+    )
+    return new_region
+
 def collapse_region(region: Region) -> Region:
     time_span, disp_range, *_ = region.margins
     new_margins = namedtuple('BaseMargins', 'time_span displacement_range_meters')(
@@ -211,4 +234,82 @@ def collapse_region(region: Region) -> Region:
     return new_region
 
 def restructure_region(region: Region, structure: RegionStructure) -> Region:
-    pass
+    if 'average_out_span' in structure and structure['average_out_span']:
+        time_span, disp_range, _ = region.margins
+        new_margins = namedtuple('BaseMargins', 'time_span displacement_range_meters')(
+            time_span,
+            disp_range,
+        )
+        region = Region(
+            region.time,
+            region.temps_kelvin.mean(axis=2),
+            new_margins,
+        )
+    if 'num_deinterleaving_groups' in structure:
+        num_disp = region.temps_kelvin.shape[1]
+        remainder = num_disp % structure['num_deinterleaving_groups']
+        if remainder != 0:
+            region = truncate_region(region, remainder, axis=1)
+        lst_groups = np.split(
+            region.temps_kelvin,
+            structure['num_deinterleaving_groups'],
+            axis=1,
+        )
+        new_temps = np.stack(lst_groups, axis=2)
+        # HACK
+        new_margins = None
+        # end HACK
+        region = Region(
+            region.time,
+            new_temps,
+            new_margins,
+        )
+    return region
+
+def geometry_to_region(
+        df_recording: pd.DataFrame,
+        geometry: Geometry,
+        setup: ExperimentalSetup,
+) -> Region:
+    match geometry:
+        case {'heat_source': _}:
+            return extract_cartesian_region(df_recording, geometry, setup)
+        case {'center': _}:
+            return extract_polar_region(df_recording, geometry, setup)
+
+def fully_extract_region(
+        df_recording: pd.DataFrame,
+        information: RegionInformation,
+        setup: ExperimentalSetup,
+) -> Region | list[Region]:
+    """
+    Exceptions
+    ----------
+    ValueError
+        Malformed information.
+    """
+    match information:
+        case {'geometry': geometry}:
+            region = geometry_to_region(df_recording, geometry, setup)
+            if 'structure' in information:
+                region = restructure_region(region, information['structure'])
+            return region
+        case {'geometries': geometries}:
+            regions = [
+                geometry_to_region(df_recording, g, setup) for g in geometries
+            ]
+            if 'structure' in information:
+                regions = [
+                    restructure_region(r, information['structure'])
+                    for r in regions
+                ]
+            # TODO: Aggregate regions; warn if truncate
+            raise NotImplementedError()
+        case [*region_configs]:
+            regions = [
+                fully_extract_region(df_recording, c, setup)
+                for c in region_configs
+            ]
+            return regions
+        case _:
+            raise ValueError(f"Invalid information format: {information}")
