@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 
 import yaml
+from tqdm.auto import tqdm
 import numpy as np
 import pandas as pd
 from matplotlib.animation import Animation
@@ -74,13 +75,16 @@ def load_recording_frames(p_rec: Path):
             delimiter=',',
             skip_header=header_end,
         )
-        dict_frame['Samples'] = arr
         logger.debug(f"{dict_frame=}, {arr.shape=}")
+        dict_frame['Samples'] = arr
         yield dict_frame
 
-def load_recording_csv(p_rec: Path) -> pd.DataFrame:
+def load_recording_csv(p_rec: Path, progress_bar: bool = False) -> pd.DataFrame:
     logger.debug(f"Loading {p_rec}")
-    df = pd.DataFrame.from_records(load_recording_frames(p_rec))
+    frame_generator = load_recording_frames(p_rec)
+    if progress_bar:
+        frame_generator = tqdm(frame_generator)
+    df = pd.DataFrame.from_records(frame_generator)
     df['Time'] = pd.to_datetime(df['Time'], format='%j:%H:%M:%S.%f')
     df = df.set_index('Time')
     return df
