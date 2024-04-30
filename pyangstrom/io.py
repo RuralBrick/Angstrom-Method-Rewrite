@@ -60,7 +60,7 @@ def iter_recording_path(p_rec: Path):
 
 def load_recording_frames(p_rec: Path):
     path_iterable = iter_recording_path(p_rec)
-    if logging.root.level <= logging.INFO:
+    if logger.getEffectiveLevel() <= logging.INFO:
         path_iterable = tqdm(path_iterable, total=len(list(p_rec.iterdir())))
     for p_frame in path_iterable:
         dict_frame = {}
