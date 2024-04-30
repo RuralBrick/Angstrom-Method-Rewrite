@@ -5,7 +5,7 @@ import numpy as np
 import pyangstromRT.blmcmc
 from pyangstromRT.blmcmc import calculate_theoretical_results
 
-from pyangstrom.yuan.RT.signatures import (
+from pyangstrom.hu.RT.signatures import (
     RtFileConfig,
     RtAmpPhaseConfig,
     LsrConfig,

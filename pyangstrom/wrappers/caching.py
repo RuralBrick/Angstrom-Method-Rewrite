@@ -10,7 +10,7 @@ from pyangstromHT.high_T_angstrom_method import (
 )
 from pyangstromRT.blmcmc import calculate_theoretical_results
 
-from pyangstrom.yuan.RT import TheorConfig
+from pyangstrom.hu.RT import TheorConfig
 from pyangstrom.wrappers.data_extraction import McmcConfig, FrameConfig
 from pyangstrom.wrappers.data_extraction import mcmc_analysis, get_first_frame
 from pyangstrom.wrappers.helpers import ht_df_to_rt_df
