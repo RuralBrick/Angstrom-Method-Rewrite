@@ -71,6 +71,11 @@ def record_to_cartesian_geometry(record) -> Optional[CartesianGeometry]:
                     'heat_source': 'lesser_y',
                 }
                 return geometry
+            case _:
+                warnings.warn(
+                    f"Direction not recognized: {record['direction']}"
+                )
+                return None
     except KeyError as e:
         warnings.warn(f"Could not find {e} field for cartesian geometry")
         return None

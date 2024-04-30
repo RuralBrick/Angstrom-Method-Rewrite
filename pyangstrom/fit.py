@@ -1,4 +1,4 @@
-from typing import NamedTuple, Dict, Callable, Any, TypedDict, NotRequired
+from typing import NamedTuple, Dict, Callable, Any, TypedDict
 from dataclasses import dataclass
 
 import numpy as np
@@ -28,14 +28,14 @@ FitterCallable = Callable[
     FittingResult,
 ]
 
-class Solver(TypedDict):
+class Solver(TypedDict, total=False):
     name: str
-    parameters: NotRequired[Parameters]
+    parameters: Parameters
 
-class Fitter(TypedDict):
+class Fitter(TypedDict, total=False):
     name: str
     guesses: Guesses
-    parameters: NotRequired[Parameters]
+    parameters: Parameters
 
 def region_to_displacement(region: Region) -> np.ndarray:
     disp = np.linspace(0, region.margins[1], region.temps_kelvin.shape[1])

@@ -62,13 +62,15 @@ def analyze_recording(
 
     Keyword Arguments
     -----------------
+    verbose
+        If True, print status messages while processing data
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved
     """
-    recording_path = Path(recording_path)
     logger.info("Loading recording")
+    recording_path = Path(recording_path)
     if recording_cache_path:
         recording_cache_path = Path(recording_cache_path)
         if recording_cache_exists(recording_cache_path, recording_path.stem):
@@ -94,6 +96,11 @@ def analyze_recording(
         logger.info("Loading config")
         config = load_config(Path(config))
         logger.debug(f"{config=}")
+    if 'region_information' not in config:
+        return df_recording
+    if 'experimental_setup' not in config:
+        warnings.warn("Field experimental_setup required to extract regions")
+        return df_recording
     logger.info("Extracting region(s)")
     region_result = fully_extract_region(
         df_recording,

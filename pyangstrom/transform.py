@@ -1,5 +1,5 @@
 import warnings
-from typing import TypedDict, NotRequired, NamedTuple, Iterable
+from typing import TypedDict, NamedTuple, Iterable
 from dataclasses import dataclass
 from collections import namedtuple
 
@@ -42,18 +42,18 @@ class PolarGeometry(TypedDict):
 
 Geometry = CartesianGeometry | PolarGeometry
 
-class RegionStructure(TypedDict):
-    average_out_span: NotRequired[bool]
-    num_deinterleaving_groups: NotRequired[int]
+class RegionStructure(TypedDict, total=False):
+    average_out_span: bool
+    num_deinterleaving_groups: int
 
-class RegionConfig(TypedDict):
+class RegionConfig(TypedDict, total=False):
     geometry: Geometry
-    structure: NotRequired[RegionStructure]
+    structure: RegionStructure
 
-class RegionBatchConfig(TypedDict):
+class RegionBatchConfig(TypedDict, total=False):
     geometries: list[Geometry]
-    structure: NotRequired[RegionStructure]
-    average_over_regions: NotRequired[bool]
+    structure: RegionStructure
+    average_over_regions: bool
 
 RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list[RegionBatchConfig]
 
@@ -133,6 +133,13 @@ def extract_cartesian_region(
             df_recording.index.max() - df_recording.index.min(),
             (geometry['max_y_pixels'] - geometry['min_y_pixels']) * setup['meters_per_pixel'],
             (geometry['max_x_pixels'] - geometry['min_x_pixels']) * setup['meters_per_pixel'],
+        )
+    else:
+        warnings.warn(f"Heat source not recognized: {geometry['heat_source']}")
+        margins = namedtuple('CorruptedMargins', 'time_span unknown1 unknown2')(
+            df_recording.index.max() - df_recording.index.min(),
+            0,
+            0,
         )
 
     temps_kelvin = convert_temps_to_kelvin(df_recording, temps)

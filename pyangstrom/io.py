@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 
 import yaml
+from tqdm.auto import tqdm
 import numpy as np
 import pandas as pd
 from matplotlib.animation import Animation
@@ -58,7 +59,10 @@ def iter_recording_path(p_rec: Path):
     return sorted(p_rec.iterdir(), key=lambda p: int(p.stem.split('_')[-1]))
 
 def load_recording_frames(p_rec: Path):
-    for p_frame in iter_recording_path(p_rec):
+    path_iterable = iter_recording_path(p_rec)
+    if logger.getEffectiveLevel() <= logging.INFO:
+        path_iterable = tqdm(path_iterable, total=len(list(p_rec.iterdir())))
+    for p_frame in path_iterable:
         dict_frame = {}
         with open(p_frame) as f:
             for i, line in enumerate(f):
@@ -74,8 +78,8 @@ def load_recording_frames(p_rec: Path):
             delimiter=',',
             skip_header=header_end,
         )
-        dict_frame['Samples'] = arr
         logger.debug(f"{dict_frame=}, {arr.shape=}")
+        dict_frame['Samples'] = arr
         yield dict_frame
 
 def load_recording_csv(p_rec: Path) -> pd.DataFrame:
