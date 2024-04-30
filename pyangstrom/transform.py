@@ -1,5 +1,5 @@
 import warnings
-from typing import TypedDict, NotRequired, NamedTuple, Iterable
+from typing import TypedDict, NamedTuple, Iterable
 from dataclasses import dataclass
 from collections import namedtuple
 
@@ -42,18 +42,18 @@ class PolarGeometry(TypedDict):
 
 Geometry = CartesianGeometry | PolarGeometry
 
-class RegionStructure(TypedDict):
-    average_out_span: NotRequired[bool]
-    num_deinterleaving_groups: NotRequired[int]
+class RegionStructure(TypedDict, total=False):
+    average_out_span: bool
+    num_deinterleaving_groups: int
 
-class RegionConfig(TypedDict):
+class RegionConfig(TypedDict, total=False):
     geometry: Geometry
-    structure: NotRequired[RegionStructure]
+    structure: RegionStructure
 
-class RegionBatchConfig(TypedDict):
+class RegionBatchConfig(TypedDict, total=False):
     geometries: list[Geometry]
-    structure: NotRequired[RegionStructure]
-    average_over_regions: NotRequired[bool]
+    structure: RegionStructure
+    average_over_regions: bool
 
 RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list[RegionBatchConfig]
 

@@ -1,4 +1,4 @@
-from typing import NamedTuple, TypedDict, NotRequired
+from typing import NamedTuple, TypedDict
 
 import numpy as np
 
@@ -10,9 +10,9 @@ class SignalProperties(NamedTuple):
     amp_ratio: np.ndarray
     phase_diff: np.ndarray
 
-class SignalProcessor(TypedDict):
+class SignalProcessor(TypedDict, total=False):
     name: str
-    apply_filter: NotRequired[bool]
+    apply_filter: bool
 
 def fft_signal_processing(
         region: Region,
