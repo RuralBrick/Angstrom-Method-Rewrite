@@ -51,7 +51,7 @@ def hu_batch_process(
         Path to a directory in which cached IR camera data will be saved
     """
     if verbose:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.INFO, force=True)
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)
