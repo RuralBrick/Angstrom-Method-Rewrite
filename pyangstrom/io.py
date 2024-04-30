@@ -83,7 +83,10 @@ def load_recording_csv(p_rec: Path, progress_bar: bool = False) -> pd.DataFrame:
     logger.debug(f"Loading {p_rec}")
     frame_generator = load_recording_frames(p_rec)
     if progress_bar:
-        frame_generator = tqdm(frame_generator)
+        frame_generator = tqdm(
+            frame_generator,
+            total=len(list(p_rec.iterdir())),
+        )
     df = pd.DataFrame.from_records(frame_generator)
     df['Time'] = pd.to_datetime(df['Time'], format='%j:%H:%M:%S.%f')
     df = df.set_index('Time')
