@@ -63,15 +63,18 @@ def analyze_recording(
 
     Keyword Arguments
     -----------------
+    verbose
+        If True, print status messages while processing data
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved
     """
     if verbose:
-        verbose_handler = logging.StreamHandler()
         root_logger = logging.getLogger()
-        root_logger.addHandler(verbose_handler)
+        if not root_logger.hasHandlers():
+            verbose_handler = logging.StreamHandler()
+            root_logger.addHandler(verbose_handler)
     recording_path = Path(recording_path)
     logger.info("Loading recording")
     if recording_cache_path:
