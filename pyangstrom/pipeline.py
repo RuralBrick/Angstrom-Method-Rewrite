@@ -1,3 +1,4 @@
+import logging
 import warnings
 from typing import Optional
 from dataclasses import dataclass
@@ -10,6 +11,7 @@ from pyangstrom.io import (
     load_recording_csv,
     save_recording_cache,
     load_recording_cache,
+    load_config,
 )
 from pyangstrom.transform import fully_extract_region
 from pyangstrom.signal import fft_signal_processing
@@ -40,6 +42,8 @@ FITTERS = {
     'lsr': lsr.fitter,
 }
 
+logger = logging.getLogger('pipeline')
+
 def analyze_recording(
         recording_path: str | Path,
         config: str | Path | Config,
@@ -64,22 +68,33 @@ def analyze_recording(
         Path to a directory in which cached IR camera data will be saved
     """
     recording_path = Path(recording_path)
+    logger.info("Loading recording")
     if recording_cache_path:
         recording_cache_path = Path(recording_cache_path)
         if recording_cache_exists(recording_cache_path, recording_path.stem):
+            logger.debug("Recording cache found")
             df_recording = load_recording_cache(
                 recording_cache_path,
-                recording_cache_path.stem,
+                recording_path.stem,
             )
+            logger.debug(f"{df_recording[:1]=}")
         else:
+            logger.debug("Recording cache not found")
             df_recording = load_recording_csv(recording_path)
             save_recording_cache(
                 df_recording,
                 recording_cache_path,
                 recording_path.stem,
             )
+            logger.debug(f"Saved to cache: {df_recording[:1]=}")
     else:
         df_recording = load_recording_csv(recording_path)
+        logger.debug(f"Loaded csv: {df_recording[:1]=}")
+    if not isinstance(config, dict):
+        logger.info("Loading config")
+        config = load_config(Path(config))
+        logger.debug(f"{config=}")
+    logger.info("Extracting region(s)")
     region_result = fully_extract_region(
         df_recording,
         config['region_information'],
@@ -87,6 +102,15 @@ def analyze_recording(
     )
     if 'signal_processor' not in config:
         return region_result
+    if isinstance(region_result, list):
+        debug_region = region_result[0]
+    else:
+        debug_region = region_result
+    logger.debug(
+        f"{debug_region.time[:1]=}, {debug_region.temps_kelvin[:1, :1]=}, "
+        f"{debug_region.margins=}"
+    )
+    logger.info("Signal processing")
     try:
         # TODO: apply_filter
         signal_processor = SIGNAL_PROCESSORS[config['signal_processor']['name']]
@@ -106,34 +130,31 @@ def analyze_recording(
     # TODO: Custom solver
     if 'solver' not in config or 'fitter' not in config:
         return props
+    if isinstance(props, list):
+        debug_props = props[0]
+    else:
+        debug_props = props
+    for name, prop in debug_props._asdict().items():
+        logger.debug(f"{name}={prop[:1]}")
+    logger.info("Fitting")
     try:
+        fit_kwargs = dict(
+            calc_props=SOLUTIONS[config['solver']['name']].solver,
+            guess_converter=SOLUTIONS[config['solver']['name']].unknowns_formatter,
+            fitter=FITTERS[config['fitter']['name']],
+            guesses=config['fitter']['guesses'],
+            setup=config['experimental_setup'],
+        )
+        if 'parameters' in config['solver']:
+            fit_kwargs['solver_parameters'] = config['solver']['parameters']
+        if 'parameters' in config['fitter']:
+            fit_kwargs['fitter_parameters'] = config['fitter']['parameters']
         if isinstance(props, list):
             fitting_result = [
-                fit(
-                    p,
-                    SOLUTIONS[config['solver']['name']].solver,
-                    config['solver']['parameters'],
-                    SOLUTIONS[config['solver']['name']].unknowns_formatter,
-                    FITTERS[config['fitter']['name']],
-                    config['fitter']['parameters'],
-                    config['fitter']['guesses'],
-                    r,
-                    config['experimental_setup'],
-                )
-                for p, r in zip(props, region_result)
+                fit(r, p, **fit_kwargs) for r, p in zip(region_result, props)
             ]
         else:
-            fitting_result = fit(
-                props,
-                SOLUTIONS[config['solver']['name']].solver,
-                config['solver']['parameters'],
-                SOLUTIONS[config['solver']['name']].unknowns_formatter,
-                FITTERS[config['fitter']['name']],
-                config['fitter']['parameters'],
-                config['fitter']['guesses'],
-                region_result,
-                config['experimental_setup'],
-            )
+            fitting_result = fit(region_result, props, **fit_kwargs,)
     except KeyError as e:
         warnings.warn(f"Solver or fitter {e} not found.")
         return props

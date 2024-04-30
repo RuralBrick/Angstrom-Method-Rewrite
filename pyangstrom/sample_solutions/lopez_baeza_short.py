@@ -2,7 +2,7 @@ from typing import NamedTuple, TypedDict
 
 import numpy as np
 
-from pyangstrom.fit import Region, ExperimentalSetup, SignalProperties
+from pyangstrom.fit import Displacement, ExperimentalSetup, SignalProperties
 from pyangstrom.helpers import calc_thermal_conductivity
 
 
@@ -37,7 +37,7 @@ def calc_xi(wavenumber, length, displacement):
 
 def calc_props(
         unknowns: LopezBaezaShortUnknowns,
-        region: Region,
+        displacement: Displacement,
         setup: ExperimentalSetup,
         params: LopezBaezaShortParameters,
 ) -> SignalProperties:
@@ -53,11 +53,10 @@ def calc_props(
             setup['material_properties']['density_kg_m3'],
         ),
     )
-    disp = np.linspace(0, region.margins[1], region.temps_kelvin.shape[1])
     xi = calc_xi(
         wavenumber,
         params['length_meters'],
-        disp,
+        displacement,
     )
 
     amps = np.abs(xi)

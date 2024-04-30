@@ -1,5 +1,7 @@
-from typing import NamedTuple, Dict, Callable, Any, TypedDict
+from typing import NamedTuple, Dict, Callable, Any, TypedDict, NotRequired
 from dataclasses import dataclass
+
+import numpy as np
 
 from pyangstrom.transform import Region
 from pyangstrom.exp_setup import ExperimentalSetup
@@ -8,9 +10,10 @@ from pyangstrom.signal import SignalProperties
 
 Unknowns = NamedTuple
 Guesses = Dict
+Displacement = np.ndarray
 Parameters = Dict
 PropertiesCalculator = Callable[
-    [Unknowns, Region, ExperimentalSetup, Parameters],
+    [Unknowns, Displacement, ExperimentalSetup, Parameters],
     SignalProperties,
 ]
 UnknownsFormatter = Callable[..., Unknowns]
@@ -27,32 +30,37 @@ FitterCallable = Callable[
 
 class Solver(TypedDict):
     name: str
-    parameters: Parameters
+    parameters: NotRequired[Parameters]
 
 class Fitter(TypedDict):
     name: str
     guesses: Guesses
-    parameters: Parameters
+    parameters: NotRequired[Parameters]
+
+def region_to_displacement(region: Region) -> np.ndarray:
+    disp = np.linspace(0, region.margins[1], region.temps_kelvin.shape[1])
+    return disp
 
 def fit(
+        region: Region,
         props: SignalProperties,
         calc_props: PropertiesCalculator,
-        solver_parameters: Parameters,
         guess_converter: UnknownsFormatter,
         fitter: FitterCallable,
-        fitter_parameters: Parameters,
         guesses: Guesses,
-        region: Region,
         setup: ExperimentalSetup,
+        solver_parameters: Parameters = {},
+        fitter_parameters: Parameters = {},
 ) -> FittingResult:
+    disp = region_to_displacement(region)
     def residuals(unknowns):
-        residuals = sum(
-            prop - calc_prop for prop, calc_prop
-            in zip(
+        residuals = np.stack([
+            prop - np.expand_dims(calc_prop, tuple(range(1, len(prop.shape))))
+            for prop, calc_prop in zip(
                 props,
-                calc_props(unknowns, region, setup, solver_parameters),
+                calc_props(unknowns, disp, setup, solver_parameters),
             )
-        )
+        ]).flatten()
         return residuals
     result = fitter(residuals, guess_converter(**guesses), fitter_parameters)
     return result

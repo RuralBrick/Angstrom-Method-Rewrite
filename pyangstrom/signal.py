@@ -1,4 +1,4 @@
-from typing import NamedTuple, TypedDict
+from typing import NamedTuple, TypedDict, NotRequired
 
 import numpy as np
 
@@ -12,7 +12,7 @@ class SignalProperties(NamedTuple):
 
 class SignalProcessor(TypedDict):
     name: str
-    apply_filter: bool
+    apply_filter: NotRequired[bool]
 
 def fft_signal_processing(
         region: Region,

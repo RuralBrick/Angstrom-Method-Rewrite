@@ -20,14 +20,15 @@ def load_config(p_config: Path) -> Config:
         File extension not recognized.
     """
     match p_config.suffix:
-        case 'json':
+        case '.json':
             with open(p_config) as f:
                 return json.load(f)
-        case 'yaml' | 'yml':
+        case '.yaml' | '.yml':
             with open(p_config) as f:
                 return yaml.safe_load(f)
         case _:
-            raise ValueError(f"File extension not recognized: {p_config}")
+            msg = f"File extension not recognized: {p_config.suffix}"
+            raise ValueError(msg)
 
 def save_config(
         config: Config,

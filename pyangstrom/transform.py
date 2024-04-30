@@ -259,7 +259,7 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
         new_field_values = list(region.margins)
         new_field_values.insert(2, structure['num_deinterleaving_groups'])
         new_margins = namedtuple(
-            f'{type(region.margins).__name__}Deinterleaved',
+            f'Deinterleaved{type(region.margins).__name__}',
             new_field_names,
         )._make(new_field_values)
         region = Region(

@@ -150,6 +150,12 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                     continue
                 case 'gap' | 'gap_pixels':
                     structure['num_deinterleaving_groups'] = int(value)
+                case 'exp_amp_phase_extraction_method' | 'analysis_method':
+                    if 'signal_processor' not in config:
+                        config['signal_processor'] = {
+                            'name': value,
+                            'apply_filter': False,
+                        }
                 case 'L' | 'r':
                     if 'solver' not in config:
                         config['solver'] = record_to_lopez_baeza_short(record)
