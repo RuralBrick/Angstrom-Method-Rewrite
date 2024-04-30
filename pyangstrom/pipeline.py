@@ -71,10 +71,7 @@ def analyze_recording(
         Path to a directory in which cached IR camera data will be saved
     """
     if verbose:
-        root_logger = logging.getLogger()
-        if not root_logger.hasHandlers():
-            verbose_handler = logging.StreamHandler()
-            root_logger.addHandler(verbose_handler)
+        logging.basicConfig(level=logging.INFO)
     logger.info("Loading recording")
     recording_path = Path(recording_path)
     if recording_cache_path:

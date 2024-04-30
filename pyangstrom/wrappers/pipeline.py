@@ -51,10 +51,7 @@ def hu_batch_process(
         Path to a directory in which cached IR camera data will be saved
     """
     if verbose:
-        root_logger = logging.getLogger()
-        if not root_logger.hasHandlers():
-            verbose_handler = logging.StreamHandler()
-            root_logger.addHandler(verbose_handler)
+        logging.basicConfig(level=logging.INFO)
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)

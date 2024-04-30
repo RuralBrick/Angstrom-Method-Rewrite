@@ -58,8 +58,11 @@ def save_config(
 def iter_recording_path(p_rec: Path):
     return sorted(p_rec.iterdir(), key=lambda p: int(p.stem.split('_')[-1]))
 
-def load_recording_frames(p_rec: Path):
-    for p_frame in iter_recording_path(p_rec):
+def load_recording_frames(p_rec: Path, progress_bar: bool = False):
+    path_iterable = iter_recording_path(p_rec)
+    if progress_bar:
+        path_iterable = tqdm(path_iterable, total=len(list(p_rec.iterdir())))
+    for p_frame in path_iterable:
         dict_frame = {}
         with open(p_frame) as f:
             for i, line in enumerate(f):
@@ -81,13 +84,7 @@ def load_recording_frames(p_rec: Path):
 
 def load_recording_csv(p_rec: Path, progress_bar: bool = False) -> pd.DataFrame:
     logger.debug(f"Loading {p_rec}")
-    frame_generator = load_recording_frames(p_rec)
-    if progress_bar:
-        frame_generator = tqdm(
-            frame_generator,
-            total=len(list(p_rec.iterdir())),
-        )
-    df = pd.DataFrame.from_records(frame_generator)
+    df = pd.DataFrame.from_records(load_recording_frames(p_rec, progress_bar))
     df['Time'] = pd.to_datetime(df['Time'], format='%j:%H:%M:%S.%f')
     df = df.set_index('Time')
     return df
