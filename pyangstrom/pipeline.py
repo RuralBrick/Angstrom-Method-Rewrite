@@ -48,7 +48,6 @@ def analyze_recording(
         recording_path: str | Path,
         config: str | Path | Config,
         *,
-        verbose: bool = False,
         memory_cache: Optional[Cache] = None,
         recording_cache_path: Optional[str | Path] = None,
 ):
@@ -70,8 +69,6 @@ def analyze_recording(
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved
     """
-    if verbose:
-        logging.basicConfig(level=logging.INFO, force=True)
     logger.info("Loading recording")
     recording_path = Path(recording_path)
     if recording_cache_path:
@@ -85,7 +82,7 @@ def analyze_recording(
             logger.debug(f"{df_recording[:1]=}")
         else:
             logger.debug("Recording cache not found")
-            df_recording = load_recording_csv(recording_path, verbose)
+            df_recording = load_recording_csv(recording_path)
             save_recording_cache(
                 df_recording,
                 recording_cache_path,
@@ -93,7 +90,7 @@ def analyze_recording(
             )
             logger.debug(f"Saved to cache: {df_recording[:1]=}")
     else:
-        df_recording = load_recording_csv(recording_path, verbose)
+        df_recording = load_recording_csv(recording_path)
         logger.debug(f"Loaded csv: {df_recording[:1]=}")
     if not isinstance(config, dict):
         logger.info("Loading config")

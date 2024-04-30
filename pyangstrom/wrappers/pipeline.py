@@ -16,7 +16,6 @@ def hu_batch_process(
         code_directory: str | Path,
         data_directory: Optional[str | Path] = None,
         *,
-        verbose: bool = False,
         memory_cache: Optional[Cache] = None,
         config_directory_path: Optional[str | Path] = None,
         recording_cache_path: Optional[str | Path] = None,
@@ -50,8 +49,6 @@ def hu_batch_process(
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved
     """
-    if verbose:
-        logging.basicConfig(level=logging.INFO, force=True)
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)
@@ -74,7 +71,6 @@ def hu_batch_process(
         result = analyze_recording(
             data_directory / recording_name,
             config,
-            verbose=verbose,
             memory_cache=memory_cache,
             recording_cache_path=recording_cache_path,
         )
