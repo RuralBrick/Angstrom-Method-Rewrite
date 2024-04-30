@@ -134,6 +134,13 @@ def extract_cartesian_region(
             (geometry['max_y_pixels'] - geometry['min_y_pixels']) * setup['meters_per_pixel'],
             (geometry['max_x_pixels'] - geometry['min_x_pixels']) * setup['meters_per_pixel'],
         )
+    else:
+        warnings.warn(f"Heat source not recognized: {geometry['heat_source']}")
+        margins = namedtuple('CorruptedMargins', 'time_span unknown1 unknown2')(
+            df_recording.index.max() - df_recording.index.min(),
+            0,
+            0,
+        )
 
     temps_kelvin = convert_temps_to_kelvin(df_recording, temps)
 
