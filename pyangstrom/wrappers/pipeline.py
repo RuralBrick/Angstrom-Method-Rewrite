@@ -60,6 +60,7 @@ def hu_batch_process(
         data_directory = Path(data_directory)
     else:
         data_directory = code_directory / 'temperature data'
+    logger.info("Loading exp_condition")
     exp_cond = load_exp_condition(
         code_directory / 'batch process information' / df_exp_condition_filename
     )
@@ -70,14 +71,15 @@ def hu_batch_process(
         config_directory_path = Path(config_directory_path)
         for recording_name, config in dict_config.items():
             save_config(config, config_directory_path, recording_name)
-    results = [
-        analyze_recording(
+    results = []
+    for recording_name, config in dict_config.items():
+        logger.info(f"Processing {recording_name}")
+        result = analyze_recording(
             data_directory / recording_name,
             config,
             verbose=verbose,
             memory_cache=memory_cache,
             recording_cache_path=recording_cache_path,
         )
-        for recording_name, config in dict_config.items()
-    ]
+        results.append(result)
     return results
