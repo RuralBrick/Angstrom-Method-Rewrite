@@ -2,7 +2,7 @@ import logging
 import warnings
 from typing import Optional
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import PurePath, Path
 
 from pyangstrom.config import Config
 from pyangstrom.caching import Cache
@@ -56,7 +56,9 @@ def analyze_recording(
     Arguments
     ---------
     recording_path
-        Path to the directory holding CSV IR camera data
+        Path to the directory holding CSV IR camera data. Does not have to be a
+        real path if there is a cache file with a matching name in
+        recording_cache_path.
     config
         Path to a YAML config file or the deserialized config object itself
 
@@ -70,8 +72,8 @@ def analyze_recording(
         Path to a directory in which cached IR camera data will be saved
     """
     logger.info("Loading recording")
-    recording_path = Path(recording_path)
     if recording_cache_path:
+        recording_path = PurePath(recording_path)
         recording_cache_path = Path(recording_cache_path)
         if recording_cache_exists(recording_cache_path, recording_path.stem):
             logger.debug("Recording cache found")
@@ -82,6 +84,7 @@ def analyze_recording(
             logger.debug(f"{df_recording[:1]=}")
         else:
             logger.debug("Recording cache not found")
+            recording_path = Path(recording_path)
             df_recording = load_recording_csv(recording_path)
             save_recording_cache(
                 df_recording,
@@ -90,6 +93,7 @@ def analyze_recording(
             )
             logger.debug(f"Saved to cache: {df_recording[:1]=}")
     else:
+        recording_path = Path(recording_path)
         df_recording = load_recording_csv(recording_path)
         logger.debug(f"Loaded csv: {df_recording[:1]=}")
     if not isinstance(config, dict):
