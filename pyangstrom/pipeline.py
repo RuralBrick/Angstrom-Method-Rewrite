@@ -19,6 +19,7 @@ from pyangstrom.fit import PropertiesCalculator, UnknownsFormatter, fit
 import pyangstrom.sample_solutions.lopez_baeza_short as lopez_baeza_short
 import pyangstrom.sample_solutions.hu_high_temp as hu_high_temp
 import pyangstrom.fitting_methods.lsr as lsr
+import pyangstrom.fitting_methods.nelder_mead as nelder_mead
 import pyangstrom.fitting_methods.mcmc as mcmc
 
 
@@ -44,6 +45,7 @@ SOLUTIONS = {
 
 FITTERS = {
     'lsr': lsr.fitter,
+    'nelder-mead': nelder_mead.fitter,
 }
 
 logger = logging.getLogger('pipeline')
