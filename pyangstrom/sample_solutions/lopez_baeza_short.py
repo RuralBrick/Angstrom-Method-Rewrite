@@ -10,6 +10,10 @@ class LopezBaezaShortUnknowns(NamedTuple):
     thermal_diffusivity_m2_s: float
     thermal_transfer_coefficient_kg_s2_K_m2: float
 
+class LogLopezBaezaShortUnknowns(NamedTuple):
+    thermal_diffusivity_log10_m2_s: float
+    thermal_transfer_coefficient_log10_kg_s2_K_m2: float
+
 class LopezBaezaShortParameters(TypedDict):
     r_meters: float
     length_meters: float
@@ -66,3 +70,11 @@ def calc_props(
     phase_diff = phases - phases[0]
 
     return SignalProperties(amp_ratio, phase_diff)
+
+def log_calc_props(
+        unknowns: LogLopezBaezaShortUnknowns,
+        displacement: Displacement,
+        setup: ExperimentalSetup,
+        params: LopezBaezaShortParameters,
+):
+    return calc_props(np.power(10.0, unknowns), displacement, setup, params)

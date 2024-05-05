@@ -36,6 +36,10 @@ SOLUTIONS = {
         lopez_baeza_short.calc_props,
         lopez_baeza_short.LopezBaezaShortUnknowns,
     ),
+    'log-lopez-baeza': Solution(
+        lopez_baeza_short.log_calc_props,
+        lopez_baeza_short.LogLopezBaezaShortUnknowns,
+    ),
 }
 
 FITTERS = {
