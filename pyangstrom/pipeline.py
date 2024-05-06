@@ -47,6 +47,7 @@ def analyze_recording(
         Path to a directory in which cached IR camera data will be saved
     """
     logger.info("Loading recording")
+    recording_path = Path(recording_path)
     if recording_cache_path:
         recording_path = PurePath(recording_path)
         recording_cache_path = Path(recording_cache_path)
