@@ -14,7 +14,7 @@ from pyangstrom.transform import (
     RegionStructure,
     RegionBatchConfig,
 )
-from pyangstrom.fit import SolverInformation
+from pyangstrom.fit import SolverInformation, FitterInformation
 
 
 logger = logging.getLogger('config')
@@ -105,15 +105,29 @@ def record_to_polar_geometries(record) -> Optional[list[PolarGeometry]]:
 def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
     try:
         solver: SolverInformation = {
-            'name': 'lopez-baeza',
+            'name': 'log_lopez-baeza',
             'parameters': {
                 'r_meters': float(record['r']),
                 'length_meters': float(record['L']),
-            }
+            },
         }
         return solver
     except KeyError as e:
         warnings.warn(f"Could not find {e} field for lopez_baeza_short solver")
+        return None
+
+def record_to_lsr(record) -> Optional[FitterInformation]:
+    try:
+        fitter: FitterInformation = {
+            'name': 'nelder-mead',
+            'guesses': {
+                'thermal_diffusivity_log10_m2_s': -5,
+                'thermal_transfer_coefficient_log10_kg_s2_K_m2': -2,
+            },
+        }
+        return fitter
+    except KeyError as e:
+        warnings.warn(f"Could not find {e} field for lsr fitter")
         return None
 
 def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
@@ -170,4 +184,7 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
             'average_over_regions': True,
         }
         config['region_information'].append(batch_config)
+        # HACK
+        config['fitter'] = record_to_lsr(record)
+        # end HACK
     return dict(dd_config)

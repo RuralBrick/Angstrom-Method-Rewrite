@@ -87,7 +87,7 @@ def autofit(
 
     fit: Fitter = None
     match fitter_information['name']:
-        case 'least_square_regression' | 'lsr':
+        case 'least_squares_regression' | 'lsr':
             from pyangstrom.fitting_methods.lsr import fit
         case 'nelder-mead':
             from pyangstrom.fitting_methods.nelder_mead import fit
