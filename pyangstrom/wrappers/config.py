@@ -14,8 +14,7 @@ from pyangstrom.transform import (
     RegionStructure,
     RegionBatchConfig,
 )
-from pyangstrom.fit import Solver
-from pyangstrom.sample_solutions.lopez_baeza_short import LopezBaezaShortParameters
+from pyangstrom.fit import SolverInformation
 
 
 logger = logging.getLogger('config')
@@ -103,15 +102,14 @@ def record_to_polar_geometries(record) -> Optional[list[PolarGeometry]]:
         warnings.warn(f"Could not find {e} field for polar geometry")
         return None
 
-def record_to_lopez_baeza_short(record) -> Optional[Solver]:
+def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
     try:
-        parameters: LopezBaezaShortParameters = {
-            'r_meters': float(record['r']),
-            'length_meters': float(record['L']),
-        }
-        solver: Solver = {
+        solver: SolverInformation = {
             'name': 'lopez-baeza',
-            'parameters': parameters,
+            'parameters': {
+                'r_meters': float(record['r']),
+                'length_meters': float(record['L']),
+            }
         }
         return solver
     except KeyError as e:

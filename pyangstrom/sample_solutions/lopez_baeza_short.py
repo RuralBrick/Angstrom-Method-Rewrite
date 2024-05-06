@@ -1,8 +1,8 @@
-from typing import NamedTuple, TypedDict
+from typing import NamedTuple
 
 import numpy as np
 
-from pyangstrom.fit import Displacement, ExperimentalSetup, SignalProperties
+from pyangstrom.fit import ExperimentalSetup, SignalProperties
 from pyangstrom.helpers import calc_thermal_conductivity
 
 
@@ -10,9 +10,9 @@ class LopezBaezaShortUnknowns(NamedTuple):
     thermal_diffusivity_m2_s: float
     thermal_transfer_coefficient_kg_s2_K_m2: float
 
-class LopezBaezaShortParameters(TypedDict):
-    r_meters: float
-    length_meters: float
+class LogLopezBaezaShortUnknowns(NamedTuple):
+    thermal_diffusivity_log10_m2_s: float
+    thermal_transfer_coefficient_log10_kg_s2_K_m2: float
 
 def calc_wavenumber(
         angular_frequency_hertz,
@@ -35,18 +35,19 @@ def calc_xi(wavenumber, length, displacement):
     xi = temp_var1 / temp_var2
     return xi
 
-def calc_props(
+def solve(
         unknowns: LopezBaezaShortUnknowns,
-        displacement: Displacement,
+        displacements_meters: np.ndarray,
         setup: ExperimentalSetup,
-        params: LopezBaezaShortParameters,
+        r_meters: float,
+        length_meters: float,
 ) -> SignalProperties:
     thermal_diffusivity_m2_s, thermal_transfer_coefficient_kg_s2_K_m2 = unknowns
     wavenumber = calc_wavenumber(
         2 * np.pi * setup['heating_frequency_hertz'],
         thermal_diffusivity_m2_s,
         thermal_transfer_coefficient_kg_s2_K_m2,
-        params['r_meters'],
+        r_meters,
         calc_thermal_conductivity(
             thermal_diffusivity_m2_s,
             setup['material_properties']['specific_heat_capacity_J_kg_K'],
@@ -55,8 +56,8 @@ def calc_props(
     )
     xi = calc_xi(
         wavenumber,
-        params['length_meters'],
-        displacement,
+        length_meters,
+        displacements_meters,
     )
 
     amps = np.abs(xi)
@@ -66,3 +67,19 @@ def calc_props(
     phase_diff = phases - phases[0]
 
     return SignalProperties(amp_ratio, phase_diff)
+
+def log_solve(
+        unknowns: LogLopezBaezaShortUnknowns,
+        displacements_meters: np.ndarray,
+        setup: ExperimentalSetup,
+        r_meters: float,
+        length_meters: float,
+) -> SignalProperties:
+    props = solve(
+        np.power(10.0, unknowns),
+        displacements_meters,
+        setup,
+        r_meters,
+        length_meters,
+    )
+    return props

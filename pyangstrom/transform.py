@@ -62,17 +62,18 @@ Margins = NamedTuple
 
 @dataclass
 class Region:
-    time: pd.DatetimeIndex
-    temps_kelvin: np.ndarray
+    timestamps: pd.DatetimeIndex
+    temperatures_kelvin: np.ndarray
     margins: Margins # Should be in (time, displacement_meters, ...) order
 
 
-def convert_temps_to_kelvin(
+def convert_temperatures_to_kelvin(
         df_recording: pd.DataFrame,
         arr_temps: np.ndarray,
 ) -> np.ndarray:
     try:
-        return arr_temps + TEMPERATURE_OFFSET[df_recording['Units'].unique().item()]
+        offset = TEMPERATURE_OFFSET[df_recording['Units'].unique().item()]
+        return arr_temps + offset
     except ValueError:
         raise ValueError("More than one temperature unit found")
     except KeyError:
@@ -142,7 +143,7 @@ def extract_cartesian_region(
             0,
         )
 
-    temps_kelvin = convert_temps_to_kelvin(df_recording, temps)
+    temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps)
 
     region = Region(
         df_recording.index,
@@ -191,9 +192,12 @@ def extract_polar_region(
     uxuy_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floorp1], [0, 1], [1, 2]) * upper_x_weight * upper_y_weight
 
     temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
-    temps_kelvin = convert_temps_to_kelvin(df_recording, temps_trans)
+    temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps_trans)
 
-    margins = namedtuple('PolarMargins', 'time_span r_range_meters theta_range_degrees')(
+    margins = namedtuple(
+        'PolarMargins',
+        'time_span r_range_meters theta_range_degrees',
+    )(
         df_recording.index.max() - df_recording.index.min(),
         (geometry['max_r_pixels'] - geometry['min_r_pixels']) * setup['meters_per_pixel'],
         geometry['max_theta_degrees'] - geometry['min_theta_degrees'],
@@ -218,16 +222,16 @@ def geometry_to_region(
             return extract_polar_region(df_recording, geometry, setup)
 
 def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
-    new_time = region.time
+    new_time = region.timestamps
     if axis == 0:
-        new_time = region.time[:-num_truncate]
+        new_time = region.timestamps[:-num_truncate]
 
-    new_temps = np.moveaxis(region.temps_kelvin, axis, 0)
+    new_temps = np.moveaxis(region.temperatures_kelvin, axis, 0)
     new_temps = new_temps[:-num_truncate]
     new_temps = np.moveaxis(new_temps, 0, axis)
 
     disp_range = region.margins[1]
-    disp_range *= new_temps.shape[1] / region.temps_kelvin.shape[1]
+    disp_range *= new_temps.shape[1] / region.temperatures_kelvin.shape[1]
     new_field = {region.margins._fields[1]: disp_range}
     new_margins = region.margins._replace(**new_field)
 
@@ -241,22 +245,25 @@ def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
 def restructure_region(region: Region, structure: RegionStructure) -> Region:
     if 'average_out_span' in structure and structure['average_out_span']:
         time_span, disp_range, _ = region.margins
-        new_margins = namedtuple('BaseMargins', 'time_span displacement_range_meters')(
+        new_margins = namedtuple(
+            'BaseMargins',
+            'time_span displacement_range_meters',
+        )(
             time_span,
             disp_range,
         )
         region = Region(
-            region.time,
-            region.temps_kelvin.mean(axis=2),
+            region.timestamps,
+            region.temperatures_kelvin.mean(axis=2),
             new_margins,
         )
     if 'num_deinterleaving_groups' in structure:
-        num_disp = region.temps_kelvin.shape[1]
+        num_disp = region.temperatures_kelvin.shape[1]
         remainder = num_disp % structure['num_deinterleaving_groups']
         if remainder != 0:
             region = truncate_region(region, remainder, axis=1)
         lst_groups = np.split(
-            region.temps_kelvin,
+            region.temperatures_kelvin,
             structure['num_deinterleaving_groups'],
             axis=1,
         )
@@ -270,19 +277,19 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
             new_field_names,
         )._make(new_field_values)
         region = Region(
-            region.time,
+            region.timestamps,
             new_temps,
             new_margins,
         )
     return region
 
 def all_temps_same_shape(regions: Iterable[Region]) -> bool:
-    dim_sizes = zip(*(r.temps_kelvin.shape for r in regions))
+    dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
     size_counts = [set(s) for s in dim_sizes]
     return all(len(c) == 1 for c in size_counts)
 
 def min_temps_shape(regions: Iterable[Region]) -> tuple:
-    dim_sizes = zip(*(r.temps_kelvin.shape for r in regions))
+    dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
     min_shape = tuple(min(s) for s in dim_sizes)
     return min_shape
 
@@ -293,7 +300,7 @@ def trim_regions(regions: Iterable[Region]) -> list[Region]:
         for axis, size in enumerate(min_shape):
             region = truncate_region(
                 region,
-                region.temps_kelvin.shape[axis] - size,
+                region.temperatures_kelvin.shape[axis] - size,
                 axis,
             )
             new_regions.append(region)
@@ -328,14 +335,17 @@ def fully_extract_region(
             if ('average_over_regions' not in information
                 or not information['average_over_regions']):
                 return regions
-            assert len({r.time.shape for r in regions}) == 1
+            assert len({r.timestamps.shape for r in regions}) == 1
             if not all_temps_same_shape(regions):
                 warnings.warn(
                     "Not all regions have the same number of samples. Trimming "
                     "regions to match minimum shape."
                 )
                 regions = trim_regions(regions)
-            new_temps = np.stack([r.temps_kelvin for r in regions], axis=2)
+            new_temps = np.stack(
+                [r.temperatures_kelvin for r in regions],
+                axis=2,
+            )
             new_temps = new_temps.mean(axis=2)
             if len({r.margins for r in regions}) != 1:
                 warnings.warn(
@@ -343,7 +353,7 @@ def fully_extract_region(
                     "of the first region."
                 )
             new_region = Region(
-                regions[0].time,
+                regions[0].timestamps,
                 new_temps,
                 regions[0].margins,
             )
@@ -358,15 +368,29 @@ def fully_extract_region(
             raise ValueError(f"Invalid information format: {information}")
 
 def collapse_region(region: Region) -> Region:
+    num_times, num_disp, *_ = region.temperatures_kelvin.shape
+    new_temps = (region.temperatures_kelvin
+                       .reshape(num_times, num_disp, -1)
+                       .mean(axis=2))
     time_span, disp_range, *_ = region.margins
-    new_margins = namedtuple('BaseMargins', 'time_span displacement_range_meters')(
+    new_margins = namedtuple(
+        'BaseMargins',
+        'time_span displacement_range_meters',
+    )(
         time_span,
         disp_range,
     )
-    num_times, num_disp, *_ = region.temps_kelvin.shape
     new_region = Region(
-        region.time,
-        region.temps_kelvin.reshape(num_times, num_disp, -1).mean(axis=2),
+        region.timestamps,
+        new_temps,
         new_margins,
     )
     return new_region
+
+def region_to_displacement(region: Region) -> np.ndarray:
+    disp = np.linspace(
+        0,
+        region.margins[1],
+        region.temperatures_kelvin.shape[1],
+    )
+    return disp
