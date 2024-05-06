@@ -1,7 +1,6 @@
 import logging
 import warnings
 from typing import Optional
-from dataclasses import dataclass
 from pathlib import PurePath, Path
 
 from pyangstrom.config import Config
@@ -14,39 +13,9 @@ from pyangstrom.io import (
     load_config,
 )
 from pyangstrom.transform import fully_extract_region
-from pyangstrom.signal import fft_signal_processing
-from pyangstrom.fit import PropertiesCalculator, UnknownsFormatter, fit
-import pyangstrom.sample_solutions.lopez_baeza_short as lopez_baeza_short
-import pyangstrom.sample_solutions.hu_high_temp as hu_high_temp
-import pyangstrom.fitting_methods.lsr as lsr
-import pyangstrom.fitting_methods.nelder_mead as nelder_mead
-import pyangstrom.fitting_methods.mcmc as mcmc
+from pyangstrom.signal import signal_process_region
+from pyangstrom.fit import autofit
 
-
-@dataclass
-class Solution:
-    solver: PropertiesCalculator
-    unknowns_formatter: UnknownsFormatter
-
-SIGNAL_PROCESSORS = {
-    'fft': fft_signal_processing,
-}
-
-SOLUTIONS = {
-    'lopez-baeza': Solution(
-        lopez_baeza_short.calc_props,
-        lopez_baeza_short.LopezBaezaShortUnknowns,
-    ),
-    'log-lopez-baeza': Solution(
-        lopez_baeza_short.log_calc_props,
-        lopez_baeza_short.LogLopezBaezaShortUnknowns,
-    ),
-}
-
-FITTERS = {
-    'lsr': lsr.fitter,
-    'nelder-mead': nelder_mead.fitter,
-}
 
 logger = logging.getLogger('pipeline')
 
@@ -112,11 +81,15 @@ def analyze_recording(
         warnings.warn("Field experimental_setup required to extract regions")
         return df_recording
     logger.info("Extracting region(s)")
-    region_result = fully_extract_region(
-        df_recording,
-        config['region_information'],
-        config['experimental_setup'],
-    )
+    try:
+        region_result = fully_extract_region(
+            df_recording,
+            config['region_information'],
+            config['experimental_setup'],
+        )
+    except Exception as e:
+        warnings.warn(repr(e))
+        return df_recording
     if 'signal_processor' not in config:
         return region_result
     if isinstance(region_result, list):
@@ -124,56 +97,58 @@ def analyze_recording(
     else:
         debug_region = region_result
     logger.debug(
-        f"{debug_region.time[:1]=}, {debug_region.temps_kelvin[:1, :1]=}, "
+        f"{debug_region.timestamps[:1]=}, "
+        f"{debug_region.temperatures_kelvin[:1, :1]=}, "
         f"{debug_region.margins=}"
     )
     logger.info("Signal processing")
     try:
-        # TODO: apply_filter
-        signal_processor = SIGNAL_PROCESSORS[config['signal_processor']['name']]
         if isinstance(region_result, list):
-            props = [
-                signal_processor(r, config['experimental_setup'])
-                for r in region_result
+            signal_result = [
+                signal_process_region(
+                    r,
+                    config['signal_processor'],
+                    config['experimental_setup'],
+                ) for r in region_result
             ]
         else:
-            props = signal_processor(
+            signal_result = signal_process_region(
                 region_result,
+                config['signal_processor'],
                 config['experimental_setup'],
             )
-    except KeyError as e:
-        warnings.warn(f"Signal processor {e} not found.")
+    except Exception as e:
+        warnings.warn(repr(e))
         return region_result
     # TODO: Custom solver
     if 'solver' not in config or 'fitter' not in config:
-        return props
-    if isinstance(props, list):
-        debug_props = props[0]
+        return signal_result
+    if isinstance(signal_result, list):
+        debug_signal = signal_result[0]
     else:
-        debug_props = props
-    for name, prop in debug_props._asdict().items():
-        logger.debug(f"{name}={prop[:1]}")
+        debug_signal = signal_result
+    for name, prop in debug_signal.signal_properties._asdict().items():
+        logger.debug(f"{name}={prop[:3]}")
     logger.info("Fitting")
     try:
-        fit_kwargs = dict(
-            calc_props=SOLUTIONS[config['solver']['name']].solver,
-            guess_converter=SOLUTIONS[config['solver']['name']].unknowns_formatter,
-            fitter=FITTERS[config['fitter']['name']],
-            guesses=config['fitter']['guesses'],
-            setup=config['experimental_setup'],
-        )
-        if 'parameters' in config['solver']:
-            fit_kwargs['solver_parameters'] = config['solver']['parameters']
-        if 'parameters' in config['fitter']:
-            fit_kwargs['fitter_parameters'] = config['fitter']['parameters']
-        if isinstance(props, list):
+        if isinstance(signal_result, list):
             fitting_result = [
-                fit(r, p, **fit_kwargs) for r, p in zip(region_result, props)
+                autofit(
+                    r,
+                    config['solver'],
+                    config['fitter'],
+                    config['experimental_setup'],
+                ) for r in signal_result
             ]
         else:
-            fitting_result = fit(region_result, props, **fit_kwargs,)
-    except KeyError as e:
-        warnings.warn(f"Solver or fitter {e} not found.")
-        return props
+            fitting_result = autofit(
+                signal_result,
+                config['solver'],
+                config['fitter'],
+                config['experimental_setup'],
+            )
+    except Exception as e:
+        warnings.warn(repr(e))
+        return signal_result
     return fitting_result
     # TODO: Automatic visualizations/better formatted return

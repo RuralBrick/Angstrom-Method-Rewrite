@@ -1,66 +1,106 @@
-from typing import NamedTuple, Dict, Callable, Any, TypedDict
+from typing import TypedDict, Iterable, Callable, Any, Protocol
 from dataclasses import dataclass
 
 import numpy as np
 
-from pyangstrom.transform import Region
 from pyangstrom.exp_setup import ExperimentalSetup
-from pyangstrom.signal import SignalProperties
+from pyangstrom.signal import SignalProperties, SignalResult
 
 
-Unknowns = NamedTuple
-Guesses = Dict
-Displacement = np.ndarray
-Parameters = Dict
-PropertiesCalculator = Callable[
-    [Unknowns, Displacement, ExperimentalSetup, Parameters],
-    SignalProperties,
-]
+class SolverInformation(TypedDict, total=False):
+    name: str
+    parameters: dict
+
+class FitterInformation(TypedDict, total=False):
+    name: str
+    guesses: dict
+    parameters: dict
+
+Unknowns = Iterable
 UnknownsFormatter = Callable[..., Unknowns]
-ResidualsCallable = Callable[[Unknowns], Any]
+ResidualsCalculator = Callable[[Unknowns], Any]
 
 @dataclass
 class FittingResult:
     unknowns_solutions: Unknowns
 
-FitterCallable = Callable[
-    [ResidualsCallable, Unknowns, Parameters],
-    FittingResult,
-]
+class Solver(Protocol):
+    def __call__(
+            self,
+            unknowns: Unknowns,
+            displacements_meters: np.ndarray,
+            setup: ExperimentalSetup,
+            **kwargs,
+    ) -> SignalProperties: ...
 
-class Solver(TypedDict, total=False):
-    name: str
-    parameters: Parameters
+class Fitter(Protocol):
+    def __call__(
+            self,
+            calc_residuals: ResidualsCalculator,
+            unknowns_guesses: Unknowns,
+            **kwargs,
+    ) -> FittingResult: ...
 
-class Fitter(TypedDict, total=False):
-    name: str
-    guesses: Guesses
-    parameters: Parameters
-
-def region_to_displacement(region: Region) -> np.ndarray:
-    disp = np.linspace(0, region.margins[1], region.temps_kelvin.shape[1])
-    return disp
-
-def fit(
-        region: Region,
-        props: SignalProperties,
-        calc_props: PropertiesCalculator,
-        guess_converter: UnknownsFormatter,
-        fitter: FitterCallable,
-        guesses: Guesses,
+def autofit(
+        signal_result: SignalResult,
+        solver_information: SolverInformation,
+        fitter_information: FitterInformation,
         setup: ExperimentalSetup,
-        solver_parameters: Parameters = {},
-        fitter_parameters: Parameters = {},
 ) -> FittingResult:
-    disp = region_to_displacement(region)
-    def residuals(unknowns):
-        residuals = np.stack([
-            prop - np.expand_dims(calc_prop, tuple(range(1, len(prop.shape))))
-            for prop, calc_prop in zip(
-                props,
-                calc_props(unknowns, disp, setup, solver_parameters),
-            )
-        ]).flatten()
+    """
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named solver or fitter not found.
+    """
+    solve: Solver = None
+    guess_converter: UnknownsFormatter = None
+    match solver_information['name']:
+        case 'lopez-baeza':
+            from pyangstrom.sample_solutions.lopez_baeza_short import solve
+            from pyangstrom.sample_solutions.lopez_baeza_short import LopezBaezaShortUnknowns as guess_converter
+        case 'log_lopez-baeza':
+            from pyangstrom.sample_solutions.lopez_baeza_short import log_solve as solve
+            from pyangstrom.sample_solutions.lopez_baeza_short import LogLopezBaezaShortUnknowns as guess_converter
+        case _:
+            raise ValueError(f"Solver {solver_information['name']} not found.")
+
+    solver_params = (solver_information['parameters']
+                     if 'parameters' in solver_information
+                     else {})
+
+    def calc_residuals(unknowns):
+        answers = solve(
+            unknowns,
+            signal_result.displacements_meters,
+            setup,
+            **solver_params,
+        )
+        all_residuals = [
+            p - np.expand_dims(a, tuple(range(1, len(p.shape))))
+            for p, a in zip(signal_result.signal_properties, answers)
+        ]
+        residuals = np.stack(all_residuals).flatten()
         return residuals
-    result = fitter(residuals, guess_converter(**guesses), fitter_parameters)
+
+    fit: Fitter = None
+    match fitter_information['name']:
+        case 'least_square_regression' | 'lsr':
+            from pyangstrom.fitting_methods.lsr import fit
+        case 'nelder-mead':
+            from pyangstrom.fitting_methods.nelder_mead import fit
+        case _:
+            raise ValueError(f"Fitter {fitter_information['name']} not found.")
+
+    fitter_params = (fitter_information['parameters']
+                     if 'parameters' in fitter_information
+                     else {})
+
+    result = fit(
+        calc_residuals,
+        guess_converter(**fitter_information['guesses']),
+        **fitter_params,
+    )
     return result

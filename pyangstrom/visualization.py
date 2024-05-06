@@ -126,9 +126,9 @@ def animate_recording(df_recording: pd.DataFrame) -> Animation:
 
 def animate_region(region: Region) -> Region:
     fig, ax = plt.subplots()
-    num_frames, num_disp, *_ = region.temps_kelvin.shape
+    num_frames, num_disp, *_ = region.temperatures_kelvin.shape
     disp = np.linspace(0, region.margins[1], num_disp)
-    condensed_temps = (region.temps_kelvin
+    condensed_temps = (region.temperatures_kelvin
                              .reshape((num_frames, num_disp, -1))
                              .mean(axis=2))
     ln, = ax.plot(disp, condensed_temps[0])
@@ -136,7 +136,7 @@ def animate_region(region: Region) -> Region:
     def update(temps):
         ln.set_data(disp, temps)
     interval = 1e3 * (
-        region.time
+        region.timestamps
               .to_series()
               .diff()
               .mode()
