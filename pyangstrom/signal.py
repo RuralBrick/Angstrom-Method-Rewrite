@@ -94,7 +94,8 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     """
-    # TODO: apply_filter
+    if 'apply_filter' in information and information['apply_filter']:
+        region = filter_signal(region, setup)
     match information['name']:
         case 'fft':
             processor = fft_signal_processing
