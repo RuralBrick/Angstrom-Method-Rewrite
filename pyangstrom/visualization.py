@@ -10,6 +10,8 @@ from pyangstrom.transform import (
     CartesianGeometry,
     PolarGeometry,
     Region,
+    collapse_region,
+    region_to_displacement,
 )
 
 
@@ -126,13 +128,13 @@ def animate_recording(df_recording: pd.DataFrame) -> Animation:
 
 def animate_region(region: Region) -> Region:
     fig, ax = plt.subplots()
-    num_frames, num_disp, *_ = region.temperatures_kelvin.shape
-    disp = np.linspace(0, region.margins[1], num_disp)
-    condensed_temps = (region.temperatures_kelvin
-                             .reshape((num_frames, num_disp, -1))
-                             .mean(axis=2))
-    ln, = ax.plot(disp, condensed_temps[0])
-    ax.set_ylim(condensed_temps.min(), condensed_temps.max())
+    region = collapse_region(region)
+    disp = region_to_displacement(region)
+    ln, = ax.plot(disp, region.temperatures_kelvin[0])
+    ax.set_ylim(
+        region.temperatures_kelvin.min(),
+        region.temperatures_kelvin.max(),
+    )
     def update(temps):
         ln.set_data(disp, temps)
     interval = 1e3 * (
@@ -146,7 +148,7 @@ def animate_region(region: Region) -> Region:
     anim = FuncAnimation(
         fig,
         update,
-        iter(condensed_temps),
+        iter(region.temperatures_kelvin),
         interval=interval,
         repeat=False,
         cache_frame_data=False,
