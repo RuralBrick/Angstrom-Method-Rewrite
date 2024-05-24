@@ -27,6 +27,8 @@ class SignalProcessor(Protocol):
 @dataclass
 class SignalResult:
     signal_properties: SignalProperties
+    signal_deviations: SignalProperties
+    timestamps: np.ndarray
     displacements_meters: np.ndarray
 
 def fft_signal_processing(
@@ -60,6 +62,12 @@ SIGNAL_PROCESSORS: dict[str, SignalProcessor] = {
     'fft': fft_signal_processing,
 }
 
+def calc_deviations():
+    raise NotImplementedError()
+
+def calc_timestamps():
+    raise NotImplementedError()
+
 def signal_process_region(
         region: Region,
         information: SignalProcessorInformation,
@@ -83,5 +91,5 @@ def signal_process_region(
             )
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
-    result = SignalResult(props, region_to_displacement(region))
+    result = SignalResult(props, calc_deviations(), calc_timestamps(), region_to_displacement(region))
     return result
