@@ -2,7 +2,7 @@ from typing import NamedTuple
 
 import numpy as np
 
-from pyangstrom.fit import ExperimentalSetup, SignalProperties
+from pyangstrom.fit import ExperimentalSetup, RegionProperties, SignalProperties
 from pyangstrom.helpers import calc_thermal_conductivity
 
 
@@ -37,7 +37,7 @@ def calc_xi(wavenumber, length, displacement):
 
 def solve(
         unknowns: LopezBaezaShortUnknowns,
-        displacements_meters: np.ndarray,
+        region_properties: RegionProperties,
         setup: ExperimentalSetup,
         r_meters: float,
         length_meters: float,
@@ -57,7 +57,7 @@ def solve(
     xi = calc_xi(
         wavenumber,
         length_meters,
-        displacements_meters,
+        region_properties.displacements_meters,
     )
 
     amps = np.abs(xi)

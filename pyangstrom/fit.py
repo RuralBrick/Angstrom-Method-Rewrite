@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from pyangstrom.exp_setup import ExperimentalSetup
-from pyangstrom.signal import SignalProperties, SignalResult
+from pyangstrom.signal import RegionProperties, SignalProperties, SignalResult
 
 
 class SolverInformation(TypedDict, total=False):
@@ -28,7 +28,7 @@ class Solver(Protocol):
     def __call__(
             self,
             unknowns: Unknowns,
-            displacements_meters: np.ndarray,
+            region_properties: RegionProperties,
             setup: ExperimentalSetup,
             **kwargs,
     ) -> SignalProperties: ...
@@ -74,7 +74,7 @@ def autofit(
     def calc_residuals(unknowns):
         answers = solve(
             unknowns,
-            signal_result.displacements_meters,
+            signal_result.region_properties,
             setup,
             **solver_params,
         )

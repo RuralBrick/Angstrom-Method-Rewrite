@@ -386,17 +386,3 @@ def collapse_region(region: Region) -> Region:
         new_margins,
     )
     return new_region
-
-def region_normalized_timestamps(region: Region) -> np.ndarray:
-    time = region.timestamps - region.timestamps.min()
-    time = time.total_seconds()
-    time = time.to_numpy()
-    return time
-
-def region_to_displacement(region: Region) -> np.ndarray:
-    disp = np.linspace(
-        0,
-        region.margins[1],
-        region.temperatures_kelvin.shape[1],
-    )
-    return disp

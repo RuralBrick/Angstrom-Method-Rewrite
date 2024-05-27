@@ -3,11 +3,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from pyangstrom.transform import (
-    Region,
-    region_normalized_timestamps,
-    region_to_displacement,
-)
+from pyangstrom.transform import Region
 from pyangstrom.exp_setup import ExperimentalSetup
 
 
@@ -29,10 +25,27 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 @dataclass
-class SignalResult:
-    signal_properties: SignalProperties
-    timestamps: np.ndarray
+class RegionProperties:
+    seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
+
+@dataclass
+class SignalResult:
+    region_properties: RegionProperties
+    signal_properties: SignalProperties
+
+def region_to_properties(region: Region) -> RegionProperties:
+    time = region.timestamps - region.timestamps.min()
+    time = time.total_seconds()
+    time = time.to_numpy()
+
+    disp = np.linspace(
+        0,
+        region.margins[1],
+        region.temperatures_kelvin.shape[1],
+    )
+
+    return RegionProperties(time, disp)
 
 def fft_signal_processing(
         region: Region,
@@ -88,9 +101,5 @@ def signal_process_region(
             )
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
-    result = SignalResult(
-        props,
-        region_normalized_timestamps(region),
-        region_to_displacement(region),
-    )
+    result = SignalResult(region_to_properties(region), props)
     return result
