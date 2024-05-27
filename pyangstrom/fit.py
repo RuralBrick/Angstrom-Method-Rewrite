@@ -18,7 +18,7 @@ class FitterInformation(TypedDict, total=False):
 
 Unknowns = Iterable
 UnknownsFormatter = Callable[..., Unknowns]
-ResidualsCalculator = Callable[[Unknowns], Any]
+TheoreticalCalculator = Callable[[Unknowns], SignalProperties]
 
 @dataclass
 class FittingResult:
@@ -36,8 +36,9 @@ class Solver(Protocol):
 class Fitter(Protocol):
     def __call__(
             self,
-            calc_residuals: ResidualsCalculator,
             unknowns_guesses: Unknowns,
+            unknowns_to_props: TheoreticalCalculator,
+            signal_properties: SignalProperties,
             **kwargs,
     ) -> FittingResult: ...
 
@@ -71,19 +72,14 @@ def autofit(
                      if 'parameters' in solver_information
                      else {})
 
-    def calc_residuals(unknowns):
-        answers = solve(
+    def unknowns_to_props(unknowns):
+        props = solve(
             unknowns,
             signal_result.region_properties,
             setup,
             **solver_params,
         )
-        all_residuals = [
-            p - np.expand_dims(a, tuple(range(1, len(p.shape))))
-            for p, a in zip(signal_result.signal_properties, answers)
-        ]
-        residuals = np.stack(all_residuals).flatten()
-        return residuals
+        return props
 
     fit: Fitter = None
     match fitter_information['name']:
@@ -99,8 +95,9 @@ def autofit(
                      else {})
 
     result = fit(
-        calc_residuals,
         guess_converter(**fitter_information['guesses']),
+        unknowns_to_props,
+        signal_result.signal_properties,
         **fitter_params,
     )
     return result

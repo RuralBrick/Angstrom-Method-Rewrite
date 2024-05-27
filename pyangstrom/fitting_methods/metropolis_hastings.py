@@ -1,9 +1,15 @@
-from pyangstrom.fit import ResidualsCalculator, Unknowns, FittingResult
+from pyangstrom.fit import (
+    Unknowns,
+    TheoreticalCalculator,
+    SignalProperties,
+    FittingResult
+)
 
 
 def fit(
-        calc_residuals: ResidualsCalculator, # FIXME: Can't use
         unknowns_guesses: Unknowns,
+        unknowns_to_props: TheoreticalCalculator,
+        signal_properties: SignalProperties,
         # TODO: Need injected distribution sampler
 ) -> FittingResult:
     raise NotImplementedError()
