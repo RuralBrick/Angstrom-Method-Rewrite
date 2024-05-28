@@ -1,17 +1,21 @@
 import logging
+from typing import Callable
 
 import numpy as np
 from scipy.optimize import least_squares
 
 from pyangstrom.fit import (
     Unknowns,
-    TheoreticalCalculator,
+    EquationPackage,
     SignalProperties,
-    FittingResult
+    FittingResult,
 )
 
 
 logger = logging.getLogger('fit')
+
+UnknownsVectorizer = Callable[[Unknowns], np.ndarray]
+VectorTheoreticalCalculator = Callable[[Unknowns], SignalProperties]
 
 def fitting_function(signal_properties: SignalProperties) -> np.ndarray:
     linear_data = (np.log(1/signal_properties.amplitude_ratios)
@@ -20,8 +24,8 @@ def fitting_function(signal_properties: SignalProperties) -> np.ndarray:
 
 def fit(
         unknowns_guesses: Unknowns,
-        unknowns_to_props: TheoreticalCalculator,
-        signal_properties: SignalProperties,
+        solution: EquationPackage,
+        observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -> FittingResult:
     level = logger.getEffectiveLevel()
@@ -32,10 +36,13 @@ def fit(
     else:
         verbosity = 0
 
-    observed = fitting_function(signal_properties)
-    def calc_residuals(unknowns):
-        answers = unknowns_to_props(unknowns)
-        theoretical = fitting_function(answers)
+    vectorize_unknowns: UnknownsVectorizer = solution.unknowns_to_vector
+    vector_solve: VectorTheoreticalCalculator = solution.vector_solve
+
+    observed = fitting_function(observed_properties)
+    def calc_residuals(unknowns_vector):
+        theoretical_properties = vector_solve(unknowns_vector)
+        theoretical = fitting_function(theoretical_properties)
         theoretical = np.expand_dims(
             theoretical,
             tuple(range(1, len(observed.shape))),
@@ -46,7 +53,7 @@ def fit(
 
     result = least_squares(
         calc_residuals,
-        unknowns_guesses,
+        vectorize_unknowns(unknowns_guesses),
         verbose=verbosity,
         **least_squares_kwargs,
     )

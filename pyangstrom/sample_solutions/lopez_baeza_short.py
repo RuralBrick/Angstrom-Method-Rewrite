@@ -1,16 +1,22 @@
-from typing import NamedTuple
+from typing import TypedDict
 
 import numpy as np
 
-from pyangstrom.fit import ExperimentalSetup, RegionProperties, SignalProperties
 from pyangstrom.helpers import calc_thermal_conductivity
+from pyangstrom.fit import (
+    EquationPackage,
+    RegionProperties,
+    ExperimentalSetup,
+    Unknowns,
+)
+from pyangstrom.signal import SignalProperties
 
 
-class LopezBaezaShortUnknowns(NamedTuple):
+class LopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_m2_s: float
     thermal_transfer_coefficient_kg_s2_K_m2: float
 
-class LogLopezBaezaShortUnknowns(NamedTuple):
+class LogLopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_log10_m2_s: float
     thermal_transfer_coefficient_log10_kg_s2_K_m2: float
 
@@ -83,3 +89,30 @@ def log_solve(
         length_meters,
     )
     return props
+
+class Solution(EquationPackage):
+    def __init__(
+            self,
+            region_properties: RegionProperties,
+            setup: ExperimentalSetup,
+            r_meters: float,
+            length_meters: float,
+    ) -> None:
+        pass
+
+    def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray:
+        raise NotImplementedError()
+
+    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns:
+        raise NotImplementedError()
+
+    def solve(self, unknowns: Unknowns) -> SignalProperties:
+        raise NotImplementedError()
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        unknowns = self.vector_to_unknowns(unknowns_vector)
+        return self.solve(unknowns)
+
+class LogSolution(Solution):
+    def solve(unknowns: Unknowns) -> SignalProperties:
+        return super().solve(np.power(10.0, unknowns))

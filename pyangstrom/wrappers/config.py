@@ -106,6 +106,10 @@ def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
     try:
         solver: SolverInformation = {
             'name': 'log_lopez-baeza',
+            'guesses': {
+                'thermal_diffusivity_log10_m2_s': -5,
+                'thermal_transfer_coefficient_log10_kg_s2_K_m2': -2,
+            },
             'parameters': {
                 'r_meters': float(record['r']),
                 'length_meters': float(record['L']),
@@ -120,10 +124,6 @@ def record_to_lsr(record) -> Optional[FitterInformation]:
     try:
         fitter: FitterInformation = {
             'name': 'nelder-mead',
-            'guesses': {
-                'thermal_diffusivity_log10_m2_s': -5,
-                'thermal_transfer_coefficient_log10_kg_s2_K_m2': -2,
-            },
         }
         return fitter
     except KeyError as e:

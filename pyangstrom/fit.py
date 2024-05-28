@@ -1,44 +1,41 @@
-from typing import TypedDict, Iterable, Callable, Any, Protocol
+from typing import TypedDict, Protocol
+import abc
 from dataclasses import dataclass
-
-import numpy as np
 
 from pyangstrom.exp_setup import ExperimentalSetup
 from pyangstrom.signal import RegionProperties, SignalProperties, SignalResult
 
 
+Unknowns = dict
+
 class SolverInformation(TypedDict, total=False):
     name: str
+    guesses: Unknowns
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
     name: str
-    guesses: dict
     parameters: dict
-
-Unknowns = Iterable
-UnknownsFormatter = Callable[..., Unknowns]
-TheoreticalCalculator = Callable[[Unknowns], SignalProperties]
 
 @dataclass
 class FittingResult:
     unknowns_solutions: Unknowns
 
-class Solver(Protocol):
-    def __call__(
+class EquationPackage(abc.ABC):
+    @abc.abstractmethod
+    def __init__(
             self,
-            unknowns: Unknowns,
             region_properties: RegionProperties,
             setup: ExperimentalSetup,
             **kwargs,
-    ) -> SignalProperties: ...
+    ) -> None: ...
 
 class Fitter(Protocol):
     def __call__(
             self,
             unknowns_guesses: Unknowns,
-            unknowns_to_props: TheoreticalCalculator,
-            signal_properties: SignalProperties,
+            solution: EquationPackage,
+            observed_properties: SignalProperties,
             **kwargs,
     ) -> FittingResult: ...
 
@@ -56,30 +53,18 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     """
-    solve: Solver = None
-    guess_converter: UnknownsFormatter = None
+    Solution = EquationPackage
     match solver_information['name']:
         case 'lopez-baeza':
-            from pyangstrom.sample_solutions.lopez_baeza_short import solve
-            from pyangstrom.sample_solutions.lopez_baeza_short import LopezBaezaShortUnknowns as guess_converter
+            from pyangstrom.sample_solutions.lopez_baeza_short import Solution
         case 'log_lopez-baeza':
-            from pyangstrom.sample_solutions.lopez_baeza_short import log_solve as solve
-            from pyangstrom.sample_solutions.lopez_baeza_short import LogLopezBaezaShortUnknowns as guess_converter
+            from pyangstrom.sample_solutions.lopez_baeza_short import LogSolution as Solution
         case _:
             raise ValueError(f"Solver {solver_information['name']} not found.")
 
     solver_params = (solver_information['parameters']
                      if 'parameters' in solver_information
                      else {})
-
-    def unknowns_to_props(unknowns):
-        props = solve(
-            unknowns,
-            signal_result.region_properties,
-            setup,
-            **solver_params,
-        )
-        return props
 
     fit: Fitter = None
     match fitter_information['name']:
@@ -95,8 +80,8 @@ def autofit(
                      else {})
 
     result = fit(
-        guess_converter(**fitter_information['guesses']),
-        unknowns_to_props,
+        solver_information['guesses'],
+        Solution(signal_result.region_properties, setup, **solver_params),
         signal_result.signal_properties,
         **fitter_params,
     )
