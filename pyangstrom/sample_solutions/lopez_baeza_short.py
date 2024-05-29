@@ -1,85 +1,166 @@
-from typing import NamedTuple
+from typing import TypedDict
 
 import numpy as np
 
-from pyangstrom.fit import ExperimentalSetup, SignalProperties
 from pyangstrom.helpers import calc_thermal_conductivity
+from pyangstrom.exp_setup import ExperimentalSetup
+from pyangstrom.signal import RegionProperties, SignalProperties
+from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
+from pyangstrom.fitting_methods.lsr import LsrEquations
+from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
 
 
-class LopezBaezaShortUnknowns(NamedTuple):
+class LopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_m2_s: float
     thermal_transfer_coefficient_kg_s2_K_m2: float
 
-class LogLopezBaezaShortUnknowns(NamedTuple):
+class LogLopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_log10_m2_s: float
     thermal_transfer_coefficient_log10_kg_s2_K_m2: float
 
-def calc_wavenumber(
-        angular_frequency_hertz,
-        thermal_diffusivity_m2_s,
-        thermal_transfer_coefficient_kg_s2_K_m2,
-        r_meters,
-        thermal_conductivity_W_m_K,
+class Solution(
+    NelderMeadEquations,
+    LsrEquations,
+    MetropolisHastingsEquations,
 ):
-    heat_conduction = angular_frequency_hertz / (2.0*thermal_diffusivity_m2_s)
-    thermal_losses = thermal_transfer_coefficient_kg_s2_K_m2 / (r_meters * thermal_conductivity_W_m_K)
-    temp_var1 = np.sqrt(thermal_losses**2.0 + heat_conduction**2.0)
-    temp_var2 = np.sqrt(-thermal_losses + temp_var1)
-    temp_var3 = 1.0j*np.sqrt(thermal_losses + temp_var1)
-    wavenumber = temp_var2 + temp_var3
-    return wavenumber
+    def __init__(
+            self,
+            region_properties: RegionProperties,
+            setup: ExperimentalSetup,
+            r_meters: float,
+            length_meters: float,
+    ) -> None:
+        mp = setup['material_properties']
+        self.specific_heat_capacity_J_kg_K = mp['specific_heat_capacity_J_kg_K']
+        self.density_kg_m3 = mp['density_kg_m3']
+        self.displacements_meters = region_properties.displacements_meters
+        self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
+        self.r_meters = r_meters
+        self.length_meters = length_meters
 
-def calc_xi(wavenumber, length, displacement):
-    temp_var1 = np.cos(wavenumber * (length - displacement))
-    temp_var2 = np.cos(wavenumber * length)
-    xi = temp_var1 / temp_var2
-    return xi
+    def unknowns_to_vector(
+            self,
+            unknowns: LopezBaezaShortUnknowns,
+    ) -> np.ndarray:
+        vector = np.array([
+            unknowns['thermal_diffusivity_m2_s'],
+            unknowns['thermal_transfer_coefficient_kg_s2_K_m2']
+        ])
+        return vector
 
-def solve(
-        unknowns: LopezBaezaShortUnknowns,
-        displacements_meters: np.ndarray,
-        setup: ExperimentalSetup,
-        r_meters: float,
-        length_meters: float,
-) -> SignalProperties:
-    thermal_diffusivity_m2_s, thermal_transfer_coefficient_kg_s2_K_m2 = unknowns
-    wavenumber = calc_wavenumber(
-        2 * np.pi * setup['heating_frequency_hertz'],
-        thermal_diffusivity_m2_s,
-        thermal_transfer_coefficient_kg_s2_K_m2,
-        r_meters,
-        calc_thermal_conductivity(
+    def vector_to_unknowns(self, vector: np.ndarray) -> LopezBaezaShortUnknowns:
+        unknowns: LopezBaezaShortUnknowns = {
+            'thermal_diffusivity_m2_s': vector[0],
+            'thermal_transfer_coefficient_kg_s2_K_m2': vector[1],
+        }
+        return unknowns
+
+    def calc_wavenumber(
+            self,
             thermal_diffusivity_m2_s,
-            setup['material_properties']['specific_heat_capacity_J_kg_K'],
-            setup['material_properties']['density_kg_m3'],
-        ),
-    )
-    xi = calc_xi(
-        wavenumber,
-        length_meters,
-        displacements_meters,
-    )
+            thermal_transfer_coefficient_kg_s2_K_m2,
+            thermal_conductivity_W_m_K,
+    ):
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2_s
+        h = thermal_transfer_coefficient_kg_s2_K_m2
+        r = self.r_meters
+        K = thermal_conductivity_W_m_K
 
-    amps = np.abs(xi)
-    amp_ratio = amps / amps[0]
+        heat_conduction = w / (2.0*D)
+        thermal_losses = h / (r*K)
+        temp_var1 = np.sqrt(thermal_losses**2.0 + heat_conduction**2.0)
+        temp_var2 = np.sqrt(-thermal_losses + temp_var1)
+        temp_var3 = 1.0j*np.sqrt(thermal_losses + temp_var1)
+        wavenumber = temp_var2 + temp_var3
+        return wavenumber
 
-    phases = np.angle(xi)
-    phase_diff = phases - phases[0]
+    def calc_xi(self, wavenumber):
+        k = wavenumber
+        L = self.length_meters
+        x = self.displacements_meters
 
-    return SignalProperties(amp_ratio, phase_diff)
+        xi = np.cos(k*(L - x)) / np.cos(k*L)
+        return xi
 
-def log_solve(
-        unknowns: LogLopezBaezaShortUnknowns,
-        displacements_meters: np.ndarray,
-        setup: ExperimentalSetup,
-        r_meters: float,
-        length_meters: float,
-) -> SignalProperties:
-    props = solve(
-        np.power(10.0, unknowns),
-        displacements_meters,
-        setup,
-        r_meters,
-        length_meters,
-    )
-    return props
+    def solve(self, unknowns: LopezBaezaShortUnknowns) -> SignalProperties:
+        wavenumber = self.calc_wavenumber(
+            unknowns['thermal_diffusivity_m2_s'],
+            unknowns['thermal_transfer_coefficient_kg_s2_K_m2'],
+            calc_thermal_conductivity(
+                unknowns['thermal_diffusivity_m2_s'],
+                self.specific_heat_capacity_J_kg_K,
+                self.density_kg_m3,
+            ),
+        )
+        xi = self.calc_xi(wavenumber)
+
+        amps = np.abs(xi)
+        amp_ratio = amps / amps[0]
+
+        phases = np.angle(xi)
+        phase_diff = phases - phases[0]
+
+        return SignalProperties(amp_ratio, phase_diff)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        thermal_diffusivity_m2_s, thermal_transfer_coefficient_kg_s2_K_m2 = unknowns_vector
+        wavenumber = self.calc_wavenumber(
+            thermal_diffusivity_m2_s,
+            thermal_transfer_coefficient_kg_s2_K_m2,
+            calc_thermal_conductivity(
+                thermal_diffusivity_m2_s,
+                self.specific_heat_capacity_J_kg_K,
+                self.density_kg_m3,
+            ),
+        )
+        xi = self.calc_xi(wavenumber)
+
+        amps = np.abs(xi)
+        amp_ratio = amps / amps[0]
+
+        phases = np.angle(xi)
+        phase_diff = phases - phases[0]
+
+        return SignalProperties(amp_ratio, phase_diff)
+
+    def propose(
+            self,
+            unknowns: LopezBaezaShortUnknowns
+    ) -> LopezBaezaShortUnknowns:
+        raise NotImplementedError()
+
+    def log_posterior(
+            self,
+            unknowns: LopezBaezaShortUnknowns,
+            observed_properties: SignalProperties,
+    ) -> float:
+        raise NotImplementedError()
+
+class LogSolution(Solution):
+    def unknowns_to_vector(
+            self,
+            unknowns: LogLopezBaezaShortUnknowns,
+    ) -> np.ndarray:
+        vector = np.array([
+            unknowns['thermal_diffusivity_log10_m2_s'],
+            unknowns['thermal_transfer_coefficient_log10_kg_s2_K_m2']
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -> LogLopezBaezaShortUnknowns:
+        unknowns: LogLopezBaezaShortUnknowns = {
+            'thermal_diffusivity_log10_m2_s': vector[0],
+            'thermal_transfer_coefficient_log10_kg_s2_K_m2': vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogLopezBaezaShortUnknowns) -> SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))

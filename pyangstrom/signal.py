@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy import signal
 
-from pyangstrom.transform import Region, region_to_displacement
+from pyangstrom.transform import Region
 from pyangstrom.exp_setup import ExperimentalSetup
 
 
@@ -26,9 +26,51 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 @dataclass
-class SignalResult:
-    signal_properties: SignalProperties
+class RegionProperties:
+    seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
+
+@dataclass
+class SignalResult:
+    region_properties: RegionProperties
+    signal_properties: SignalProperties
+
+def region_to_properties(region: Region) -> RegionProperties:
+    time = region.timestamps - region.timestamps.min()
+    time = time.total_seconds()
+    time = time.to_numpy()
+
+    disp = np.linspace(
+        0,
+        region.margins[1],
+        region.temperatures_kelvin.shape[1],
+    )
+
+    return RegionProperties(time, disp)
+
+def filter_signal(
+        region: Region,
+        setup: ExperimentalSetup,
+        cutoff: float = 0.5,
+        order: int = 5,
+) -> Region:
+    cutoff_frequency = cutoff * setup['heating_frequency_hertz']
+    sampling_frequency = region.temperatures_kelvin.shape[0] / region.margins[0]
+    nyquist_frequency = 0.5 * sampling_frequency
+    normal_cutoff = cutoff_frequency / nyquist_frequency
+    b, a = signal.butter(
+        order,
+        normal_cutoff,
+        btype='high',
+        analog=False,
+    )
+    new_temps = signal.filtfilt(b, a, region.temperatures_kelvin, axis=0)
+    new_region = Region(
+        region.timestamps,
+        new_temps,
+        region.margins,
+    )
+    return new_region
 
 def filter_signal(
         region: Region,
@@ -105,5 +147,5 @@ def signal_process_region(
             )
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
-    result = SignalResult(props, region_to_displacement(region))
+    result = SignalResult(region_to_properties(region), props)
     return result
