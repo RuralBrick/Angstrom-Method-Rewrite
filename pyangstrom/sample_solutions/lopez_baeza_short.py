@@ -3,13 +3,16 @@ from typing import TypedDict
 import numpy as np
 
 from pyangstrom.helpers import calc_thermal_conductivity
+from pyangstrom.signal import SignalProperties
 from pyangstrom.fit import (
     EquationPackage,
     RegionProperties,
     ExperimentalSetup,
     Unknowns,
 )
-from pyangstrom.signal import SignalProperties
+from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
+from pyangstrom.fitting_methods.lsr import LsrEquations
+from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
 
 
 class LopezBaezaShortUnknowns(TypedDict):
@@ -90,7 +93,12 @@ def log_solve(
     )
     return props
 
-class Solution(EquationPackage):
+class Solution(
+    EquationPackage,
+    NelderMeadEquations,
+    LsrEquations,
+    MetropolisHastingsEquations,
+):
     def __init__(
             self,
             region_properties: RegionProperties,
@@ -112,6 +120,16 @@ class Solution(EquationPackage):
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
         unknowns = self.vector_to_unknowns(unknowns_vector)
         return self.solve(unknowns)
+
+    def propose(self, unknowns: Unknowns) -> Unknowns:
+        raise NotImplementedError()
+
+    def log_posterior(
+            self,
+            unknowns: Unknowns,
+            observed_properties: SignalProperties,
+    ) -> float:
+        raise NotImplementedError()
 
 class LogSolution(Solution):
     def solve(unknowns: Unknowns) -> SignalProperties:

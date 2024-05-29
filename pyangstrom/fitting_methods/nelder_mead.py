@@ -1,5 +1,5 @@
 import logging
-from typing import Callable
+import abc
 
 import numpy as np
 from scipy.optimize import minimize
@@ -15,20 +15,22 @@ from pyangstrom.signal import SignalProperties
 
 logger = logging.getLogger('fit')
 
-UnknownsVectorizer = Callable[[Unknowns], np.ndarray]
-VectorTheoreticalCalculator = Callable[[Unknowns], SignalProperties]
+class NelderMeadEquations(EquationPackage):
+    @abc.abstractmethod
+    def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray: ...
+
+    @abc.abstractmethod
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties: ...
 
 def fit(
         unknowns_guesses: Unknowns,
-        solution: EquationPackage,
+        solution: NelderMeadEquations,
         observed_properties: SignalProperties,
         **minimize_kwargs,
 ) -> FittingResult:
-    vectorize_unknowns: UnknownsVectorizer = solution.unknowns_to_vector
-    vector_solve: VectorTheoreticalCalculator = solution.vector_solve
 
     def calc_error(unknowns_vector):
-        theoretical_properties = vector_solve(unknowns_vector)
+        theoretical_properties = solution.vector_solve(unknowns_vector)
         all_residuals = [
             p - np.expand_dims(a, tuple(range(1, len(p.shape))))
             for p, a in zip(observed_properties, theoretical_properties)
@@ -39,7 +41,7 @@ def fit(
 
     result = minimize(
         calc_error,
-        vectorize_unknowns(unknowns_guesses),
+        solution.unknowns_to_vector(unknowns_guesses),
         method='Nelder-Mead',
         options=dict(disp=(logger.getEffectiveLevel() <= logging.DEBUG)),
         **minimize_kwargs,
