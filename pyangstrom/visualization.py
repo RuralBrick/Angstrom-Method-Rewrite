@@ -11,8 +11,8 @@ from pyangstrom.transform import (
     PolarGeometry,
     Region,
     collapse_region,
-    region_to_displacement,
 )
+from pyangstrom.signal import region_to_properties
 
 
 def plot_recording(ax: Axes, df_recording: pd.DataFrame) -> Axes:
@@ -27,8 +27,8 @@ def plot_cartesian_geometry(
     ax = plot_recording(ax, df_recording)
     ax.add_patch(Rectangle(
         (geometry['min_x_pixels'], geometry['min_y_pixels']),
-        geometry['min_x_pixels'] - geometry['min_x_pixels'],
-        geometry['min_y_pixels'] - geometry['min_y_pixels'],
+        geometry['max_x_pixels'] - geometry['min_x_pixels'],
+        geometry['max_y_pixels'] - geometry['min_y_pixels'],
         hatch='..',
         edgecolor='red',
         facecolor='none',
@@ -36,28 +36,28 @@ def plot_cartesian_geometry(
     if geometry['heat_source'] in Direction.LESSER_X:
         ax.plot(
             [geometry['min_x_pixels'], geometry['min_x_pixels']],
-            [geometry['min_y_pixels'], geometry['min_y_pixels']],
+            [geometry['min_y_pixels'], geometry['max_y_pixels']],
             linewidth=2,
             color='blue',
         )
     elif geometry['heat_source'] in Direction.GREATER_X:
         ax.plot(
-            [geometry['min_x_pixels'], geometry['min_x_pixels']],
-            [geometry['min_y_pixels'], geometry['min_y_pixels']],
+            [geometry['max_x_pixels'], geometry['max_x_pixels']],
+            [geometry['min_y_pixels'], geometry['max_y_pixels']],
             linewidth=2,
             color='blue',
         )
     elif geometry['heat_source'] in Direction.LESSER_Y:
         ax.plot(
-            [geometry['min_x_pixels'], geometry['min_x_pixels']],
+            [geometry['min_x_pixels'], geometry['max_x_pixels']],
             [geometry['min_y_pixels'], geometry['min_y_pixels']],
             linewidth=2,
             color='blue',
         )
     elif geometry['heat_source'] in Direction.GREATER_Y:
         ax.plot(
-            [geometry['min_x_pixels'], geometry['min_x_pixels']],
-            [geometry['min_y_pixels'], geometry['min_y_pixels']],
+            [geometry['min_x_pixels'], geometry['max_x_pixels']],
+            [geometry['max_y_pixels'], geometry['max_y_pixels']],
             linewidth=2,
             color='blue',
         )
@@ -126,10 +126,10 @@ def animate_recording(df_recording: pd.DataFrame) -> Animation:
     )
     return anim
 
-def animate_region(region: Region) -> Region:
+def animate_region(region: Region) -> Animation:
     fig, ax = plt.subplots()
     region = collapse_region(region)
-    disp = region_to_displacement(region)
+    disp = region_to_properties(region).displacements_meters
     ln, = ax.plot(disp, region.temperatures_kelvin[0])
     ax.set_ylim(
         region.temperatures_kelvin.min(),
