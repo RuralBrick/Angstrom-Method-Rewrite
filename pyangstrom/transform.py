@@ -13,23 +13,18 @@ TEMPERATURE_OFFSET = {
     'Temperature (C)': 273.15,
 }
 
-class Direction:
-    LESSER_X = {'lesser_x', 'negative_x', 'neg_x'}
-    GREATER_X = {'greater_x', 'positive_x', 'pos_x'}
-    LESSER_Y = {'lesser_y', 'negative_y', 'neg_y'}
-    GREATER_Y = {'greater_y', 'positive_y', 'pos_y'}
-
 
 class Point(TypedDict):
     x_pixels: int | float
     y_pixels: int | float
 
-class CartesianGeometry(TypedDict):
+class CartesianGeometry(TypedDict, total=False):
     min_x_pixels: int
     max_x_pixels: int
     min_y_pixels: int
     max_y_pixels: int
-    heat_source: str
+    heat_source_x_pixels: int
+    heat_source_y_pixels: int
 
 class PolarGeometry(TypedDict):
     center: Point
@@ -60,6 +55,27 @@ RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list
 
 @dataclass
 class Margins:
+    def __init__(
+            self,
+            df_recording: pd.DataFrame,
+            temperatures: np.ndarray,
+            min_displacement_pixels: int | float,
+            max_displacement_pixels: int | float,
+            setup: ExperimentalSetup,
+    ) -> None:
+        normalized_timestamps = df_recording.index - df_recording.index.min()
+        self.seconds_elapsed = normalized_timestamps.total_seconds().to_numpy()
+
+        disp = np.linspace(
+            min_displacement_pixels,
+            max_displacement_pixels,
+            temperatures.shape[1],
+            dtype=float,
+        )
+        disp = disp * setup['meters_per_pixel']
+        disp = np.stack(temperatures.shape[2] * [disp], axis=1)
+        self.displacements_meters = disp
+
     seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
 
@@ -103,6 +119,14 @@ def extract_cartesian_region(
         geometry: CartesianGeometry,
         setup: ExperimentalSetup,
 ) -> Region:
+    """
+    Exceptions
+    ----------
+    KeyError
+        Field not found in geometry.
+    ValueError
+        Invalid geometry.
+    """
     temps = np.stack(df_recording['Samples']) # (time, height, width)
     temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
     temps = temps[
@@ -112,52 +136,44 @@ def extract_cartesian_region(
     temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, width, height)
 
     # (time, displacement, span)
-    if geometry['heat_source'] in Direction.LESSER_X:
-        margins = namedtuple(
-            'XAlignedCartesianMargins',
-            'time_span x_range_meters y_range_meters',
-        )(
-            df_recording.index.max() - df_recording.index.min(),
-            (geometry['max_x_pixels'] - geometry['min_x_pixels']) * setup['meters_per_pixel'],
-            (geometry['max_y_pixels'] - geometry['min_y_pixels']) * setup['meters_per_pixel'],
+    if ('heat_source_x_pixels' in geometry
+            and 'heat_source_y_pixels' in geometry):
+        raise ValueError(
+            "Cannot have both heat_source_x_pixels and heat_source_y_pixels in "
+            "geometry."
         )
-    elif geometry['heat_source'] in Direction.GREATER_X:
-        temps = np.flip(temps, axis=1)
-        margins = namedtuple(
-            'XAlignedCartesianMargins',
-            'time_span x_range_meters y_range_meters',
-        )(
-            df_recording.index.max() - df_recording.index.min(),
-            (geometry['max_x_pixels'] - geometry['min_x_pixels']) * setup['meters_per_pixel'],
-            (geometry['max_y_pixels'] - geometry['min_y_pixels']) * setup['meters_per_pixel'],
-        )
-    elif geometry['heat_source'] in Direction.LESSER_Y:
-        temps = np.swapaxes(temps, 1, 2)
-        margins = namedtuple(
-            'YAlignedCartesianMargins',
-            'time_span y_range_meters x_range_meters',
-        )(
-            df_recording.index.max() - df_recording.index.min(),
-            (geometry['max_y_pixels'] - geometry['min_y_pixels']) * setup['meters_per_pixel'],
-            (geometry['max_x_pixels'] - geometry['min_x_pixels']) * setup['meters_per_pixel'],
-        )
-    elif geometry['heat_source'] in Direction.GREATER_Y:
-        temps = np.swapaxes(temps, 1, 2)
-        temps = np.flip(temps, axis=1)
-        margins = namedtuple(
-            'YAlignedCartesianMargins',
-            'time_span y_range_meters x_range_meters',
-        )(
-            df_recording.index.max() - df_recording.index.min(),
-            (geometry['max_y_pixels'] - geometry['min_y_pixels']) * setup['meters_per_pixel'],
-            (geometry['max_x_pixels'] - geometry['min_x_pixels']) * setup['meters_per_pixel'],
-        )
+    elif 'heat_source_x_pixels' in geometry:
+        if geometry['heat_source_x_pixels'] <= geometry['min_x_pixels']:
+            min_disp_px = geometry['min_x_pixels'] - geometry['heat_source_x_pixels']
+            max_disp_px = geometry['max_x_pixels'] - geometry['heat_source_x_pixels']
+        elif geometry['heat_source_x_pixels'] >= geometry['max_x_pixels']:
+            temps = np.flip(temps, axis=1)
+            min_disp_px = geometry['heat_source_x_pixels'] - geometry['max_x_pixels']
+            max_disp_px = geometry['heat_source_x_pixels'] - geometry['min_x_pixels']
+        else:
+            raise ValueError(
+                "heat_source_x_pixels cannot be between min_x_pixels and "
+                "max_x_pixels."
+            )
+    elif 'heat_source_y_pixels' in geometry:
+        if geometry['heat_source_y_pixels'] <= geometry['min_y_pixels']:
+            temps = np.swapaxes(temps, 1, 2)
+            min_disp_px = geometry['min_y_pixels'] - geometry['heat_source_y_pixels']
+            max_disp_px = geometry['max_y_pixels'] - geometry['heat_source_y_pixels']
+        elif geometry['heat_source_y_pixels'] >= geometry['max_y_pixels']:
+            temps = np.swapaxes(temps, 1, 2)
+            temps = np.flip(temps, axis=1)
+            min_disp_px = geometry['heat_source_y_pixels'] - geometry['max_y_pixels']
+            max_disp_px = geometry['heat_source_y_pixels'] - geometry['min_y_pixels']
+        else:
+            raise ValueError(
+                "heat_source_y_pixels cannot be between min_y_pixels and "
+                "max_y_pixels."
+            )
     else:
-        warnings.warn(f"Heat source not recognized: {geometry['heat_source']}")
-        margins = namedtuple('CorruptedMargins', 'time_span unknown1 unknown2')(
-            df_recording.index.max() - df_recording.index.min(),
-            0,
-            0,
+        raise KeyError(
+            "Must have at either heat_source_x_pixels or heat_source_y_pixels "
+            "in geometry."
         )
 
     temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps)
@@ -165,7 +181,7 @@ def extract_cartesian_region(
     region = Region(
         df_recording.index,
         temps_kelvin,
-        margins,
+        Margins(df_recording, temps, min_disp_px, max_disp_px, setup),
     )
     return region
 
@@ -211,19 +227,16 @@ def extract_polar_region(
     temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
     temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps_trans)
 
-    margins = namedtuple(
-        'PolarMargins',
-        'time_span r_range_meters theta_range_degrees',
-    )(
-        df_recording.index.max() - df_recording.index.min(),
-        (geometry['max_r_pixels'] - geometry['min_r_pixels']) * setup['meters_per_pixel'],
-        geometry['max_theta_degrees'] - geometry['min_theta_degrees'],
-    )
-
     region = Region(
         df_recording.index,
         temps_kelvin,
-        margins,
+        Margins(
+            df_recording,
+            temps_kelvin,
+            geometry['min_r_pixels'],
+            geometry['max_r_pixels'],
+            setup,
+        ),
     )
     return region
 
@@ -233,7 +246,7 @@ def geometry_to_region(
         setup: ExperimentalSetup,
 ) -> Region:
     match geometry:
-        case {'heat_source': _}:
+        case {'min_x_pixels': _}:
             return extract_cartesian_region(df_recording, geometry, setup)
         case {'center': _}:
             return extract_polar_region(df_recording, geometry, setup)
