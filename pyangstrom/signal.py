@@ -79,7 +79,8 @@ def filter_signal(
         order: int = 5,
 ) -> Region:
     cutoff_frequency = cutoff * setup['heating_frequency_hertz']
-    sampling_frequency = region.temperatures_kelvin.shape[0] / region.margins[0]
+    sampling_frequency = (region.temperatures_kelvin.shape[0]
+                          / region.margins[0].total_seconds())
     nyquist_frequency = 0.5 * sampling_frequency
     normal_cutoff = cutoff_frequency / nyquist_frequency
     b, a = signal.butter(
