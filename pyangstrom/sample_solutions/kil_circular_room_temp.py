@@ -25,14 +25,17 @@ class Solution(NelderMeadEquations, LsrEquations, MetropolisHastingsEquations):
             self,
             region_properties: RegionProperties,
             setup: ExperimentalSetup,
+            min_radius_meters: float,
+            max_radius_meters: float,
     ) -> None:
         # HACK: Actually need to use 2D array
         self.time_seconds = region_properties.seconds_elapsed
-        self.radii_meters = region_properties.displacements_meters
+        self.radii_meters = (region_properties.displacements_meters
+                             + min_radius_meters)
         # end HACK
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
-        self.min_radius_meters = region_properties.displacements_meters[0]
-        self.max_radius_meters = region_properties.displacements_meters[-1]
+        self.min_radius_meters = min_radius_meters
+        self.max_radius_meters = max_radius_meters
 
     def calc_convective_heat_transfer_coefficient(self):
         raise NotImplementedError()
