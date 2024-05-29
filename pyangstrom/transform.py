@@ -1,5 +1,5 @@
 import warnings
-from typing import TypedDict, NamedTuple, Iterable
+from typing import TypedDict, Iterable
 from dataclasses import dataclass
 from collections import namedtuple
 
@@ -58,7 +58,10 @@ class RegionBatchConfig(TypedDict, total=False):
 RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list[RegionBatchConfig]
 
 
-Margins = NamedTuple
+@dataclass
+class Margins:
+    seconds_elapsed: np.ndarray
+    displacements_meters: np.ndarray
 
 @dataclass
 class Region:
@@ -78,7 +81,7 @@ class Region:
     """
     timestamps: pd.DatetimeIndex
     temperatures_kelvin: np.ndarray
-    margins: Margins
+    margins: Margins # TODO: Update docstring
 
 
 def convert_temperatures_to_kelvin(
@@ -297,6 +300,13 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
         )
     return region
 
+def all_timestamps_same(regions: Iterable[Region]) -> bool:
+    idx0 = next(iter(regions)).timestamps
+    for region in regions:
+        if not idx0.symmetric_difference(region.timestamps):
+            return False
+    return True
+
 def all_temps_same_shape(regions: Iterable[Region]) -> bool:
     dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
     size_counts = [set(s) for s in dim_sizes]
@@ -349,7 +359,7 @@ def fully_extract_region(
             if ('average_over_regions' not in information
                 or not information['average_over_regions']):
                 return regions
-            assert len({r.timestamps.shape for r in regions}) == 1
+            assert all_timestamps_same(regions)
             if not all_temps_same_shape(regions):
                 warnings.warn(
                     "Not all regions have the same number of samples. Trimming "

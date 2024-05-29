@@ -99,7 +99,8 @@ def analyze_recording(
     logger.debug(
         f"{debug_region.timestamps[:1]=}, "
         f"{debug_region.temperatures_kelvin[:1, :1]=}, "
-        f"{debug_region.margins=}"
+        f"{debug_region.margins.seconds_elapsed[:1]}="
+        f"{debug_region.margins.displacements_meters[:1, :1]=}"
     )
     logger.info("Signal processing")
     try:

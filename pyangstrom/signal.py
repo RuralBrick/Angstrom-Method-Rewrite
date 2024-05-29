@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy import signal
 
-from pyangstrom.transform import Region
+from pyangstrom.transform import Region, Margins
 from pyangstrom.exp_setup import ExperimentalSetup
 
 
@@ -26,27 +26,9 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 @dataclass
-class RegionProperties:
-    seconds_elapsed: np.ndarray
-    displacements_meters: np.ndarray
-
-@dataclass
 class SignalResult:
-    region_properties: RegionProperties
     signal_properties: SignalProperties
-
-def region_to_properties(region: Region) -> RegionProperties:
-    time = region.timestamps - region.timestamps.min()
-    time = time.total_seconds()
-    time = time.to_numpy()
-
-    disp = np.linspace(
-        0,
-        region.margins[1],
-        region.temperatures_kelvin.shape[1],
-    )
-
-    return RegionProperties(time, disp)
+    margins: Margins
 
 def filter_signal(
         region: Region,
@@ -148,5 +130,5 @@ def signal_process_region(
             )
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
-    result = SignalResult(region_to_properties(region), props)
+    result = SignalResult(props, region.margins)
     return result

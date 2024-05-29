@@ -25,7 +25,7 @@ class Solution(
 ):
     def __init__(
             self,
-            region_properties: RegionProperties,
+            margins: Margins,
             setup: ExperimentalSetup,
             r_meters: float,
             length_meters: float,
