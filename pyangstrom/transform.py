@@ -62,9 +62,23 @@ Margins = NamedTuple
 
 @dataclass
 class Region:
+    """A bounded region of IR temperature camera data after undergoing
+    transformations and changes of basis until
+
+    Attributes
+    ----------
+    timestamps
+        The timestamps of the original IR camera frames.
+    temperatures_kelvin
+        An N-dimensional array of temperatures grouped by time, displacement
+        from heating source, and other factors based on its axes.
+    margins
+        The range of each corresponding axis of temperatures_kelvin. Always
+        in (time_span, displacement_range_meters, ...) order.
+    """
     timestamps: pd.DatetimeIndex
     temperatures_kelvin: np.ndarray
-    margins: Margins # Should be in (time, displacement_meters, ...) order
+    margins: Margins
 
 
 def convert_temperatures_to_kelvin(

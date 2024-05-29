@@ -2,6 +2,7 @@ from typing import TypedDict, NamedTuple, Protocol
 from dataclasses import dataclass
 
 import numpy as np
+from scipy import signal
 
 from pyangstrom.transform import Region
 from pyangstrom.exp_setup import ExperimentalSetup
@@ -47,6 +48,55 @@ def region_to_properties(region: Region) -> RegionProperties:
 
     return RegionProperties(time, disp)
 
+def filter_signal(
+        region: Region,
+        setup: ExperimentalSetup,
+        cutoff: float = 0.5,
+        order: int = 5,
+) -> Region:
+    cutoff_frequency = cutoff * setup['heating_frequency_hertz']
+    sampling_frequency = region.temperatures_kelvin.shape[0] / region.margins[0]
+    nyquist_frequency = 0.5 * sampling_frequency
+    normal_cutoff = cutoff_frequency / nyquist_frequency
+    b, a = signal.butter(
+        order,
+        normal_cutoff,
+        btype='high',
+        analog=False,
+    )
+    new_temps = signal.filtfilt(b, a, region.temperatures_kelvin, axis=0)
+    new_region = Region(
+        region.timestamps,
+        new_temps,
+        region.margins,
+    )
+    return new_region
+
+def filter_signal(
+        region: Region,
+        setup: ExperimentalSetup,
+        cutoff: float = 0.5,
+        order: int = 5,
+) -> Region:
+    cutoff_frequency = cutoff * setup['heating_frequency_hertz']
+    sampling_frequency = (region.temperatures_kelvin.shape[0]
+                          / region.margins[0].total_seconds())
+    nyquist_frequency = 0.5 * sampling_frequency
+    normal_cutoff = cutoff_frequency / nyquist_frequency
+    b, a = signal.butter(
+        order,
+        normal_cutoff,
+        btype='high',
+        analog=False,
+    )
+    new_temps = signal.filtfilt(b, a, region.temperatures_kelvin, axis=0)
+    new_region = Region(
+        region.timestamps,
+        new_temps,
+        region.margins,
+    )
+    return new_region
+
 def fft_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
@@ -74,10 +124,6 @@ def fft_signal_processing(
 
     return SignalProperties(amp_ratio, phase_diff)
 
-SIGNAL_PROCESSORS: dict[str, SignalProcessor] = {
-    'fft': fft_signal_processing,
-}
-
 def signal_process_region(
         region: Region,
         information: SignalProcessorInformation,
@@ -91,7 +137,8 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     """
-    # TODO: apply_filter
+    if 'apply_filter' in information and information['apply_filter']:
+        region = filter_signal(region, setup)
     match information['name']:
         case 'fft':
             processor = fft_signal_processing

@@ -35,16 +35,16 @@ def analyze_recording(
         real path if there is a cache file with a matching name in
         recording_cache_path.
     config
-        Path to a YAML config file or the deserialized config object itself
+        Path to a YAML config file or the deserialized config object itself.
 
     Keyword Arguments
     -----------------
     verbose
-        If True, print status messages while processing data
+        If True, print status messages while processing data.
     memory_cache
-        Holds intermediate results in memory, allowing for faster reruns
+        Holds intermediate results in memory, allowing for faster reruns.
     recording_cache_path
-        Path to a directory in which cached IR camera data will be saved
+        Path to a directory in which cached IR camera data will be saved.
     """
     logger.info("Loading recording")
     if recording_cache_path:

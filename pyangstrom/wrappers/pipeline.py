@@ -28,26 +28,26 @@ def hu_batch_process(
         Name of the CSV file containing batch processing information; equivalent
         to HT's df_exp_condition_spreadsheet_filename and RT's
         df_exp_condition_spreadsheet_filename, df_exp_condition_file_name, and
-        df_exp_conditions_file_name
+        df_exp_conditions_file_name.
     code_directory
         Path to the directory holding information, dump, and optionally data
         files; equivalent to HT's code_directory and RT's directory_path, but
-        also supports Path objects
+        also supports Path objects.
     data_directory
         Path to the directory holding data files; equivalent to HT's
-        data_directory, but also supports Path objects
+        data_directory, but also supports Path objects.
 
     Keyword Arguments
     -----------------
     verbose
-        If True, print status messages while processing data
+        If True, print status messages while processing data.
     memory_cache
-        Holds intermediate results in memory, allowing for faster reruns
+        Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
         Path to a directory in which new config files equivalent to
-        df_exp_condition_filename will be saved
+        df_exp_condition_filename will be saved.
     recording_cache_path
-        Path to a directory in which cached IR camera data will be saved
+        Path to a directory in which cached IR camera data will be saved.
     """
     code_directory = Path(code_directory)
     if data_directory:
