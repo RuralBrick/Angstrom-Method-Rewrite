@@ -4,7 +4,8 @@ import numpy as np
 from scipy.special import jv, yv
 
 from pyangstrom.exp_setup import ExperimentalSetup
-from pyangstrom.signal import RegionProperties, SignalProperties
+from pyangstrom.transform import Margins
+from pyangstrom.signal import SignalProperties
 from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
 from pyangstrom.fitting_methods.lsr import LsrEquations
 from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
@@ -23,19 +24,16 @@ def Y0(x):
 class Solution(NelderMeadEquations, LsrEquations, MetropolisHastingsEquations):
     def __init__(
             self,
-            region_properties: RegionProperties,
+            margins: Margins,
             setup: ExperimentalSetup,
-            min_radius_meters: float,
-            max_radius_meters: float,
     ) -> None:
         # HACK: Actually need to use 2D array
-        self.time_seconds = region_properties.seconds_elapsed
-        self.radii_meters = (region_properties.displacements_meters
-                             + min_radius_meters)
+        self.time_seconds = margins.seconds_elapsed
+        self.radii_meters = margins.displacements_meters
+        self.min_radius_meters = margins.displacements_meters[0]
+        self.max_radius_meters = margins.displacements_meters[-1]
         # end HACK
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
-        self.min_radius_meters = min_radius_meters
-        self.max_radius_meters = max_radius_meters
 
     def calc_convective_heat_transfer_coefficient(self):
         raise NotImplementedError()
