@@ -23,6 +23,7 @@ def analyze_recording(
         recording_path: str | Path,
         config: str | Path | Config,
         *,
+        debug: bool = False,
         memory_cache: Optional[Cache] = None,
         recording_cache_path: Optional[str | Path] = None,
 ):
@@ -88,6 +89,8 @@ def analyze_recording(
             config['experimental_setup'],
         )
     except Exception as e:
+        if debug:
+            raise
         warnings.warn(repr(e))
         return df_recording
     if 'signal_processor' not in config:
@@ -117,6 +120,8 @@ def analyze_recording(
                 config['experimental_setup'],
             )
     except Exception as e:
+        if debug:
+            raise
         warnings.warn(repr(e))
         return region_result
     # TODO: Custom solver
@@ -147,6 +152,8 @@ def analyze_recording(
                 config['experimental_setup'],
             )
     except Exception as e:
+        if debug:
+            raise
         warnings.warn(repr(e))
         return signal_result
     return fitting_result
