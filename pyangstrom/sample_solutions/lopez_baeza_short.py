@@ -4,7 +4,8 @@ import numpy as np
 
 from pyangstrom.helpers import calc_thermal_conductivity
 from pyangstrom.exp_setup import ExperimentalSetup
-from pyangstrom.signal import RegionProperties, SignalProperties
+from pyangstrom.transform import Margins
+from pyangstrom.signal import SignalProperties
 from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
 from pyangstrom.fitting_methods.lsr import LsrEquations
 from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
@@ -33,7 +34,7 @@ class Solution(
         mp = setup['material_properties']
         self.specific_heat_capacity_J_kg_K = mp['specific_heat_capacity_J_kg_K']
         self.density_kg_m3 = mp['density_kg_m3']
-        self.displacements_meters = region_properties.displacements_meters
+        self.displacements_meters = margins.displacements_meters
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
         self.r_meters = r_meters
         self.length_meters = length_meters

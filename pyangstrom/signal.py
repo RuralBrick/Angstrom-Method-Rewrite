@@ -62,7 +62,7 @@ def filter_signal(
 ) -> Region:
     cutoff_frequency = cutoff * setup['heating_frequency_hertz']
     sampling_frequency = (region.temperatures_kelvin.shape[0]
-                          / region.margins[0].total_seconds())
+                          / region.margins.seconds_elapsed.max())
     nyquist_frequency = 0.5 * sampling_frequency
     normal_cutoff = cutoff_frequency / nyquist_frequency
     b, a = signal.butter(
@@ -84,7 +84,7 @@ def fft_signal_processing(
         setup: ExperimentalSetup,
         tol=2,
 ) -> SignalProperties:
-    fundamental_freq = 1.0 / region.margins[0].total_seconds()
+    fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup['heating_frequency_hertz'] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
     window_end = min(target_harmonic + tol, region.timestamps.size)

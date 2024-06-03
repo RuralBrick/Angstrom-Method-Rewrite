@@ -1,7 +1,7 @@
 import warnings
 from typing import TypedDict, Iterable
+from enum import Enum, auto
 from dataclasses import dataclass
-from collections import namedtuple
 
 import pandas as pd
 import numpy as np
@@ -12,6 +12,12 @@ from pyangstrom.exp_setup import ExperimentalSetup
 TEMPERATURE_OFFSET = {
     'Temperature (C)': 273.15,
 }
+
+class Direction(Enum):
+    LESSER_X = auto()
+    GREATER_X = auto()
+    LESSER_Y = auto()
+    GREATER_Y = auto()
 
 
 class Point(TypedDict):
@@ -55,16 +61,20 @@ RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list
 
 @dataclass
 class Margins:
-    def __init__(
-            self,
+    seconds_elapsed: np.ndarray
+    displacements_meters: np.ndarray
+
+    @classmethod
+    def new(
+            cls,
             df_recording: pd.DataFrame,
             temperatures: np.ndarray,
             min_displacement_pixels: int | float,
             max_displacement_pixels: int | float,
             setup: ExperimentalSetup,
-    ) -> None:
+    ) -> "Margins":
         normalized_timestamps = df_recording.index - df_recording.index.min()
-        self.seconds_elapsed = normalized_timestamps.total_seconds().to_numpy()
+        seconds_elapsed = normalized_timestamps.total_seconds().to_numpy()
 
         disp = np.linspace(
             min_displacement_pixels,
@@ -74,10 +84,8 @@ class Margins:
         )
         disp = disp * setup['meters_per_pixel']
         disp = np.stack(temperatures.shape[2] * [disp], axis=1)
-        self.displacements_meters = disp
 
-    seconds_elapsed: np.ndarray
-    displacements_meters: np.ndarray
+        return cls(seconds_elapsed, disp)
 
 @dataclass
 class Region:
@@ -114,6 +122,47 @@ def convert_temperatures_to_kelvin(
                "not accounted for")
         raise NotImplementedError(msg)
 
+def find_heat_source_direction(geometry: CartesianGeometry) -> Direction:
+    """
+    Exceptions
+    ----------
+    KeyError
+        Field not found in geometry.
+    ValueError
+        Invalid geometry.
+    """
+    if ('heat_source_x_pixels' in geometry
+            and 'heat_source_y_pixels' in geometry):
+        raise ValueError(
+            "Cannot have both heat_source_x_pixels and heat_source_y_pixels in "
+            "geometry."
+        )
+    elif 'heat_source_x_pixels' in geometry:
+        if geometry['heat_source_x_pixels'] <= geometry['min_x_pixels']:
+            return Direction.LESSER_X
+        elif geometry['heat_source_x_pixels'] >= geometry['max_x_pixels']:
+            return Direction.GREATER_X
+        else:
+            raise ValueError(
+                "heat_source_x_pixels cannot be between min_x_pixels and "
+                "max_x_pixels."
+            )
+    elif 'heat_source_y_pixels' in geometry:
+        if geometry['heat_source_y_pixels'] <= geometry['min_y_pixels']:
+            return Direction.LESSER_Y
+        elif geometry['heat_source_y_pixels'] >= geometry['max_y_pixels']:
+            return Direction.GREATER_Y
+        else:
+            raise ValueError(
+                "heat_source_y_pixels cannot be between min_y_pixels and "
+                "max_y_pixels."
+            )
+    else:
+        raise KeyError(
+            "Must have at either heat_source_x_pixels or heat_source_y_pixels "
+            "in geometry."
+        )
+
 def extract_cartesian_region(
         df_recording: pd.DataFrame,
         geometry: CartesianGeometry,
@@ -136,52 +185,30 @@ def extract_cartesian_region(
     temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, width, height)
 
     # (time, displacement, span)
-    if ('heat_source_x_pixels' in geometry
-            and 'heat_source_y_pixels' in geometry):
-        raise ValueError(
-            "Cannot have both heat_source_x_pixels and heat_source_y_pixels in "
-            "geometry."
-        )
-    elif 'heat_source_x_pixels' in geometry:
-        if geometry['heat_source_x_pixels'] <= geometry['min_x_pixels']:
+    match find_heat_source_direction(geometry):
+        case Direction.LESSER_X:
             min_disp_px = geometry['min_x_pixels'] - geometry['heat_source_x_pixels']
             max_disp_px = geometry['max_x_pixels'] - geometry['heat_source_x_pixels']
-        elif geometry['heat_source_x_pixels'] >= geometry['max_x_pixels']:
+        case Direction.GREATER_X:
             temps = np.flip(temps, axis=1)
             min_disp_px = geometry['heat_source_x_pixels'] - geometry['max_x_pixels']
             max_disp_px = geometry['heat_source_x_pixels'] - geometry['min_x_pixels']
-        else:
-            raise ValueError(
-                "heat_source_x_pixels cannot be between min_x_pixels and "
-                "max_x_pixels."
-            )
-    elif 'heat_source_y_pixels' in geometry:
-        if geometry['heat_source_y_pixels'] <= geometry['min_y_pixels']:
+        case Direction.LESSER_Y:
             temps = np.swapaxes(temps, 1, 2)
             min_disp_px = geometry['min_y_pixels'] - geometry['heat_source_y_pixels']
             max_disp_px = geometry['max_y_pixels'] - geometry['heat_source_y_pixels']
-        elif geometry['heat_source_y_pixels'] >= geometry['max_y_pixels']:
+        case Direction.GREATER_Y:
             temps = np.swapaxes(temps, 1, 2)
             temps = np.flip(temps, axis=1)
             min_disp_px = geometry['heat_source_y_pixels'] - geometry['max_y_pixels']
             max_disp_px = geometry['heat_source_y_pixels'] - geometry['min_y_pixels']
-        else:
-            raise ValueError(
-                "heat_source_y_pixels cannot be between min_y_pixels and "
-                "max_y_pixels."
-            )
-    else:
-        raise KeyError(
-            "Must have at either heat_source_x_pixels or heat_source_y_pixels "
-            "in geometry."
-        )
 
     temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps)
 
     region = Region(
         df_recording.index,
         temps_kelvin,
-        Margins(df_recording, temps, min_disp_px, max_disp_px, setup),
+        Margins.new(df_recording, temps, min_disp_px, max_disp_px, setup),
     )
     return region
 
@@ -230,7 +257,7 @@ def extract_polar_region(
     region = Region(
         df_recording.index,
         temps_kelvin,
-        Margins(
+        Margins.new(
             df_recording,
             temps_kelvin,
             geometry['min_r_pixels'],
@@ -253,17 +280,21 @@ def geometry_to_region(
 
 def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
     new_time = region.timestamps
-    if axis == 0:
-        new_time = region.timestamps[:-num_truncate]
 
     new_temps = np.moveaxis(region.temperatures_kelvin, axis, 0)
     new_temps = new_temps[:-num_truncate]
     new_temps = np.moveaxis(new_temps, 0, axis)
 
-    disp_range = region.margins[1]
-    disp_range *= new_temps.shape[1] / region.temperatures_kelvin.shape[1]
-    new_field = {region.margins._fields[1]: disp_range}
-    new_margins = region.margins._replace(**new_field)
+    if axis == 0:
+        new_time = region.timestamps[:-num_truncate]
+        new_elapsed = region.margins.seconds_elapsed[:-num_truncate]
+        new_margins = Margins(new_elapsed, region.margins.displacements_meters)
+    else:
+        new_disp = region.margins.displacements_meters
+        new_disp = np.moveaxis(new_disp, axis - 1, 0)
+        new_disp = new_disp[:-num_truncate]
+        new_disp = np.moveaxis(new_disp, 0, axis - 1)
+        new_margins = Margins(region.margins.seconds_elapsed, new_disp)
 
     new_region = Region(
         new_time,
@@ -274,18 +305,13 @@ def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
 
 def restructure_region(region: Region, structure: RegionStructure) -> Region:
     if 'average_out_span' in structure and structure['average_out_span']:
-        time_span, disp_range, _ = region.margins
-        new_margins = namedtuple(
-            'BaseMargins',
-            'time_span displacement_range_meters',
-        )(
-            time_span,
-            disp_range,
-        )
         region = Region(
             region.timestamps,
             region.temperatures_kelvin.mean(axis=2),
-            new_margins,
+            Margins(
+                region.margins.seconds_elapsed,
+                region.margins.displacements_meters.mean(axis=1),
+            ),
         )
     if 'num_deinterleaving_groups' in structure:
         num_disp = region.temperatures_kelvin.shape[1]
@@ -298,25 +324,23 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
             axis=1,
         )
         new_temps = np.stack(lst_groups, axis=2)
-        new_field_names = list(region.margins._fields)
-        new_field_names.insert(2, 'num_deinterleaved_groups')
-        new_field_values = list(region.margins)
-        new_field_values.insert(2, structure['num_deinterleaving_groups'])
-        new_margins = namedtuple(
-            f'Deinterleaved{type(region.margins).__name__}',
-            new_field_names,
-        )._make(new_field_values)
+        lst_disp = np.split(
+            region.margins.displacements_meters,
+            structure['num_deinterleaving_groups'],
+            axis=0,
+        )
+        new_disp = np.stack(lst_disp, axis=1)
         region = Region(
             region.timestamps,
             new_temps,
-            new_margins,
+            Margins(region.margins.seconds_elapsed, new_disp),
         )
     return region
 
 def all_timestamps_same(regions: Iterable[Region]) -> bool:
     idx0 = next(iter(regions)).timestamps
     for region in regions:
-        if not idx0.symmetric_difference(region.timestamps):
+        if not idx0.symmetric_difference(region.timestamps).empty:
             return False
     return True
 
@@ -384,15 +408,15 @@ def fully_extract_region(
                 axis=2,
             )
             new_temps = new_temps.mean(axis=2)
-            if len({r.margins for r in regions}) != 1:
-                warnings.warn(
-                    "Not all regions have the same margins. Using the margins "
-                    "of the first region."
-                )
+            new_disp = np.stack(
+                [r.margins.displacements_meters for r in regions],
+                axis=1
+            )
+            new_disp = new_disp.mean(axis=1)
             new_region = Region(
                 regions[0].timestamps,
                 new_temps,
-                regions[0].margins,
+                Margins(regions[0].margins.seconds_elapsed, new_disp),
             )
             return new_region
         case [*region_configs]:
@@ -409,17 +433,12 @@ def collapse_region(region: Region) -> Region:
     new_temps = (region.temperatures_kelvin
                        .reshape(num_times, num_disp, -1)
                        .mean(axis=2))
-    time_span, disp_range, *_ = region.margins
-    new_margins = namedtuple(
-        'BaseMargins',
-        'time_span displacement_range_meters',
-    )(
-        time_span,
-        disp_range,
-    )
+    new_disp = (region.margins.displacements_meters
+                      .reshape(num_disp, -1)
+                      .mean(axis=1))
     new_region = Region(
         region.timestamps,
         new_temps,
-        new_margins,
+        Margins(region.margins.seconds_elapsed, new_disp),
     )
     return new_region
