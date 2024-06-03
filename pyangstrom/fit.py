@@ -3,7 +3,8 @@ import abc
 from dataclasses import dataclass
 
 from pyangstrom.exp_setup import ExperimentalSetup
-from pyangstrom.signal import RegionProperties, SignalProperties, SignalResult
+from pyangstrom.transform import Margins
+from pyangstrom.signal import SignalProperties, SignalResult
 
 
 Unknowns = dict
@@ -25,7 +26,7 @@ class EquationPackage(abc.ABC):
     @abc.abstractmethod
     def __init__(
             self,
-            region_properties: RegionProperties,
+            margins: Margins,
             setup: ExperimentalSetup,
             **kwargs,
     ) -> None: ...
@@ -81,7 +82,7 @@ def autofit(
 
     result = fit(
         solver_information['guesses'],
-        Solution(signal_result.region_properties, setup, **solver_params),
+        Solution(signal_result.margins, setup, **solver_params),
         signal_result.signal_properties,
         **fitter_params,
     )

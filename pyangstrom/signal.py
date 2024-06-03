@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import numpy as np
 from scipy import signal
 
-from pyangstrom.transform import Region
+from pyangstrom.transform import Region, Margins
 from pyangstrom.exp_setup import ExperimentalSetup
 
 
@@ -26,27 +26,9 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 @dataclass
-class RegionProperties:
-    seconds_elapsed: np.ndarray
-    displacements_meters: np.ndarray
-
-@dataclass
 class SignalResult:
-    region_properties: RegionProperties
     signal_properties: SignalProperties
-
-def region_to_properties(region: Region) -> RegionProperties:
-    time = region.timestamps - region.timestamps.min()
-    time = time.total_seconds()
-    time = time.to_numpy()
-
-    disp = np.linspace(
-        0,
-        region.margins[1],
-        region.temperatures_kelvin.shape[1],
-    )
-
-    return RegionProperties(time, disp)
+    margins: Margins
 
 def filter_signal(
         region: Region,
@@ -80,7 +62,7 @@ def filter_signal(
 ) -> Region:
     cutoff_frequency = cutoff * setup['heating_frequency_hertz']
     sampling_frequency = (region.temperatures_kelvin.shape[0]
-                          / region.margins[0].total_seconds())
+                          / region.margins.seconds_elapsed.max())
     nyquist_frequency = 0.5 * sampling_frequency
     normal_cutoff = cutoff_frequency / nyquist_frequency
     b, a = signal.butter(
@@ -102,7 +84,7 @@ def fft_signal_processing(
         setup: ExperimentalSetup,
         tol=2,
 ) -> SignalProperties:
-    fundamental_freq = 1.0 / region.margins[0].total_seconds()
+    fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup['heating_frequency_hertz'] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
     window_end = min(target_harmonic + tol, region.timestamps.size)
@@ -148,5 +130,5 @@ def signal_process_region(
             )
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
-    result = SignalResult(region_to_properties(region), props)
+    result = SignalResult(props, region.margins)
     return result
