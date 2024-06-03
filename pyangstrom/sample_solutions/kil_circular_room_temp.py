@@ -1,14 +1,14 @@
 from typing import TypedDict
 
 import numpy as np
+import pandas as pd
 from scipy.special import jv, yv
 
 from pyangstrom.exp_setup import ExperimentalSetup
-from pyangstrom.transform import Margins
-from pyangstrom.signal import SignalProperties
+from pyangstrom.transform import Margins, Region
+from pyangstrom.signal import fft_signal_processing, SignalProperties
 from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
 from pyangstrom.fitting_methods.lsr import LsrEquations
-from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
@@ -21,18 +21,19 @@ def J0(x):
 def Y0(x):
     return yv(0, x)
 
-class Solution(NelderMeadEquations, LsrEquations, MetropolisHastingsEquations):
+class Solution(NelderMeadEquations, LsrEquations):
     def __init__(
             self,
             margins: Margins,
             setup: ExperimentalSetup,
     ) -> None:
-        # HACK: Actually need to use 2D array
-        self.time_seconds = margins.seconds_elapsed
+        self.margins = margins
+        disp_axes = len(margins.displacements_meters.shape) * [np.newaxis]
+        self.time_seconds = margins.seconds_elapsed[:, *disp_axes]
         self.radii_meters = margins.displacements_meters
-        self.min_radius_meters = margins.displacements_meters[0]
-        self.max_radius_meters = margins.displacements_meters[-1]
-        # end HACK
+        self.min_radius_meters = margins.displacements_meters[0, *disp_axes[:-1]]
+        self.max_radius_meters = margins.displacements_meters[-1, *disp_axes[:-1]]
+        self.setup = setup
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
 
     def calc_convective_heat_transfer_coefficient(self):
@@ -99,5 +100,37 @@ class Solution(NelderMeadEquations, LsrEquations, MetropolisHastingsEquations):
 
         return T
 
+    def unknowns_to_vector(
+            self,
+            unknowns: KilCircularRoomTempUnknowns,
+    ) -> np.ndarray:
+        vector = np.array([
+            unknowns['thermal_diffusivity_m2_s'],
+            unknowns['convective_heat_transfer_term']
+        ])
+        return vector
+
     def solve(self, unknowns: KilCircularRoomTempUnknowns) -> SignalProperties:
-        raise NotImplementedError()
+        timestamps = pd.DatetimeIndex(
+            1e9 * self.margins.seconds_elapsed,
+            dtype='datetime64[ns]',
+        )
+        temps = self.calc_normalized_temps(
+            unknowns['thermal_diffusivity_m2_s'],
+            unknowns['convective_heat_transfer_term'],
+        )
+        region = Region(timestamps, temps, self.margins)
+        return fft_signal_processing(region)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        thermal_diffusivity_m2_s, convective_heat_transfer_term = unknowns_vector
+        timestamps = pd.DatetimeIndex(
+            1e9 * self.margins.seconds_elapsed,
+            dtype='datetime64[ns]',
+        )
+        temps = self.calc_normalized_temps(
+            thermal_diffusivity_m2_s,
+            convective_heat_transfer_term,
+        )
+        region = Region(timestamps, temps, self.margins)
+        return fft_signal_processing(region, self.setup)
