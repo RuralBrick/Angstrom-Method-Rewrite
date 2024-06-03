@@ -40,7 +40,7 @@ def record_to_cartesian_geometry(record) -> Optional[CartesianGeometry]:
                     'max_x_pixels': int(record['x_region_line_center']),
                     'min_y_pixels': int(record['y_region_line_center']) - int(record['dy'])//2,
                     'max_y_pixels': int(record['y_region_line_center']) + int(record['dy'])//2,
-                    'heat_source': 'greater_x',
+                    'heat_source_x_pixels': int(record['x_heater']),
                 }
                 return geometry
             case 'left-right':
@@ -49,7 +49,7 @@ def record_to_cartesian_geometry(record) -> Optional[CartesianGeometry]:
                     'max_x_pixels': int(record['x_region_line_center']) + int(record['dx']),
                     'min_y_pixels': int(record['y_region_line_center']) - int(record['dy'])//2,
                     'max_y_pixels': int(record['y_region_line_center']) + int(record['dy'])//2,
-                    'heat_source': 'lesser_x',
+                    'heat_source_x_pixels': int(record['x_heater']),
                 }
                 return geometry
             case 'bottom-up':
@@ -58,7 +58,7 @@ def record_to_cartesian_geometry(record) -> Optional[CartesianGeometry]:
                     'max_x_pixels': int(record['x_region_line_center']) + int(record['dx'])//2,
                     'min_y_pixels': int(record['y_region_line_center']) - int(record['dy']),
                     'max_y_pixels': int(record['y_region_line_center']),
-                    'heat_source': 'lesser_y',
+                    'heat_source_y_pixels': int(record['y_heater']),
                 }
                 return geometry
             case 'up-bottom':
@@ -67,7 +67,7 @@ def record_to_cartesian_geometry(record) -> Optional[CartesianGeometry]:
                     'max_x_pixels': int(record['x_region_line_center']) + int(record['dx'])//2,
                     'min_y_pixels': int(record['y_region_line_center']),
                     'max_y_pixels': int(record['y_region_line_center']) + int(record['dy']),
-                    'heat_source': 'lesser_y',
+                    'heat_source_y_pixels': int(record['y_heater']),
                 }
                 return geometry
             case _:
@@ -155,9 +155,7 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                     config['experimental_setup']['material_properties']['specific_heat_capacity_J_kg_K'] = float(value)
                 case 'rho':
                     config['experimental_setup']['material_properties']['density_kg_m3'] = float(value)
-                case 'x_heater' | 'y_heater':
-                    continue
-                case 'direction' | 'x_region_line_center' | 'y_region_line_center' | 'dx' | 'dy':
+                case 'direction' | 'x_region_line_center' | 'y_region_line_center' | 'dx' | 'dy' | 'x_heater' | 'y_heater':
                     if not geometries:
                         geometries = [record_to_cartesian_geometry(record)]
                 case 'anguler_range' | 'x0_pixels' | 'y0_pixels' | 'R0_pixels' | 'R_analysis_pixels':

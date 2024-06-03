@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import Animation, FuncAnimation
 
 from pyangstrom.transform import (
-    Direction,
     CartesianGeometry,
+    find_heat_source_direction,
+    Direction,
     PolarGeometry,
     Region,
     collapse_region,
 )
-from pyangstrom.signal import region_to_properties
 
 
 def plot_recording(ax: Axes, df_recording: pd.DataFrame) -> Axes:
@@ -33,34 +33,35 @@ def plot_cartesian_geometry(
         edgecolor='red',
         facecolor='none',
     ))
-    if geometry['heat_source'] in Direction.LESSER_X:
-        ax.plot(
-            [geometry['min_x_pixels'], geometry['min_x_pixels']],
-            [geometry['min_y_pixels'], geometry['max_y_pixels']],
-            linewidth=2,
-            color='blue',
-        )
-    elif geometry['heat_source'] in Direction.GREATER_X:
-        ax.plot(
-            [geometry['max_x_pixels'], geometry['max_x_pixels']],
-            [geometry['min_y_pixels'], geometry['max_y_pixels']],
-            linewidth=2,
-            color='blue',
-        )
-    elif geometry['heat_source'] in Direction.LESSER_Y:
-        ax.plot(
-            [geometry['min_x_pixels'], geometry['max_x_pixels']],
-            [geometry['min_y_pixels'], geometry['min_y_pixels']],
-            linewidth=2,
-            color='blue',
-        )
-    elif geometry['heat_source'] in Direction.GREATER_Y:
-        ax.plot(
-            [geometry['min_x_pixels'], geometry['max_x_pixels']],
-            [geometry['max_y_pixels'], geometry['max_y_pixels']],
-            linewidth=2,
-            color='blue',
-        )
+    match find_heat_source_direction(geometry):
+        case Direction.LESSER_X:
+            ax.plot(
+                [geometry['heat_source_x_pixels'], geometry['heat_source_x_pixels']],
+                [geometry['min_y_pixels'], geometry['max_y_pixels']],
+                linewidth=2,
+                color='blue',
+            )
+        case Direction.GREATER_X:
+            ax.plot(
+                [geometry['heat_source_x_pixels'], geometry['heat_source_x_pixels']],
+                [geometry['min_y_pixels'], geometry['max_y_pixels']],
+                linewidth=2,
+                color='blue',
+            )
+        case Direction.LESSER_Y:
+            ax.plot(
+                [geometry['min_x_pixels'], geometry['max_x_pixels']],
+                [geometry['heat_source_y_pixels'], geometry['heat_source_y_pixels']],
+                linewidth=2,
+                color='blue',
+            )
+        case Direction.GREATER_Y:
+            ax.plot(
+                [geometry['min_x_pixels'], geometry['max_x_pixels']],
+                [geometry['heat_source_y_pixels'], geometry['heat_source_y_pixels']],
+                linewidth=2,
+                color='blue',
+            )
     return ax
 
 def plot_polar_geometry(
@@ -96,6 +97,21 @@ def plot_polar_geometry(
     ))
     return ax
 
+def plot_isoterms(
+        ax: Axes,
+        region: Region,
+        idx_displacements: list[int] = [0, -1],
+        use_timestamps: bool = False,
+) -> Axes:
+    region = collapse_region(region)
+    if use_timestamps:
+        x = region.timestamps
+    else:
+        x = region.margins.seconds_elapsed
+    for idx in idx_displacements:
+        ax.plot(x, region.temperatures_kelvin[:, idx])
+    return ax
+
 def animate_recording(df_recording: pd.DataFrame) -> Animation:
     fig, ax = plt.subplots()
     arr_temp = np.stack(df_recording['Samples'])
@@ -129,14 +145,16 @@ def animate_recording(df_recording: pd.DataFrame) -> Animation:
 def animate_region(region: Region) -> Animation:
     fig, ax = plt.subplots()
     region = collapse_region(region)
-    disp = region_to_properties(region).displacements_meters
-    ln, = ax.plot(disp, region.temperatures_kelvin[0])
+    ln, = ax.plot(
+        region.margins.displacements_meters,
+        region.temperatures_kelvin[0],
+    )
     ax.set_ylim(
         region.temperatures_kelvin.min(),
         region.temperatures_kelvin.max(),
     )
     def update(temps):
-        ln.set_data(disp, temps)
+        ln.set_data(region.margins.displacements_meters, temps)
     interval = 1e3 * (
         region.timestamps
               .to_series()

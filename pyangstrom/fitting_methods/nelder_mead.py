@@ -32,8 +32,8 @@ def fit(
     def calc_error(unknowns_vector):
         theoretical_properties = solution.vector_solve(unknowns_vector)
         all_residuals = [
-            p - np.expand_dims(a, tuple(range(1, len(p.shape))))
-            for p, a in zip(observed_properties, theoretical_properties)
+            o - t for o, t
+            in zip(observed_properties, theoretical_properties)
         ]
         residuals = np.stack(all_residuals).flatten()
         error = np.sum(np.square(residuals))

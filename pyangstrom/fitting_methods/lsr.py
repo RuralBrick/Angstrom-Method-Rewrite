@@ -44,10 +44,6 @@ def fit(
     def calc_residuals(unknowns_vector):
         theoretical_properties = solution.vector_solve(unknowns_vector)
         theoretical = fitting_function(theoretical_properties)
-        theoretical = np.expand_dims(
-            theoretical,
-            tuple(range(1, len(observed.shape))),
-        )
         all_residuals = observed - theoretical
         residuals = all_residuals.flatten()
         return residuals
