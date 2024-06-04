@@ -20,6 +20,9 @@ class NelderMeadEquations(EquationPackage):
     def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray: ...
 
     @abc.abstractmethod
+    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns: ...
+
+    @abc.abstractmethod
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties: ...
 
 def fit(
@@ -39,11 +42,12 @@ def fit(
         error = np.sum(np.square(residuals))
         return error
 
-    result = minimize(
+    nelder_mead_result = minimize(
         calc_error,
         solution.unknowns_to_vector(unknowns_guesses),
         method='Nelder-Mead',
         options=dict(disp=(logger.getEffectiveLevel() <= logging.DEBUG)),
         **minimize_kwargs,
     )
-    return FittingResult(result.x)
+    result = FittingResult(solution.vector_to_unknowns(nelder_mead_result.x))
+    return result

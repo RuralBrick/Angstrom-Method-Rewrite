@@ -19,6 +19,9 @@ class LsrEquations(EquationPackage):
     def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray: ...
 
     @abc.abstractmethod
+    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns: ...
+
+    @abc.abstractmethod
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties: ...
 
 def fitting_function(signal_properties: SignalProperties) -> np.ndarray:
@@ -48,10 +51,11 @@ def fit(
         residuals = all_residuals.flatten()
         return residuals
 
-    result = least_squares(
+    lsr_result = least_squares(
         calc_residuals,
         solution.unknowns_to_vector(unknowns_guesses),
         verbose=verbosity,
         **least_squares_kwargs,
     )
-    return FittingResult(result.x)
+    result = FittingResult(solution.vector_to_unknowns(lsr_result.x))
+    return result
