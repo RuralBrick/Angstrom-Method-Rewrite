@@ -4,12 +4,27 @@ from pathlib import Path
 
 from pyangstrom.wrappers.config import exp_condition_to_config
 from pyangstrom.wrappers.io import load_exp_condition
+from pyangstrom.config import Config
 from pyangstrom.pipeline import analyze_recording
 from pyangstrom.io import save_config
 from pyangstrom.caching import Cache
 
 
 logger = logging.getLogger('pipeline')
+
+def convert_old_csv_to_new_config(
+        exp_condition_path: str | Path,
+        config_directory_path: Optional[str | Path] = None,
+) -> dict[str, Config]:
+    p_exp_cond = Path(exp_condition_path)
+    exp_cond = load_exp_condition(p_exp_cond)
+    logger.debug(f'{exp_cond=}')
+    dict_config = exp_condition_to_config(exp_cond)
+    if config_directory_path:
+        config_directory_path = Path(config_directory_path)
+        for recording_name, config in dict_config.items():
+            save_config(config, config_directory_path, recording_name)
+    return dict_config
 
 def hu_batch_process(
         df_exp_condition_filename: str,
@@ -55,16 +70,12 @@ def hu_batch_process(
     else:
         data_directory = code_directory / 'temperature data'
     logger.info("Loading exp_condition")
-    exp_cond = load_exp_condition(
-        code_directory / 'batch process information' / df_exp_condition_filename
+    p_exp_cond = code_directory / 'batch process information' / df_exp_condition_filename
+    dict_config = convert_old_csv_to_new_config(
+        p_exp_cond,
+        config_directory_path,
     )
-    logger.debug(f'{exp_cond=}')
-    dict_config = exp_condition_to_config(exp_cond)
     logger.debug(f'{dict_config=}')
-    if config_directory_path:
-        config_directory_path = Path(config_directory_path)
-        for recording_name, config in dict_config.items():
-            save_config(config, config_directory_path, recording_name)
     results = []
     for recording_name, config in dict_config.items():
         logger.info(f"Processing {recording_name}")
