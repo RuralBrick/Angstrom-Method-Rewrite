@@ -45,7 +45,7 @@ class Solution(
     ) -> np.ndarray:
         vector = np.array([
             unknowns['thermal_diffusivity_m2_s'],
-            unknowns['thermal_transfer_coefficient_kg_s2_K_m2']
+            unknowns['thermal_transfer_coefficient_kg_s2_K_m2'],
         ])
         return vector
 

@@ -106,9 +106,19 @@ class Solution(NelderMeadEquations, LsrEquations):
     ) -> np.ndarray:
         vector = np.array([
             unknowns['thermal_diffusivity_m2_s'],
-            unknowns['convective_heat_transfer_term']
+            unknowns['convective_heat_transfer_term'],
         ])
         return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray
+    ) -> KilCircularRoomTempUnknowns:
+        unknowns: KilCircularRoomTempUnknowns = {
+            'thermal_diffusivity_m2_s': vector[0],
+            'convective_heat_transfer_term': vector[1],
+        }
+        return unknowns
 
     def solve(self, unknowns: KilCircularRoomTempUnknowns) -> SignalProperties:
         timestamps = pd.DatetimeIndex(

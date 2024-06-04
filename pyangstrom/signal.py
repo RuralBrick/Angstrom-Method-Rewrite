@@ -122,8 +122,12 @@ def extract_processor(
         return information['processor']
     elif 'name' in information:
         match information['name']:
+            case 'sine':
+                raise NotImplementedError()
             case 'fft':
                 return fft_signal_processing
+            case 'max_min':
+                raise NotImplementedError()
             case _:
                 raise ValueError(
                     f"Signal processor {information['name']} not found."
