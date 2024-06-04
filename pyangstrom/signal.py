@@ -8,14 +8,14 @@ from pyangstrom.transform import Region, Margins
 from pyangstrom.exp_setup import ExperimentalSetup
 
 
-class SignalProcessorInformation(TypedDict, total=False):
-    name: str
-    apply_filter: bool
-    parameters: dict
-
 class SignalProperties(NamedTuple):
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
+
+@dataclass
+class SignalResult:
+    signal_properties: SignalProperties
+    margins: Margins
 
 class SignalProcessor(Protocol):
     def __call__(
@@ -25,10 +25,11 @@ class SignalProcessor(Protocol):
             **kwargs,
     ) -> SignalProperties: ...
 
-@dataclass
-class SignalResult:
-    signal_properties: SignalProperties
-    margins: Margins
+class SignalProcessorInformation(TypedDict, total=False):
+    name: str
+    processor: SignalProcessor
+    parameters: dict
+    apply_filter: bool
 
 def filter_signal(
         region: Region,
@@ -106,6 +107,30 @@ def fft_signal_processing(
 
     return SignalProperties(amp_ratio, phase_diff)
 
+def extract_processor(
+        information: SignalProcessorInformation
+) -> SignalProcessor:
+    """
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named signal processor not found.
+    """
+    if 'processor' in information:
+        return information['processor']
+    elif 'name' in information:
+        match information['name']:
+            case 'fft':
+                return fft_signal_processing
+            case _:
+                raise ValueError(
+                    f"Signal processor {information['name']} not found."
+                )
+    else:
+        raise KeyError("Must have either name or processor in information.")
+
 def signal_process_region(
         region: Region,
         information: SignalProcessorInformation,
@@ -121,13 +146,7 @@ def signal_process_region(
     """
     if 'apply_filter' in information and information['apply_filter']:
         region = filter_signal(region, setup)
-    match information['name']:
-        case 'fft':
-            processor = fft_signal_processing
-        case _:
-            raise ValueError(
-                f"Signal processor {information['name']} not found."
-            )
+    processor = extract_processor(information)
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
     result = SignalResult(props, region.margins)

@@ -124,7 +124,6 @@ def analyze_recording(
             raise
         warnings.warn(repr(e))
         return region_result
-    # TODO: Custom solver
     if 'solver' not in config or 'fitter' not in config:
         return signal_result
     if isinstance(signal_result, list):
