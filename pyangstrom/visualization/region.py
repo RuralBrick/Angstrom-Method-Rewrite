@@ -9,18 +9,17 @@ from pyangstrom.transform import (
     Direction,
     CartesianGeometry,
     PolarGeometry,
+    Geometry,
     Region,
     collapse_region,
 )
 from pyangstrom.visualization.recording import plot_recording
 
 
-def plot_cartesian_geometry(
+def add_cartesian_geometry(
         ax: Axes,
-        df_recording: pd.DataFrame,
         geometry: CartesianGeometry,
 ) -> Axes:
-    ax = plot_recording(ax, df_recording)
     ax.add_patch(Rectangle(
         (geometry['min_x_pixels'], geometry['min_y_pixels']),
         geometry['max_x_pixels'] - geometry['min_x_pixels'],
@@ -60,12 +59,10 @@ def plot_cartesian_geometry(
             )
     return ax
 
-def plot_polar_geometry(
+def add_polar_geometry(
         ax: Axes,
-        df_recording: pd.DataFrame,
         geometry: PolarGeometry,
 ) -> Axes:
-    ax = plot_recording(ax, df_recording)
     ax.add_patch(Wedge(
         (geometry['center']['x_pixels'], geometry['center']['y_pixels']),
         geometry['max_r_pixels'],
@@ -93,7 +90,39 @@ def plot_polar_geometry(
     ))
     return ax
 
-def plot_isoterms(
+def add_geometry(
+        ax: Axes,
+        geometry: Geometry | list[Geometry],
+) -> Axes:
+    if isinstance(geometry, list):
+        for g in geometry:
+            ax = add_geometry(ax, g)
+        return ax
+    match geometry:
+        case {'min_x_pixels': _}:
+            return add_cartesian_geometry(ax, geometry)
+        case {'center': _}:
+            return add_polar_geometry(ax, geometry)
+
+def plot_geometry(
+        ax: Axes,
+        df_recording: pd.DataFrame,
+        geometry: Geometry | list[Geometry],
+) -> Axes:
+    ax = plot_recording(ax, df_recording)
+    ax = add_geometry(ax, geometry)
+    return ax
+
+def idx_displacement_to_label(idx_displacement: int):
+    idx_displacement += 1
+    if idx_displacement == 0:
+        return 'Line N'
+    elif idx_displacement < 0:
+        return f'Line N{idx_displacement}'
+    else:
+        return f'Line {idx_displacement}'
+
+def plot_isotherms(
         ax: Axes,
         region: Region,
         idx_displacements: list[int] = [0, -1],
@@ -102,13 +131,32 @@ def plot_isoterms(
     region = collapse_region(region)
     if use_timestamps:
         x = region.timestamps
+        ax.set_xlabel("Time")
     else:
         x = region.margins.seconds_elapsed
-    for idx in idx_displacements:
-        ax.plot(x, region.temperatures_kelvin[:, idx])
+        ax.set_xlabel("Time elapsed (seconds)")
+    labels = map(idx_displacement_to_label, idx_displacements)
+    for idx, label in zip(idx_displacements, labels):
+        ax.plot(x, region.temperatures_kelvin[:, idx], label=label)
+    ax.set_ylabel("Temperature (kelvin)")
+    ax.set_title("Temperatures of Isotherms Over Time")
+    ax.legend()
+    return ax
+
+def plot_groups(ax: Axes, region: Region, use_timestamps: bool = False) -> Axes:
+    if use_timestamps:
+        x = region.timestamps
+        ax.set_xlabel("Ttime")
+    else:
+        x = region.margins.seconds_elapsed
+        ax.set_xlabel("Time elapsed (seconds)")
+    ax.plot(x, region.temperatures_kelvin.mean(axis=1), alpha=0.5)
+    ax.set_ylabel("Temperature (kelvin)")
+    ax.set_title("Average Temperatures of Grouped Nodes Over Time")
     return ax
 
 def animate_region(region: Region) -> Animation:
+    ax: Axes = None
     fig, ax = plt.subplots()
     region = collapse_region(region)
     ln, = ax.plot(
@@ -119,8 +167,13 @@ def animate_region(region: Region) -> Animation:
         region.temperatures_kelvin.min(),
         region.temperatures_kelvin.max(),
     )
-    def update(temps):
+    ax.set_title(region.timestamps[0].strftime('(%b %d) %H:%M:%S.%f'))
+    ax.set_xlabel("Displacement from heat source (meters)")
+    ax.set_ylabel("Temperature (kelvin)")
+    def update(frame):
+        time, temps = frame
         ln.set_data(region.margins.displacements_meters, temps)
+        ax.set_title(time.strftime('(%b %d) %H:%M:%S.%f'))
     interval = 1e3 * (
         region.timestamps
               .to_series()
@@ -132,7 +185,7 @@ def animate_region(region: Region) -> Animation:
     anim = FuncAnimation(
         fig,
         update,
-        iter(region.temperatures_kelvin),
+        iter(zip(region.timestamps, region.temperatures_kelvin)),
         interval=interval,
         repeat=False,
         cache_frame_data=False,

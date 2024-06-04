@@ -3,6 +3,8 @@ import warnings
 from typing import Optional
 from pathlib import PurePath, Path
 
+import matplotlib.pyplot as plt
+
 from pyangstrom.config import Config
 from pyangstrom.caching import Cache
 from pyangstrom.io import (
@@ -15,6 +17,12 @@ from pyangstrom.io import (
 from pyangstrom.transform import fully_extract_region
 from pyangstrom.signal import signal_process_region
 from pyangstrom.fit import autofit
+from pyangstrom.visualization.recording import animate_recording
+from pyangstrom.visualization.region import (
+    plot_geometry,
+    plot_isotherms,
+    plot_groups,
+)
 
 
 logger = logging.getLogger('pipeline')
@@ -24,6 +32,7 @@ def analyze_recording(
         config: str | Path | Config,
         *,
         debug: bool = False,
+        return_visualization: bool = False,
         memory_cache: Optional[Cache] = None,
         recording_cache_path: Optional[str | Path] = None,
 ):
@@ -77,10 +86,16 @@ def analyze_recording(
         config = load_config(Path(config))
         logger.debug(f"{config=}")
     if 'region_information' not in config:
-        return df_recording
+        if return_visualization:
+            return df_recording, animate_recording(df_recording)
+        else:
+            return df_recording
     if 'experimental_setup' not in config:
         warnings.warn("Field experimental_setup required to extract regions")
-        return df_recording
+        if return_visualization:
+            return df_recording, animate_recording(df_recording)
+        else:
+            return df_recording
     logger.info("Extracting region(s)")
     try:
         region_result = fully_extract_region(
@@ -92,9 +107,35 @@ def analyze_recording(
         if debug:
             raise
         warnings.warn(repr(e))
-        return df_recording
+        if return_visualization:
+            return df_recording, animate_recording(df_recording)
+        else:
+            return df_recording
     if 'signal_processor' not in config:
-        return region_result
+        if return_visualization:
+            if isinstance(region_result, list):
+                figs = []
+                for region, info in zip(region_result, config['region_information']):
+                    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 8))
+                    if 'geometry' in info:
+                        plot_geometry(ax1, df_recording, info['geometry'])
+                    else:
+                        plot_geometry(ax1, df_recording, info['geometries'])
+                    plot_isotherms(ax2, region)
+                    plot_groups(ax3, region)
+                    figs.append(fig)
+                return region_result, figs
+            else:
+                fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 8))
+                if 'geometry' in config['region_information']:
+                    plot_geometry(ax1, df_recording, info['geometry'])
+                else:
+                    plot_geometry(ax1, df_recording, info['geometries'])
+                plot_isotherms(ax2, region)
+                plot_groups(ax3, region)
+                return region_result, fig
+        else:
+            return region_result
     if isinstance(region_result, list):
         debug_region = region_result[0]
     else:
@@ -123,7 +164,30 @@ def analyze_recording(
         if debug:
             raise
         warnings.warn(repr(e))
-        return region_result
+        if return_visualization:
+            if isinstance(region_result, list):
+                figs = []
+                for region, info in zip(region_result, config['region_information']):
+                    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 8))
+                    if 'geometry' in info:
+                        plot_geometry(ax1, df_recording, info['geometry'])
+                    else:
+                        plot_geometry(ax1, df_recording, info['geometries'])
+                    plot_isotherms(ax2, region)
+                    plot_groups(ax3, region)
+                    figs.append(fig)
+                return region_result, figs
+            else:
+                fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 8))
+                if 'geometry' in config['region_information']:
+                    plot_geometry(ax1, df_recording, info['geometry'])
+                else:
+                    plot_geometry(ax1, df_recording, info['geometries'])
+                plot_isotherms(ax2, region)
+                plot_groups(ax3, region)
+                return region_result, fig
+        else:
+            return region_result
     if 'solver' not in config or 'fitter' not in config:
         return signal_result
     if isinstance(signal_result, list):
