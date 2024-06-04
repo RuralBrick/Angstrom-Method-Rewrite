@@ -156,4 +156,3 @@ def analyze_recording(
         warnings.warn(repr(e))
         return signal_result
     return fitting_result
-    # TODO: Automatic visualizations/better formatted return
