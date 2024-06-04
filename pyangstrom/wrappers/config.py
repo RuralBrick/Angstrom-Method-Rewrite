@@ -120,6 +120,20 @@ def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
         warnings.warn(f"Could not find {e} field for lopez_baeza_short solver")
         return None
 
+def record_to_kil_circular_room_temp(record) -> Optional[SolverInformation]:
+    try:
+        solver: SolverInformation = {
+            'name': 'kil',
+            'guesses': {
+                'thermal_diffusivity_log10_m2_s': -5,
+                'convective_heat_transfer_term': -2,
+            },
+        }
+        return solver
+    except KeyError as e:
+        warnings.warn(f"Could not find {e} field for kil_circular_room_temp solver")
+        return None
+
 def record_to_lsr(record) -> Optional[FitterInformation]:
     try:
         fitter: FitterInformation = {
@@ -161,6 +175,8 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                 case 'anguler_range' | 'x0_pixels' | 'y0_pixels' | 'R0_pixels' | 'R_analysis_pixels':
                     if not geometries:
                         geometries = record_to_polar_geometries(record)
+                    if 'solver' not in config:
+                        config['solver'] = record_to_kil_circular_room_temp(record)
                 case 'Nr_pixels':
                     continue
                 case 'gap' | 'gap_pixels':
