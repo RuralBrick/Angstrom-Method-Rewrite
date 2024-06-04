@@ -125,7 +125,7 @@ def record_to_kil_circular_room_temp(record) -> Optional[SolverInformation]:
         solver: SolverInformation = {
             'name': 'kil',
             'guesses': {
-                'thermal_diffusivity_log10_m2_s': -5,
+                'thermal_diffusivity_m2_s': -5,
                 'convective_heat_transfer_term': -2,
             },
         }

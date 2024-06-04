@@ -31,6 +31,7 @@ def hu_batch_process(
         code_directory: str | Path,
         data_directory: Optional[str | Path] = None,
         *,
+        debug: bool = False,
         memory_cache: Optional[Cache] = None,
         config_directory_path: Optional[str | Path] = None,
         recording_cache_path: Optional[str | Path] = None,
@@ -82,6 +83,7 @@ def hu_batch_process(
         result = analyze_recording(
             data_directory / recording_name,
             config,
+            debug=debug,
             memory_cache=memory_cache,
             recording_cache_path=recording_cache_path,
         )
