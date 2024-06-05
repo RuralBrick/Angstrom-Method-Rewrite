@@ -113,6 +113,17 @@ def plot_geometry(
     ax = add_geometry(ax, geometry)
     return ax
 
+def plot_spatiotemporal_heat_map(
+        ax: Axes,
+        region: Region,
+) -> Axes:
+    region = collapse_region(region)
+    ax.imshow(region.temperatures_kelvin)
+    ax.set_title("Spatiotemporal Heat Map of Analysis Region")
+    ax.set_xlabel("Displacement from heat source (meters)")
+    ax.set_ylabel("Frames elapsed")
+    return ax
+
 def idx_displacement_to_label(idx_displacement: int):
     idx_displacement += 1
     if idx_displacement == 0:
