@@ -1,3 +1,4 @@
+import logging
 from typing import TypedDict, NamedTuple, Protocol
 from dataclasses import dataclass
 
@@ -8,6 +9,8 @@ from pyangstrom.transform import Region, Margins
 from pyangstrom.exp_setup import ExperimentalSetup
 
 
+logger = logging.getLogger('signal')
+
 class SignalProperties(NamedTuple):
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
@@ -15,6 +18,7 @@ class SignalProperties(NamedTuple):
 @dataclass
 class SignalResult:
     signal_properties: SignalProperties
+    processed_region: Region
     margins: Margins
 
 class SignalProcessor(Protocol):
@@ -153,5 +157,5 @@ def signal_process_region(
     processor = extract_processor(information)
     params = information['parameters'] if 'parameters' in information else {}
     props = processor(region, setup, **params)
-    result = SignalResult(props, region.margins)
+    result = SignalResult(props, region, region.margins)
     return result

@@ -9,7 +9,7 @@ from pyangstrom.fit import (
     Unknowns,
     EquationPackage,
     SignalProperties,
-    FittingResult,
+    FitterOutput,
 )
 from pyangstrom.signal import SignalProperties
 
@@ -50,7 +50,7 @@ def fit(
         observed_properties: SignalProperties,
         properties_to_use: str | UsedProperties = UsedProperties.AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES,
         **minimize_kwargs,
-) -> FittingResult:
+) -> FitterOutput:
     used_observed_properties = extract_used_properties(
         observed_properties,
         properties_to_use,
@@ -73,5 +73,5 @@ def fit(
         options=dict(disp=(logger.getEffectiveLevel() <= logging.DEBUG)),
         **minimize_kwargs,
     )
-    result = FittingResult(solution.vector_to_unknowns(nelder_mead_result.x))
-    return result
+    output = FitterOutput(solution.vector_to_unknowns(nelder_mead_result.x))
+    return output

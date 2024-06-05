@@ -1,3 +1,4 @@
+import logging
 from typing import TypedDict, Protocol, Optional, Type
 import abc
 from dataclasses import dataclass
@@ -7,11 +8,18 @@ from pyangstrom.transform import Margins
 from pyangstrom.signal import SignalProperties, SignalResult
 
 
+logger = logging.getLogger('fit')
+
 Unknowns = dict
+
+@dataclass
+class FitterOutput:
+    unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
     unknowns_solutions: Unknowns
+    theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
     @abc.abstractmethod
@@ -22,6 +30,9 @@ class EquationPackage(abc.ABC):
             **kwargs,
     ) -> None: ...
 
+    @abc.abstractmethod
+    def solve(self, unknowns: Unknowns) -> SignalResult: ...
+
 class Fitter(Protocol):
     def __call__(
             self,
@@ -29,7 +40,7 @@ class Fitter(Protocol):
             solution: EquationPackage,
             observed_properties: SignalProperties,
             **kwargs,
-    ) -> FittingResult: ...
+    ) -> FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
     name: str
@@ -134,10 +145,14 @@ def autofit(
     fitter_params = (fitter_information['parameters']
                      if 'parameters' in fitter_information
                      else {})
-    result = fit(
+    output = fit(
         solver_information['guesses'],
         solution,
         signal_result.signal_properties,
         **fitter_params,
+    )
+    result = FittingResult(
+        output.unknowns_solutions,
+        solution.solve(output.unknowns_solutions),
     )
     return result

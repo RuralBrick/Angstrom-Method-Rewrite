@@ -1,3 +1,4 @@
+import logging
 import warnings
 from typing import TypedDict, Iterable
 from enum import Enum, auto
@@ -8,6 +9,8 @@ import numpy as np
 
 from pyangstrom.exp_setup import ExperimentalSetup
 
+
+logger = logging.getLogger('transform')
 
 TEMPERATURE_OFFSET = {
     'Temperature (C)': 273.15,
