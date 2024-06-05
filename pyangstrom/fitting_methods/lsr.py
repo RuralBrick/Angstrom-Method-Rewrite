@@ -8,7 +8,7 @@ from pyangstrom.fit import (
     Unknowns,
     EquationPackage,
     SignalProperties,
-    FittingResult,
+    FitterOutput,
 )
 
 
@@ -34,7 +34,7 @@ def fit(
         solution: LsrEquations,
         observed_properties: SignalProperties,
         **least_squares_kwargs,
-) -> FittingResult:
+) -> FitterOutput:
     level = logger.getEffectiveLevel()
     if level <= logging.DEBUG:
         verbosity = 2
@@ -57,5 +57,5 @@ def fit(
         verbose=verbosity,
         **least_squares_kwargs,
     )
-    result = FittingResult(solution.vector_to_unknowns(lsr_result.x))
-    return result
+    output = FitterOutput(solution.vector_to_unknowns(lsr_result.x))
+    return output

@@ -1,3 +1,4 @@
+import logging
 import abc
 import random
 
@@ -7,9 +8,11 @@ from pyangstrom.fit import (
     Unknowns,
     EquationPackage,
     SignalProperties,
-    FittingResult,
+    FitterOutput,
 )
 
+
+logger = logging.getLogger('fit')
 
 class MetropolisHastingsEquations(EquationPackage):
     @abc.abstractmethod
@@ -27,7 +30,7 @@ def fit(
         solution: MetropolisHastingsEquations,
         observed_properties: SignalProperties,
         target_num_accepted_samples,
-) -> FittingResult:
+) -> FitterOutput:
     accepted_samples = []
 
     current_unknowns = unknowns_guesses
@@ -47,4 +50,4 @@ def fit(
             current_unknowns = proposed_unknowns
             current_log_posterior = new_log_posterior
 
-    return FittingResult(accepted_samples[-1])
+    return FitterOutput(accepted_samples[-1])

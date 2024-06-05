@@ -130,7 +130,7 @@ class Solution(NelderMeadEquations, LsrEquations):
             unknowns['convective_heat_transfer_term'],
         )
         region = Region(timestamps, temps, self.margins)
-        return fft_signal_processing(region)
+        return fft_signal_processing(region, self.setup)
 
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
         thermal_diffusivity_m2_s, convective_heat_transfer_term = unknowns_vector

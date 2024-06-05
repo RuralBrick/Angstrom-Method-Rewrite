@@ -1,3 +1,4 @@
+import logging
 import warnings
 from typing import TypedDict, Iterable
 from enum import Enum, auto
@@ -8,6 +9,8 @@ import numpy as np
 
 from pyangstrom.exp_setup import ExperimentalSetup
 
+
+logger = logging.getLogger('transform')
 
 TEMPERATURE_OFFSET = {
     'Temperature (C)': 273.15,
@@ -315,21 +318,20 @@ def restructure_region(region: Region, structure: RegionStructure) -> Region:
         )
     if 'num_deinterleaving_groups' in structure:
         num_disp = region.temperatures_kelvin.shape[1]
-        remainder = num_disp % structure['num_deinterleaving_groups']
+        new_num_disp, remainder = divmod(
+            num_disp,
+            structure['num_deinterleaving_groups'],
+        )
         if remainder != 0:
             region = truncate_region(region, remainder, axis=1)
-        lst_groups = np.split(
-            region.temperatures_kelvin,
-            structure['num_deinterleaving_groups'],
-            axis=1,
-        )
-        new_temps = np.stack(lst_groups, axis=2)
+        lst_groups = np.split(region.temperatures_kelvin, new_num_disp, axis=1)
+        new_temps = np.stack(lst_groups, axis=1)
         lst_disp = np.split(
             region.margins.displacements_meters,
-            structure['num_deinterleaving_groups'],
+            new_num_disp,
             axis=0,
         )
-        new_disp = np.stack(lst_disp, axis=1)
+        new_disp = np.stack(lst_disp, axis=0)
         region = Region(
             region.timestamps,
             new_temps,

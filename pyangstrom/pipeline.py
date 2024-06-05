@@ -3,6 +3,8 @@ import warnings
 from typing import Optional
 from pathlib import PurePath, Path
 
+import matplotlib.pyplot as plt
+
 from pyangstrom.config import Config
 from pyangstrom.caching import Cache
 from pyangstrom.io import (
@@ -13,17 +15,96 @@ from pyangstrom.io import (
     load_config,
 )
 from pyangstrom.transform import fully_extract_region
-from pyangstrom.signal import signal_process_region
-from pyangstrom.fit import autofit
+from pyangstrom.signal import signal_process_region, filter_signal
+from pyangstrom.fit import autofit, extract_solution
+from pyangstrom.visualization.recording import animate_recording
+from pyangstrom.visualization.region import (
+    plot_geometry,
+    plot_spatiotemporal_heat_map,
+    plot_isotherms,
+    plot_groups,
+)
+from pyangstrom.visualization.signal import (
+    plot_amplitude_ratios,
+    plot_phase_differences,
+)
 
 
 logger = logging.getLogger('pipeline')
+
+def visualize_recording(df_recording):
+    return df_recording, animate_recording(df_recording)
+
+def visualize_region(df_recording, region_result, region_information):
+    if isinstance(region_result, list):
+        _, figs = zip(*(
+            visualize_region(df_recording, r, i) for r, i
+            in zip(region_result, region_information)
+        ))
+        return region_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if 'geometry' in region_information:
+        plot_geometry(ax1, df_recording, region_information['geometry'])
+    else:
+        plot_geometry(ax1, df_recording, region_information['geometries'])
+    plot_spatiotemporal_heat_map(ax2, region_result)
+    plot_isotherms(ax3, region_result)
+    plot_groups(ax4, region_result)
+    return region_result, fig
+
+def visualize_signal(df_recording, signal_result, region_information):
+    if isinstance(signal_result, list):
+        _, figs = zip(*(
+            visualize_signal(df_recording, s, i) for s, i
+            in zip(signal_result, region_information)
+        ))
+        return signal_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if 'geometry' in region_information:
+        plot_geometry(ax1, df_recording, region_information['geometry'])
+    else:
+        plot_geometry(ax1, df_recording, region_information['geometries'])
+    plot_isotherms(ax2, signal_result.processed_region)
+    plot_amplitude_ratios(ax3, signal_result)
+    plot_phase_differences(ax4, signal_result)
+    return signal_result, fig
+
+def visualize_fit(
+        df_recording,
+        signal_result,
+        fitting_result,
+        region_information,
+):
+    if isinstance(fitting_result, list):
+        _, figs = zip(*(
+            visualize_fit(df_recording, s, f, i) for s, f, i
+            in zip(signal_result, fitting_result, region_information)
+        ))
+        return fitting_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if 'geometry' in region_information:
+        plot_geometry(ax1, df_recording, region_information['geometry'])
+    else:
+        plot_geometry(ax1, df_recording, region_information['geometries'])
+    plot_isotherms(ax2, signal_result.processed_region)
+    plot_amplitude_ratios(ax3, signal_result, fitting_result)
+    plot_phase_differences(ax4, signal_result, fitting_result)
+    # ax1: geometry
+    # ax2: isotherms (maybe observed + theoretical)
+    # ax3: amp ratio / displacement (observed + theoretical)
+    # ax4: phase diff / displacement (observed + theoretical)
+    # axN: fitting method-specific plots
+    return fitting_result, fig
 
 def analyze_recording(
         recording_path: str | Path,
         config: str | Path | Config,
         *,
         debug: bool = False,
+        return_visualization: bool = False,
         memory_cache: Optional[Cache] = None,
         recording_cache_path: Optional[str | Path] = None,
 ):
@@ -77,10 +158,16 @@ def analyze_recording(
         config = load_config(Path(config))
         logger.debug(f"{config=}")
     if 'region_information' not in config:
-        return df_recording
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
     if 'experimental_setup' not in config:
         warnings.warn("Field experimental_setup required to extract regions")
-        return df_recording
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
     logger.info("Extracting region(s)")
     try:
         region_result = fully_extract_region(
@@ -92,9 +179,19 @@ def analyze_recording(
         if debug:
             raise
         warnings.warn(repr(e))
-        return df_recording
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
     if 'signal_processor' not in config:
-        return region_result
+        if return_visualization:
+            return visualize_region(
+                df_recording,
+                region_result,
+                config['region_information'],
+            )
+        else:
+            return region_result
     if isinstance(region_result, list):
         debug_region = region_result[0]
     else:
@@ -123,9 +220,23 @@ def analyze_recording(
         if debug:
             raise
         warnings.warn(repr(e))
-        return region_result
+        if return_visualization:
+            return visualize_region(
+                df_recording,
+                region_result,
+                config['region_information'],
+            )
+        else:
+            return region_result
     if 'solver' not in config or 'fitter' not in config:
-        return signal_result
+        if return_visualization:
+            return visualize_signal(
+                df_recording,
+                signal_result,
+                config['region_information'],
+            )
+        else:
+            return signal_result
     if isinstance(signal_result, list):
         debug_signal = signal_result[0]
     else:
@@ -154,6 +265,20 @@ def analyze_recording(
         if debug:
             raise
         warnings.warn(repr(e))
-        return signal_result
-    return fitting_result
-    # TODO: Automatic visualizations/better formatted return
+        if return_visualization:
+            return visualize_signal(
+                df_recording,
+                signal_result,
+                config['region_information'],
+            )
+        else:
+            return signal_result
+    if return_visualization:
+        return visualize_fit(
+            df_recording,
+            signal_result,
+            fitting_result,
+            config['region_information'],
+        )
+    else:
+        return fitting_result
