@@ -168,7 +168,7 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                 case 'cp':
                     config['experimental_setup']['material_properties']['specific_heat_capacity_J_kg_K'] = float(value)
                 case 'rho':
-                    config['experimental_setup']['material_properties']['density_kg_m3'] = float(value)
+                    config['experimental_setup']['material_properties']['density_kg__m3'] = float(value)
                 case 'direction' | 'x_region_line_center' | 'y_region_line_center' | 'dx' | 'dy' | 'x_heater' | 'y_heater':
                     if not geometries:
                         geometries = [record_to_cartesian_geometry(record)]

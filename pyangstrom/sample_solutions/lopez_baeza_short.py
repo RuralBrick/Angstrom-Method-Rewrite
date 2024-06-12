@@ -33,7 +33,7 @@ class Solution(
     ) -> None:
         mp = setup['material_properties']
         self.specific_heat_capacity_J_kg_K = mp['specific_heat_capacity_J_kg_K']
-        self.density_kg_m3 = mp['density_kg_m3']
+        self.density_kg__m3 = mp['density_kg__m3']
         self.displacements_meters = margins.displacements_meters
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
         self.r_meters = r_meters
@@ -91,7 +91,7 @@ class Solution(
             calc_thermal_conductivity(
                 unknowns['thermal_diffusivity_m2_s'],
                 self.specific_heat_capacity_J_kg_K,
-                self.density_kg_m3,
+                self.density_kg__m3,
             ),
         )
         xi = self.calc_xi(wavenumber)
@@ -112,7 +112,7 @@ class Solution(
             calc_thermal_conductivity(
                 thermal_diffusivity_m2__s,
                 self.specific_heat_capacity_J_kg_K,
-                self.density_kg_m3,
+                self.density_kg__m3,
             ),
         )
         xi = self.calc_xi(wavenumber)
