@@ -41,7 +41,7 @@ class Solution(NelderMeadEquations, LsrEquations):
 
     def calc_normalized_T1(
             self,
-            thermal_diffusivity_m2_s,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_term,
     ):
         i = 1j
@@ -49,7 +49,7 @@ class Solution(NelderMeadEquations, LsrEquations):
         a = self.min_radius_meters
         b = self.max_radius_meters
         w = self.angular_frequency_hertz
-        D = thermal_diffusivity_m2_s
+        D = thermal_diffusivity_m2__s
         m = convective_heat_transfer_term
 
         X = i * np.sqrt(m*m + i*w/D)

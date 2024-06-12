@@ -86,10 +86,10 @@ class Solution(
 
     def solve(self, unknowns: LopezBaezaShortUnknowns) -> SignalProperties:
         wavenumber = self.calc_wavenumber(
-            unknowns['thermal_diffusivity_m2_s'],
+            unknowns['thermal_diffusivity_m2__s'],
             unknowns['thermal_transfer_coefficient_kg_s2_K_m2'],
             calc_thermal_conductivity(
-                unknowns['thermal_diffusivity_m2_s'],
+                unknowns['thermal_diffusivity_m2__s'],
                 self.specific_heat_capacity_J__kg_K,
                 self.density_kg__m3,
             ),
