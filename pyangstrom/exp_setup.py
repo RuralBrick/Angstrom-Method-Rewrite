@@ -2,7 +2,7 @@ from typing import TypedDict
 
 
 class MaterialProperties(TypedDict):
-    specific_heat_capacity_J_kg_K: float
+    specific_heat_capacity_J__kg_K: float
     density_kg__m3: float
 
 class ExperimentalSetup(TypedDict):
