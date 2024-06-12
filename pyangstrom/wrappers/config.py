@@ -108,7 +108,7 @@ def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
             'name': 'log_lopez-baeza',
             'guesses': {
                 'thermal_diffusivity_log10_m2__s': -5,
-                'thermal_transfer_coefficient_log10_W__m2_K': -2,
+                'heat_transfer_coefficient_log10_W__m2_K': -2,
             },
             'parameters': {
                 'r_meters': float(record['r']),
