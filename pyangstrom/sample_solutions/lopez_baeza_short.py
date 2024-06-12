@@ -60,13 +60,13 @@ class Solution(
             self,
             thermal_diffusivity_m2__s,
             thermal_transfer_coefficient_W__m2_K,
-            thermal_conductivity_W_m_K,
+            thermal_conductivity_W__m_K,
     ):
         w = self.angular_frequency_hertz
         D = thermal_diffusivity_m2__s
         h = thermal_transfer_coefficient_W__m2_K
         r = self.r_meters
-        K = thermal_conductivity_W_m_K
+        K = thermal_conductivity_W__m_K
 
         heat_conduction = w / (2.0*D)
         thermal_losses = h / (r*K)
