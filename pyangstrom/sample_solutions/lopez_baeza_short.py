@@ -12,12 +12,12 @@ from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEqu
 
 
 class LopezBaezaShortUnknowns(TypedDict):
-    thermal_diffusivity_m2_s: float
-    thermal_transfer_coefficient_kg_s2_K_m2: float
+    thermal_diffusivity_m2__s: float
+    thermal_transfer_coefficient_W__m2_K: float
 
 class LogLopezBaezaShortUnknowns(TypedDict):
-    thermal_diffusivity_log10_m2_s: float
-    thermal_transfer_coefficient_log10_kg_s2_K_m2: float
+    thermal_diffusivity_log10_m2__s: float
+    thermal_transfer_coefficient_log10_W__m2_K: float
 
 class Solution(
     NelderMeadEquations,
@@ -44,27 +44,27 @@ class Solution(
             unknowns: LopezBaezaShortUnknowns,
     ) -> np.ndarray:
         vector = np.array([
-            unknowns['thermal_diffusivity_m2_s'],
-            unknowns['thermal_transfer_coefficient_kg_s2_K_m2'],
+            unknowns['thermal_diffusivity_m2__s'],
+            unknowns['thermal_transfer_coefficient_W__m2_K'],
         ])
         return vector
 
     def vector_to_unknowns(self, vector: np.ndarray) -> LopezBaezaShortUnknowns:
         unknowns: LopezBaezaShortUnknowns = {
-            'thermal_diffusivity_m2_s': vector[0],
-            'thermal_transfer_coefficient_kg_s2_K_m2': vector[1],
+            'thermal_diffusivity_m2__s': vector[0],
+            'thermal_transfer_coefficient_W__m2_K': vector[1],
         }
         return unknowns
 
     def calc_wavenumber(
             self,
-            thermal_diffusivity_m2_s,
-            thermal_transfer_coefficient_kg_s2_K_m2,
+            thermal_diffusivity_m2__s,
+            thermal_transfer_coefficient_W__m2_K,
             thermal_conductivity_W_m_K,
     ):
         w = self.angular_frequency_hertz
-        D = thermal_diffusivity_m2_s
-        h = thermal_transfer_coefficient_kg_s2_K_m2
+        D = thermal_diffusivity_m2__s
+        h = thermal_transfer_coefficient_W__m2_K
         r = self.r_meters
         K = thermal_conductivity_W_m_K
 
@@ -105,12 +105,12 @@ class Solution(
         return SignalProperties(amp_ratio, phase_diff)
 
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
-        thermal_diffusivity_m2_s, thermal_transfer_coefficient_kg_s2_K_m2 = unknowns_vector
+        thermal_diffusivity_m2__s, thermal_transfer_coefficient_W__m2_K = unknowns_vector
         wavenumber = self.calc_wavenumber(
-            thermal_diffusivity_m2_s,
-            thermal_transfer_coefficient_kg_s2_K_m2,
+            thermal_diffusivity_m2__s,
+            thermal_transfer_coefficient_W__m2_K,
             calc_thermal_conductivity(
-                thermal_diffusivity_m2_s,
+                thermal_diffusivity_m2__s,
                 self.specific_heat_capacity_J_kg_K,
                 self.density_kg_m3,
             ),
@@ -144,8 +144,8 @@ class LogSolution(Solution):
             unknowns: LogLopezBaezaShortUnknowns,
     ) -> np.ndarray:
         vector = np.array([
-            unknowns['thermal_diffusivity_log10_m2_s'],
-            unknowns['thermal_transfer_coefficient_log10_kg_s2_K_m2']
+            unknowns['thermal_diffusivity_log10_m2__s'],
+            unknowns['thermal_transfer_coefficient_log10_W__m2_K']
         ])
         return vector
 
@@ -154,8 +154,8 @@ class LogSolution(Solution):
             vector: np.ndarray,
     ) -> LogLopezBaezaShortUnknowns:
         unknowns: LogLopezBaezaShortUnknowns = {
-            'thermal_diffusivity_log10_m2_s': vector[0],
-            'thermal_transfer_coefficient_log10_kg_s2_K_m2': vector[1],
+            'thermal_diffusivity_log10_m2__s': vector[0],
+            'thermal_transfer_coefficient_log10_W__m2_K': vector[1],
         }
         return unknowns
 
