@@ -16,6 +16,13 @@ from pyangstrom.transform import (
 from pyangstrom.visualization.recording import plot_recording
 
 
+MARGINS_MULTIPLIERS = {
+    'm': 1.,
+    'meters': 1.,
+    'mm': 1e3,
+    'millimeters': 1e3,
+}
+
 def add_cartesian_geometry(
         ax: Axes,
         geometry: CartesianGeometry,
@@ -120,7 +127,7 @@ def plot_spatiotemporal_heat_map(
     region = collapse_region(region)
     ax.imshow(region.temperatures_kelvin)
     ax.set_title("Spatiotemporal Heat Map of Analysis Region")
-    ax.set_xlabel("Displacement from heat source (meters)")
+    ax.set_xlabel("Displacement from heat source (pixels)")
     ax.set_ylabel("Frames elapsed")
     return ax
 
@@ -157,7 +164,7 @@ def plot_isotherms(
 def plot_groups(ax: Axes, region: Region, use_timestamps: bool = False) -> Axes:
     if use_timestamps:
         x = region.timestamps
-        ax.set_xlabel("Ttime")
+        ax.set_xlabel("Time")
     else:
         x = region.margins.seconds_elapsed
         ax.set_xlabel("Time elapsed (seconds)")
@@ -166,24 +173,23 @@ def plot_groups(ax: Axes, region: Region, use_timestamps: bool = False) -> Axes:
     ax.set_title("Average Temperatures of Grouped Nodes Over Time")
     return ax
 
-def animate_region(region: Region) -> Animation:
+def animate_region(region: Region, displacements_unit: str = 'mm') -> Animation:
     ax: Axes = None
     fig, ax = plt.subplots()
     region = collapse_region(region)
-    ln, = ax.plot(
-        region.margins.displacements_meters,
-        region.temperatures_kelvin[0],
-    )
+    x = (MARGINS_MULTIPLIERS[displacements_unit]
+         * region.margins.displacements_meters)
+    ln, = ax.plot(x, region.temperatures_kelvin[0])
     ax.set_ylim(
         region.temperatures_kelvin.min(),
         region.temperatures_kelvin.max(),
     )
     ax.set_title(region.timestamps[0].strftime('(%b %d) %H:%M:%S.%f'))
-    ax.set_xlabel("Displacement from heat source (meters)")
+    ax.set_xlabel(f"Displacement from heat source ({displacements_unit})")
     ax.set_ylabel("Temperature (kelvin)")
     def update(frame):
         time, temps = frame
-        ln.set_data(region.margins.displacements_meters, temps)
+        ln.set_data(x, temps)
         ax.set_title(time.strftime('(%b %d) %H:%M:%S.%f'))
     interval = 1e3 * (
         region.timestamps

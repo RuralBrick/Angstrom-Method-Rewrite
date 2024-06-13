@@ -107,8 +107,8 @@ def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
         solver: SolverInformation = {
             'name': 'log_lopez-baeza',
             'guesses': {
-                'thermal_diffusivity_log10_m2_s': -5,
-                'thermal_transfer_coefficient_log10_kg_s2_K_m2': -2,
+                'thermal_diffusivity_log10_m2__s': -5,
+                'heat_transfer_coefficient_log10_W__m2_K': -2,
             },
             'parameters': {
                 'r_meters': float(record['r']),
@@ -125,7 +125,7 @@ def record_to_kil_circular_room_temp(record) -> Optional[SolverInformation]:
         solver: SolverInformation = {
             'name': 'kil',
             'guesses': {
-                'thermal_diffusivity_m2_s': 1,
+                'thermal_diffusivity_m2__s': 1,
                 'convective_heat_transfer_term': 35,
             },
         }
@@ -166,9 +166,9 @@ def exp_condition_to_config(exp_condition: list[dict]) -> dict[str, Config]:
                 case 'f_heating':
                     config['experimental_setup']['heating_frequency_hertz'] = float(value)
                 case 'cp':
-                    config['experimental_setup']['material_properties']['specific_heat_capacity_J_kg_K'] = float(value)
+                    config['experimental_setup']['material_properties']['specific_heat_capacity_J__kg_K'] = float(value)
                 case 'rho':
-                    config['experimental_setup']['material_properties']['density_kg_m3'] = float(value)
+                    config['experimental_setup']['material_properties']['density_kg__m3'] = float(value)
                 case 'direction' | 'x_region_line_center' | 'y_region_line_center' | 'dx' | 'dy' | 'x_heater' | 'y_heater':
                     if not geometries:
                         geometries = [record_to_cartesian_geometry(record)]

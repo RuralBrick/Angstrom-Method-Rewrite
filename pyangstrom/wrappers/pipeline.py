@@ -32,6 +32,7 @@ def hu_batch_process(
         data_directory: Optional[str | Path] = None,
         *,
         debug: bool = False,
+        return_visualization: bool = False,
         memory_cache: Optional[Cache] = None,
         config_directory_path: Optional[str | Path] = None,
         recording_cache_path: Optional[str | Path] = None,
@@ -84,6 +85,7 @@ def hu_batch_process(
             data_directory / recording_name,
             config,
             debug=debug,
+            return_visualization=return_visualization,
             memory_cache=memory_cache,
             recording_cache_path=recording_cache_path,
         )

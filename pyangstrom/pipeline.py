@@ -197,9 +197,9 @@ def analyze_recording(
     else:
         debug_region = region_result
     logger.debug(f"{debug_region.timestamps[:1]=}")
-    logger.debug(f"{debug_region.temperatures_kelvin[:1, :1]=}")
+    logger.debug(f"{debug_region.temperatures_kelvin.flatten()[:1]=}")
     logger.debug(f"{debug_region.margins.seconds_elapsed[:1]=}")
-    logger.debug(f"{debug_region.margins.displacements_meters[:1, :1]=}")
+    logger.debug(f"{debug_region.margins.displacements_meters.flatten()[:1]=}")
     logger.info("Signal processing")
     try:
         if isinstance(region_result, list):
