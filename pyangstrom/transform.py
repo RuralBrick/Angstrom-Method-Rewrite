@@ -47,6 +47,7 @@ class PolarGeometry(TypedDict):
 Geometry = CartesianGeometry | PolarGeometry
 
 class RegionStructure(TypedDict, total=False):
+    subtract_temperatures_by: str
     average_out_span: bool
     num_deinterleaving_groups: int
 
@@ -307,6 +308,24 @@ def truncate_region(region: Region, num_truncate: int, axis: int) -> Region:
     return new_region
 
 def restructure_region(region: Region, structure: RegionStructure) -> Region:
+    if 'subtract_temperatures_by' in structure:
+        match structure['subtract_temperatures_by']:
+            case 'mean' | 'avg' | 'average':
+                subtrahend = region.temperatures_kelvin.mean()
+            case 'min' | 'minimum' | 'lowest':
+                subtrahend = region.temperatures_kelvin.min()
+            case _:
+                subtrahend = 0
+                warnings.warn(
+                    f"Subtract temperatures by "
+                    f"\'{structure['subtract_temperatures_by']}\' "
+                    f"not understood"
+                )
+        region = Region(
+            region.timestamps,
+            region.temperatures_kelvin - subtrahend,
+            region.margins,
+        )
     if 'average_out_span' in structure and structure['average_out_span']:
         region = Region(
             region.timestamps,

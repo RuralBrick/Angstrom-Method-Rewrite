@@ -15,8 +15,8 @@ from pyangstrom.io import (
     load_config,
 )
 from pyangstrom.transform import fully_extract_region
-from pyangstrom.signal import signal_process_region, filter_signal
-from pyangstrom.fit import autofit, extract_solution
+from pyangstrom.signal import signal_process_region
+from pyangstrom.fit import autofit
 from pyangstrom.visualization.recording import animate_recording
 from pyangstrom.visualization.region import (
     plot_geometry,
