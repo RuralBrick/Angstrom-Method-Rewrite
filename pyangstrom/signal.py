@@ -42,30 +42,6 @@ def filter_signal(
         order: int = 5,
 ) -> Region:
     cutoff_frequency = cutoff * setup['heating_frequency_hertz']
-    sampling_frequency = region.temperatures_kelvin.shape[0] / region.margins[0]
-    nyquist_frequency = 0.5 * sampling_frequency
-    normal_cutoff = cutoff_frequency / nyquist_frequency
-    b, a = signal.butter(
-        order,
-        normal_cutoff,
-        btype='high',
-        analog=False,
-    )
-    new_temps = signal.filtfilt(b, a, region.temperatures_kelvin, axis=0)
-    new_region = Region(
-        region.timestamps,
-        new_temps,
-        region.margins,
-    )
-    return new_region
-
-def filter_signal(
-        region: Region,
-        setup: ExperimentalSetup,
-        cutoff: float = 0.5,
-        order: int = 5,
-) -> Region:
-    cutoff_frequency = cutoff * setup['heating_frequency_hertz']
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
     nyquist_frequency = 0.5 * sampling_frequency
