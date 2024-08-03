@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 import numpy as np
 from scipy import signal
+from lmfit import Parameters, minimize
 
 from pyangstrom.transform import Region, Margins
 from pyangstrom.exp_setup import ExperimentalSetup
@@ -35,6 +36,11 @@ class SignalProcessorInformation(TypedDict, total=False):
     parameters: dict
     apply_filter: bool
 
+class SineParameters(TypedDict):
+    amplitude: float
+    phiase: float
+    bias: float
+
 def filter_signal(
         region: Region,
         setup: ExperimentalSetup,
@@ -59,6 +65,26 @@ def filter_signal(
         region.margins,
     )
     return new_region
+
+def sine_signal_processing(
+        region: Region,
+        setup: ExperimentalSetup,
+        initial_parameters: SineParameters=dict(
+            amplitude=1.0,
+            phase=0.1,
+            bias=298.0,
+        ),
+) -> SignalProperties:
+
+    params = Parameters()
+    params.add_many(
+        ('amplitude', initial_parameters['amplitude'], True, None, None, None, None),
+        ('phase', initial_parameters['phiase'], True, None, None, None, None),
+        ('bias', initial_parameters['bias'], True, None, None, None, None),
+        ('frequency', setup['heating_frequency_hertz'], False, None, None, None, None),
+    )
+
+    raise NotImplementedError()
 
 def fft_signal_processing(
         region: Region,
@@ -87,6 +113,16 @@ def fft_signal_processing(
 
     return SignalProperties(amp_ratio, phase_diff)
 
+def max_min_signal_processing(
+        region: Region,
+        setup: ExperimentalSetup,
+) -> SignalProperties:
+
+    idx_maxes = signal.argrelextrema(None, np.greater, axis=None)
+    idx_mins = signal.argrelextrema(None, np.less, axis=None)
+
+    raise NotImplementedError()
+
 def extract_processor(
         information: SignalProcessorInformation
 ) -> SignalProcessor:
@@ -102,12 +138,12 @@ def extract_processor(
         return information['processor']
     elif 'name' in information:
         match information['name']:
-            case 'sine':
-                raise NotImplementedError()
+            case 'sin' | 'sine':
+                return sine_signal_processing
             case 'fft':
                 return fft_signal_processing
             case 'max_min':
-                raise NotImplementedError()
+                return max_min_signal_processing
             case _:
                 raise ValueError(
                     f"Signal processor {information['name']} not found."
