@@ -1,6 +1,7 @@
 import logging
 from typing import TypedDict, NamedTuple, Protocol
 from dataclasses import dataclass
+from functools import partial
 
 import numpy as np
 from scipy import signal
@@ -113,15 +114,41 @@ def fft_signal_processing(
 
     return SignalProperties(amp_ratio, phase_diff)
 
+def max_min_amp(node_temps: np.ndarray) -> float:
+    maxes = node_temps[signal.argrelmax(node_temps)]
+    mins = node_temps[signal.argrelmin(node_temps)]
+    amp = maxes.mean() - mins.mean()
+    return amp
+
+def max_min_phase(
+        node_temps: np.ndarray,
+        region: Region,
+        setup: ExperimentalSetup,
+) -> float:
+    idx_first_min = signal.argrelmin(node_temps)[0][0]
+    phase = (2.0
+             * np.pi
+             * idx_first_min
+             * setup['heating_frequency_hertz']
+             * region.margins.seconds_elapsed.max()
+             / len(node_temps))
+    return phase
+
 def max_min_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
 ) -> SignalProperties:
+    amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
+    amp_ratio = amps / amps[0]
 
-    idx_maxes = signal.argrelextrema(None, np.greater, axis=None)
-    idx_mins = signal.argrelextrema(None, np.less, axis=None)
+    phases = np.apply_along_axis(
+        partial(max_min_phase, region=region, setup=setup),
+        0,
+        region.temperatures_kelvin,
+    )
+    phase_diff = phases - phases[0]
 
-    raise NotImplementedError()
+    return SignalProperties(amp_ratio, phase_diff)
 
 def extract_processor(
         information: SignalProcessorInformation
