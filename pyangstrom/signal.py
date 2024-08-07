@@ -39,7 +39,7 @@ class SignalProcessorInformation(TypedDict, total=False):
 
 class SineParameters(TypedDict):
     amplitude: float
-    phiase: float
+    phase: float
     bias: float
 
 def filter_signal(
@@ -80,10 +80,12 @@ def sine_signal_processing(
     params = Parameters()
     params.add_many(
         ('amplitude', initial_parameters['amplitude'], True, None, None, None, None),
-        ('phase', initial_parameters['phiase'], True, None, None, None, None),
+        ('phase', initial_parameters['phase'], True, None, None, None, None),
         ('bias', initial_parameters['bias'], True, None, None, None, None),
         ('frequency', setup['heating_frequency_hertz'], False, None, None, None, None),
     )
+
+    np.apply_along_axis(partial(minimize), 0, region.temperatures_kelvin)
 
     raise NotImplementedError()
 
