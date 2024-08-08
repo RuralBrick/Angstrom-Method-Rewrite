@@ -6,6 +6,7 @@ from functools import partial
 import numpy as np
 from scipy import signal
 from lmfit import Parameters, minimize
+from lmfit.minimizer import MinimizerResult
 
 from pyangstrom.transform import Region, Margins
 from pyangstrom.exp_setup import ExperimentalSetup
@@ -67,6 +68,37 @@ def filter_signal(
     )
     return new_region
 
+def calc_sine_residuals(
+        params: SineParameters,
+        node_temps: np.ndarray,
+        region: Region,
+        setup: ExperimentalSetup,
+):
+    # TODO: Figure out good bounds for params
+
+    raise NotImplementedError()
+
+def minimize_sine_residuals(
+        node_temps: np.ndarray,
+        params: Parameters,
+        region: Region,
+        setup: ExperimentalSetup,
+) -> MinimizerResult:
+    result = minimize(
+        calc_sine_residuals,
+        params,
+        args=(node_temps, region, setup),
+    )
+    return result
+
+@np.vectorize
+def extract_result_amplitudes(result: MinimizerResult) -> float:
+    return result['amplitude']
+
+@np.vectorize
+def extract_result_phases(result: MinimizerResult) -> float:
+    return result['phase']
+
 def sine_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
@@ -76,7 +108,6 @@ def sine_signal_processing(
             bias=298.0,
         ),
 ) -> SignalProperties:
-
     params = Parameters()
     params.add_many(
         ('amplitude', initial_parameters['amplitude'], True, None, None, None, None),
@@ -85,9 +116,26 @@ def sine_signal_processing(
         ('frequency', setup['heating_frequency_hertz'], False, None, None, None, None),
     )
 
-    np.apply_along_axis(partial(minimize), 0, region.temperatures_kelvin)
+    results = np.apply_along_axis(
+        partial(
+            minimize_sine_residuals,
+            params=params,
+            region=region,
+            setup=setup,
+        ),
+        0,
+        region.temperatures_kelvin,
+    )
+
+    amps = extract_result_amplitudes(results)
+    amp_ratio = amps / amps[0]
+
+    phases = extract_result_phases(results)
+    # TODO: phase_diff
 
     raise NotImplementedError()
+
+    return SignalProperties(amp_ratio, phase_diff)
 
 def fft_signal_processing(
         region: Region,
