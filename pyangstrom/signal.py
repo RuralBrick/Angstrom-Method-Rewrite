@@ -42,6 +42,7 @@ class SineParameters(TypedDict):
     amplitude: float
     phase: float
     bias: float
+    frequency: float
 
 def filter_signal(
         region: Region,
@@ -68,61 +69,57 @@ def filter_signal(
     )
     return new_region
 
-def calc_sine_residuals(
+def calc_sine_temps(
         params: SineParameters,
-        node_temps: np.ndarray,
-        region: Region,
-        setup: ExperimentalSetup,
-):
-    # TODO: Figure out good bounds for params
+        seconds_elapsed: np.ndarray,
+) -> np.ndarray:
+    A = params['amplitude']
+    p = params['phase']
+    b = params['bias']
+    f = params['frequency']
+    t = seconds_elapsed
 
-    raise NotImplementedError()
+    return A * np.sin(2.0*np.pi*f*t + p) + b
 
 def minimize_sine_residuals(
         node_temps: np.ndarray,
         params: Parameters,
-        region: Region,
-        setup: ExperimentalSetup,
+        margins: Margins,
 ) -> MinimizerResult:
-    result = minimize(
-        calc_sine_residuals,
-        params,
-        args=(node_temps, region, setup),
-    )
+
+    def calc_sine_residuals(params: SineParameters):
+        theoretical_temps = calc_sine_temps(params, margins.seconds_elapsed)
+        residuals = node_temps - theoretical_temps
+        return residuals
+
+    result = minimize(calc_sine_residuals, params)
     return result
 
 @np.vectorize
 def extract_result_amplitudes(result: MinimizerResult) -> float:
-    return result['amplitude']
+    return result.params['amplitude']
 
 @np.vectorize
 def extract_result_phases(result: MinimizerResult) -> float:
-    return result['phase']
+    return result.params['phase']
 
 def sine_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
-        initial_parameters: SineParameters=dict(
-            amplitude=1.0,
-            phase=0.1,
-            bias=298.0,
-        ),
+        initial_amplitude=1.0,
+        initial_phase=0.1,
+        initial_bias=298.0,
 ) -> SignalProperties:
     params = Parameters()
     params.add_many(
-        ('amplitude', initial_parameters['amplitude'], True, None, None, None, None),
-        ('phase', initial_parameters['phase'], True, None, None, None, None),
-        ('bias', initial_parameters['bias'], True, None, None, None, None),
+        ('amplitude', initial_amplitude, True, 0.0, None, None, None),
+        ('phase', initial_phase, True, 0.0, 2.0*np.pi, None, None),
+        ('bias', initial_bias, True, None, None, None, None),
         ('frequency', setup['heating_frequency_hertz'], False, None, None, None, None),
     )
 
     results = np.apply_along_axis(
-        partial(
-            minimize_sine_residuals,
-            params=params,
-            region=region,
-            setup=setup,
-        ),
+        partial(minimize_sine_residuals, params=params, margins=region.margins),
         0,
         region.temperatures_kelvin,
     )
@@ -131,9 +128,7 @@ def sine_signal_processing(
     amp_ratio = amps / amps[0]
 
     phases = extract_result_phases(results)
-    # TODO: phase_diff
-
-    raise NotImplementedError()
+    phase_diff = phases - phases[0]
 
     return SignalProperties(amp_ratio, phase_diff)
 
