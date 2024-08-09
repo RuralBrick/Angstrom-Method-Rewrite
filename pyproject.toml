@@ -13,11 +13,12 @@ dependencies = [
     "numpy",
     "matplotlib",
     "scipy",
+    "lmfit",
     "pyangstromHT@git+https://github.com/RuralBrick/cylindrical-angstrom1.git#egg=pyangstromHT",
     "pyangstromRT@git+https://github.com/RuralBrick/cylindrical-angstrom2.git#egg=pyangstromRT",
 ]
 authors = [
-    {name = "RuralBrick"},
+    {name = "Theodore Lau", email = "teddy1405@g.ucla.edu"},
 ]
 description = """
 Perform the Angstrom method for determining thermal conductivity using thermal \

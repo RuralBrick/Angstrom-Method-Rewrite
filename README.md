@@ -32,6 +32,14 @@ research, please cite the following sources:
 - https://doi.org/10.1115/1.4053108
 - https://doi.org/10.1115/1.4047145
 
+## Other Credits
+
+This code was written for the [Nano Transport Research Group (NTRG) at
+UCLA](https://ntrg.seas.ucla.edu/) through a collaboration between PhD Student
+Min Jong Kil and Undergraduate Research Assistant Theodore Lau under the
+direction of Professor Timothy S. Fisher. The majority of this work is inspired
+by and derived from the work of Yuan Hu under NTRG.
+
 ## Works Referenced
 
 This code is based off of techniques and theory described in the following
