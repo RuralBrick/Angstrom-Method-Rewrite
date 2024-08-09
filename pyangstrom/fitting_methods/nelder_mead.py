@@ -1,5 +1,5 @@
 import logging
-from enum import Enum
+from enum import StrEnum
 import abc
 
 import numpy as np
@@ -16,7 +16,7 @@ from pyangstrom.signal import SignalProperties
 
 logger = logging.getLogger('fit')
 
-class UsedProperties(Enum):
+class UsedProperties(StrEnum):
     AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES = 'phase-amplitude'
     AMPLITUDE_RATIOS_ONLY = 'amplitude'
     PHASE_DIFFERENCES_ONLY = 'phase'
@@ -33,9 +33,8 @@ class NelderMeadEquations(EquationPackage):
 
 def extract_used_properties(
         properties: SignalProperties,
-        properties_to_use: str | UsedProperties,
+        properties_to_use: UsedProperties | str,
 ) -> np.ndarray:
-    properties_to_use = UsedProperties(properties_to_use)
     match properties_to_use:
         case UsedProperties.AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES:
             return np.stack(properties)
@@ -48,7 +47,7 @@ def fit(
         unknowns_guesses: Unknowns,
         solution: NelderMeadEquations,
         observed_properties: SignalProperties,
-        properties_to_use: str | UsedProperties = UsedProperties.AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES,
+        properties_to_use: UsedProperties | str = UsedProperties.AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES,
         **minimize_kwargs,
 ) -> FitterOutput:
     used_observed_properties = extract_used_properties(
