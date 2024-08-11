@@ -128,6 +128,10 @@ def record_to_kil_circular_room_temp(record) -> Optional[SolverInformation]:
                 'thermal_diffusivity_m2__s': 1,
                 'convective_heat_transfer_term': 35,
             },
+            'parameters': {
+                'heating_source_radius_meters': record['R0_pixels'] * 25e-6,
+                'outer_boundary_radius_meters': 4.8e-2,
+            },
         }
         return solver
     except KeyError as e:

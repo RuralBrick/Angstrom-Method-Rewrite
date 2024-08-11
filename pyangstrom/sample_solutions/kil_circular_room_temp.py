@@ -26,13 +26,15 @@ class Solution(NelderMeadEquations, LsrEquations):
             self,
             margins: Margins,
             setup: ExperimentalSetup,
+            heating_source_radius_meters: float,
+            outer_boundary_radius_meters: float,
     ) -> None:
         self.margins = margins
         disp_axes = len(margins.displacements_meters.shape) * [np.newaxis]
         self.time_seconds = margins.seconds_elapsed[:, *disp_axes]
         self.radii_meters = margins.displacements_meters
-        self.min_radius_meters = margins.displacements_meters[0, *disp_axes[:-1]]
-        self.max_radius_meters = margins.displacements_meters[-1, *disp_axes[:-1]]
+        self.heating_source_radius_meters = heating_source_radius_meters
+        self.outer_boundary_radius_meters = outer_boundary_radius_meters
         self.setup = setup
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
 
@@ -46,8 +48,8 @@ class Solution(NelderMeadEquations, LsrEquations):
     ):
         i = 1j
         r = self.radii_meters
-        a = self.min_radius_meters
-        b = self.max_radius_meters
+        a = self.heating_source_radius_meters
+        b = self.outer_boundary_radius_meters
         w = self.angular_frequency_hertz
         D = thermal_diffusivity_m2__s
         m = convective_heat_transfer_term
@@ -66,13 +68,13 @@ class Solution(NelderMeadEquations, LsrEquations):
     ):
         i = 1j
         r = self.radii_meters
-        a = self.min_radius_meters
-        b = self.max_radius_meters
+        a = self.heating_source_radius_meters
+        b = self.outer_boundary_radius_meters
         w = self.angular_frequency_hertz
-        A = thermal_diffusivity_m2__s
+        D = thermal_diffusivity_m2__s
         m = convective_heat_transfer_term
 
-        X = i * np.sqrt(m*m - i*w/A)
+        X = i * np.sqrt(m*m - i*w/D)
         numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
         denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
         T2 = 0.5 * numerator / denominator
