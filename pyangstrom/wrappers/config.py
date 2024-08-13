@@ -129,7 +129,7 @@ def record_to_kil_circular_room_temp(record) -> Optional[SolverInformation]:
                 'convective_heat_transfer_term': 35,
             },
             'parameters': {
-                'heating_source_radius_meters': record['R0_pixels'] * 25e-6,
+                'heating_source_radius_meters': float(record['R0_pixels']) * 25e-6,
                 'outer_boundary_radius_meters': 4.8e-2,
             },
         }
