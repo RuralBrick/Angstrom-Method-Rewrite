@@ -9,11 +9,11 @@ from pyangstrom.transform import Margins, Region
 from pyangstrom.signal import fft_signal_processing, SignalProperties
 from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
 from pyangstrom.fitting_methods.lsr import LsrEquations
-from pyangstrom.helpers import calc_thermal_diffusivity
+from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
-    thermal_conductivity_W__m_K: float
+    thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 def J0(x):
@@ -53,11 +53,15 @@ class Solution(NelderMeadEquations, LsrEquations):
 
     def calc_convective_heat_transfer_term(
             self,
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
     ):
         h = convective_heat_transfer_coefficient_W__m2_K
-        k = thermal_conductivity_W__m_K
+        k = calc_thermal_conductivity(
+            thermal_diffusivity_m2__s,
+            self.setup['material_properties']['specific_heat_capacity_J__kg_K'],
+            self.setup['material_properties']['density_kg__m3'],
+        )
         d = self.sample_thickness_meters
 
         m2 = h / (k*d)
@@ -66,7 +70,7 @@ class Solution(NelderMeadEquations, LsrEquations):
 
     def calc_normalized_T1(
             self,
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
     ):
         i = 1j
@@ -74,13 +78,9 @@ class Solution(NelderMeadEquations, LsrEquations):
         a = self.heating_source_radius_meters
         b = self.outer_boundary_radius_meters
         w = self.angular_frequency_hertz
-        D = calc_thermal_diffusivity(
-            thermal_conductivity_W__m_K,
-            self.setup['material_properties']['specific_heat_capacity_J__kg_K'],
-            self.setup['material_properties']['density_kg__m3'],
-        )
+        D = thermal_diffusivity_m2__s
         m2 = self.calc_convective_heat_transfer_term(
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
         )
 
@@ -93,7 +93,7 @@ class Solution(NelderMeadEquations, LsrEquations):
 
     def calc_normalized_T2(
             self,
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
     ):
         i = 1j
@@ -101,13 +101,9 @@ class Solution(NelderMeadEquations, LsrEquations):
         a = self.heating_source_radius_meters
         b = self.outer_boundary_radius_meters
         w = self.angular_frequency_hertz
-        D = calc_thermal_diffusivity(
-            thermal_conductivity_W__m_K,
-            self.setup['material_properties']['specific_heat_capacity_J__kg_K'],
-            self.setup['material_properties']['density_kg__m3'],
-        )
+        D = thermal_diffusivity_m2__s
         m2 = self.calc_convective_heat_transfer_term(
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
         )
 
@@ -120,18 +116,18 @@ class Solution(NelderMeadEquations, LsrEquations):
 
     def calc_normalized_temps(
             self,
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
     ):
         i = 1j
         t = self.time_seconds
         w = self.angular_frequency_hertz
         T1 = self.calc_normalized_T1(
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
         )
         T2 = self.calc_normalized_T2(
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
         )
 
@@ -144,7 +140,7 @@ class Solution(NelderMeadEquations, LsrEquations):
             unknowns: KilCircularRoomTempUnknowns,
     ) -> np.ndarray:
         vector = np.array([
-            unknowns['thermal_conductivity_W__m_K'],
+            unknowns['thermal_diffusivity_m2__s'],
             unknowns['convective_heat_transfer_coefficient_W__m2_K'],
         ])
         return vector
@@ -154,7 +150,7 @@ class Solution(NelderMeadEquations, LsrEquations):
             vector: np.ndarray
     ) -> KilCircularRoomTempUnknowns:
         unknowns: KilCircularRoomTempUnknowns = {
-            'thermal_conductivity_W__m_K': vector[0],
+            'thermal_diffusivity_m2__s': vector[0],
             'convective_heat_transfer_coefficient_W__m2_K': vector[1],
         }
         return unknowns
@@ -165,20 +161,20 @@ class Solution(NelderMeadEquations, LsrEquations):
             dtype='datetime64[ns]',
         )
         temps = self.calc_normalized_temps(
-            unknowns['thermal_conductivity_W__m_K'],
+            unknowns['thermal_diffusivity_m2__s'],
             unknowns['convective_heat_transfer_coefficient_W__m2_K'],
         )
         region = Region(timestamps, temps, self.margins)
         return fft_signal_processing(region, self.setup)
 
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
-        thermal_conductivity_W__m_K, convective_heat_transfer_coefficient_W__m2_K = unknowns_vector
+        thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K = unknowns_vector
         timestamps = pd.DatetimeIndex(
             1e9 * self.margins.seconds_elapsed,
             dtype='datetime64[ns]',
         )
         temps = self.calc_normalized_temps(
-            thermal_conductivity_W__m_K,
+            thermal_diffusivity_m2__s,
             convective_heat_transfer_coefficient_W__m2_K,
         )
         region = Region(timestamps, temps, self.margins)
