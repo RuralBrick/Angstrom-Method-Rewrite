@@ -32,14 +32,24 @@ class Solution(NelderMeadEquations, LsrEquations):
             outer_boundary_radius_meters: float,
     ) -> None:
         self.margins = margins
-        disp_axes = len(margins.displacements_meters.shape) * [np.newaxis]
-        self.time_seconds = margins.seconds_elapsed[:, *disp_axes]
+        self.time_seconds = self.append_dims(
+            margins.seconds_elapsed,
+            len(margins.displacements_meters.shape),
+        )
         self.radii_meters = margins.displacements_meters
         self.sample_thickness_meters = sample_thickness_meters
         self.heating_source_radius_meters = heating_source_radius_meters
         self.outer_boundary_radius_meters = outer_boundary_radius_meters
         self.setup = setup
         self.angular_frequency_hertz = 2*np.pi*setup['heating_frequency_hertz']
+
+    def append_dims(self, arr: np.ndarray, num_dims: int) -> np.ndarray:
+        num_current_dims = len(arr.shape)
+        expanded_arr = np.expand_dims(
+            arr,
+            axis=tuple(range(num_current_dims, num_current_dims + num_dims)),
+        )
+        return expanded_arr
 
     def calc_convective_heat_transfer_term(
             self,
