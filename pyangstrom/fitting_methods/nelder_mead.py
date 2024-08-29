@@ -1,5 +1,5 @@
 import logging
-from enum import StrEnum
+from enum import Enum
 import abc
 
 import numpy as np
@@ -16,7 +16,7 @@ from pyangstrom.signal import SignalProperties
 
 logger = logging.getLogger('fit')
 
-class UsedProperties(StrEnum):
+class UsedProperties(Enum):
     AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES = 'phase-amplitude'
     AMPLITUDE_RATIOS_ONLY = 'amplitude'
     PHASE_DIFFERENCES_ONLY = 'phase'
@@ -35,7 +35,7 @@ def extract_used_properties(
         properties: SignalProperties,
         properties_to_use: UsedProperties | str,
 ) -> np.ndarray:
-    match properties_to_use:
+    match UsedProperties(properties_to_use):
         case UsedProperties.AMPLITUDE_RATIOS_AND_PHASE_DIFFERENCES:
             return np.stack(properties)
         case UsedProperties.AMPLITUDE_RATIOS_ONLY:
