@@ -392,7 +392,7 @@ def fully_extract_region(
         df_recording: pd.DataFrame,
         information: RegionInformation,
         setup: ExperimentalSetup,
-) -> Region | list[Region]:
+) -> Region | list[Region] | list[list[Region]]:
     """
     Exceptions
     ----------
