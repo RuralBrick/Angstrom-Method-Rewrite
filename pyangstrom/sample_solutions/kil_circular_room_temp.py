@@ -16,6 +16,10 @@ class KilCircularRoomTempUnknowns(TypedDict):
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
+class LogKilCircularRoomTempUnknowns(TypedDict):
+    thermal_diffusivity_log10_m2__s: float
+    convective_heat_transfer_coefficient_log10_W__m2_K: float
+
 def J0(x):
     return jv(0, x)
 
@@ -179,3 +183,31 @@ class Solution(NelderMeadEquations, LsrEquations):
         )
         region = Region(timestamps, temps, self.margins)
         return fft_signal_processing(region, self.setup)
+
+class LogSolution(Solution):
+    def unknowns_to_vector(
+            self,
+            unknowns: LogKilCircularRoomTempUnknowns,
+    ) -> np.ndarray:
+        vector = np.array([
+            unknowns['thermal_diffusivity_log10_m2__s'],
+            unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -> LogKilCircularRoomTempUnknowns:
+        unknowns: LogKilCircularRoomTempUnknowns = {
+            'thermal_diffusivity_log10_m2__s': vector[0],
+            'convective_heat_transfer_coefficient_log10_W__m2_K': vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogKilCircularRoomTempUnknowns) -> SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))

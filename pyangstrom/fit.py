@@ -72,6 +72,8 @@ def extract_solution_class(
             from pyangstrom.sample_solutions.lopez_baeza_short import LogSolution as Solution
         case 'kil':
             from pyangstrom.sample_solutions.kil_circular_room_temp import Solution
+        case 'log_kil':
+            from pyangstrom.sample_solutions.kil_circular_room_temp import LogSolution as Solution
         case _:
             raise ValueError(f"Solver {solver_information['name']} not found.")
     return Solution
