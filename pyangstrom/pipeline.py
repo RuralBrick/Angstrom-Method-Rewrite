@@ -32,6 +32,11 @@ from pyangstrom.visualization.signal import (
 
 logger = logging.getLogger('pipeline')
 
+def fully_extract_result(func, data, *args):
+    if isinstance(data, list):
+        return [fully_extract_result(func, d, *args) for d in data]
+    return func(data, *args)
+
 def visualize_recording(df_recording):
     return df_recording, animate_recording(df_recording)
 
@@ -39,7 +44,12 @@ def visualize_region(df_recording, region_result, region_information):
     if isinstance(region_result, list):
         _, figs = zip(*(
             visualize_region(df_recording, r, i) for r, i
-            in zip(region_result, region_information)
+            in zip(
+                region_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{'geometry': g} for g in region_information['geometries']]
+            )
         ))
         return region_result, list(figs)
 
@@ -57,7 +67,12 @@ def visualize_signal(df_recording, signal_result, region_information):
     if isinstance(signal_result, list):
         _, figs = zip(*(
             visualize_signal(df_recording, s, i) for s, i
-            in zip(signal_result, region_information)
+            in zip(
+                signal_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{'geometry': g} for g in region_information['geometries']]
+            )
         ))
         return signal_result, list(figs)
 
@@ -80,7 +95,13 @@ def visualize_fit(
     if isinstance(fitting_result, list):
         _, figs = zip(*(
             visualize_fit(df_recording, s, f, i) for s, f, i
-            in zip(signal_result, fitting_result, region_information)
+            in zip(
+                signal_result,
+                fitting_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{'geometry': g} for g in region_information['geometries']]
+            )
         ))
         return fitting_result, list(figs)
 
@@ -193,7 +214,10 @@ def analyze_recording(
         else:
             return region_result
     if isinstance(region_result, list):
-        debug_region = region_result[0]
+        if isinstance(region_result[0], list):
+            debug_region = region_result[0][0]
+        else:
+            debug_region = region_result[0]
     else:
         debug_region = region_result
     logger.debug(f"{debug_region.timestamps[:1]=}")
@@ -202,20 +226,12 @@ def analyze_recording(
     logger.debug(f"{debug_region.margins.displacements_meters.flatten()[:1]=}")
     logger.info("Signal processing")
     try:
-        if isinstance(region_result, list):
-            signal_result = [
-                signal_process_region(
-                    r,
-                    config['signal_processor'],
-                    config['experimental_setup'],
-                ) for r in region_result
-            ]
-        else:
-            signal_result = signal_process_region(
-                region_result,
-                config['signal_processor'],
-                config['experimental_setup'],
-            )
+        signal_result = fully_extract_result(
+            signal_process_region,
+            region_result,
+            config['signal_processor'],
+            config['experimental_setup']
+        )
     except Exception as e:
         if debug:
             raise
@@ -238,29 +254,23 @@ def analyze_recording(
         else:
             return signal_result
     if isinstance(signal_result, list):
-        debug_signal = signal_result[0]
+        if isinstance(signal_result[0], list):
+            debug_signal = signal_result[0][0]
+        else:
+            debug_signal = signal_result[0]
     else:
         debug_signal = signal_result
     for name, prop in debug_signal.signal_properties._asdict().items():
         logger.debug(f"{name}={prop[:3]}")
     logger.info("Fitting")
     try:
-        if isinstance(signal_result, list):
-            fitting_result = [
-                autofit(
-                    r,
-                    config['solver'],
-                    config['fitter'],
-                    config['experimental_setup'],
-                ) for r in signal_result
-            ]
-        else:
-            fitting_result = autofit(
-                signal_result,
-                config['solver'],
-                config['fitter'],
-                config['experimental_setup'],
-            )
+        fitting_result = fully_extract_result(
+            autofit,
+            signal_result,
+            config['solver'],
+            config['fitter'],
+            config['experimental_setup'],
+        )
     except Exception as e:
         if debug:
             raise
