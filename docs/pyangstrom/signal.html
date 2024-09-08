@@ -227,8 +227,8 @@ def extract_processor(
         information: SignalProcessorInformation
 ) -&gt; SignalProcessor:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -257,8 +257,8 @@ def signal_process_region(
         setup: ExperimentalSetup,
 ) -&gt; SignalResult:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -306,11 +306,13 @@ def signal_process_region(
 <span>def <span class="ident">extract_processor</span></span>(<span>information: <a title="pyangstrom.signal.SignalProcessorInformation" href="#pyangstrom.signal.SignalProcessorInformation">SignalProcessorInformation</a>) ‑> <a title="pyangstrom.signal.SignalProcessor" href="#pyangstrom.signal.SignalProcessor">SignalProcessor</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in information.
-ValueError
-Named signal processor not found.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in information.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Named signal processor not found.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -319,8 +321,8 @@ Named signal processor not found.</p></div>
         information: SignalProcessorInformation
 ) -&gt; SignalProcessor:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -510,11 +512,13 @@ Named signal processor not found.</p></div>
 <span>def <span class="ident">signal_process_region</span></span>(<span>region: <a title="pyangstrom.transform.Region" href="transform.html#pyangstrom.transform.Region">Region</a>, information: <a title="pyangstrom.signal.SignalProcessorInformation" href="#pyangstrom.signal.SignalProcessorInformation">SignalProcessorInformation</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.signal.SignalResult" href="#pyangstrom.signal.SignalResult">SignalResult</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in information.
-ValueError
-Named signal processor not found.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in information.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Named signal processor not found.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -525,8 +529,8 @@ Named signal processor not found.</p></div>
         setup: ExperimentalSetup,
 ) -&gt; SignalResult:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError

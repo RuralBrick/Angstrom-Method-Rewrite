@@ -86,8 +86,8 @@ def extract_solution_class(
 ) -&gt; Optional[Type[EquationPackage]]:
     &#34;&#34;&#34;Returns None if &#39;name&#39; not in solver_information.
 
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Named solver not found.
     &#34;&#34;&#34;
@@ -112,8 +112,8 @@ def extract_solution(
         setup: ExperimentalSetup,
 ) -&gt; EquationPackage:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -133,8 +133,8 @@ def extract_solution(
 
 def extract_fit(fitter_information: FitterInformation) -&gt; Fitter:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -163,8 +163,8 @@ def autofit(
         setup: ExperimentalSetup,
 ) -&gt; FittingResult:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -199,11 +199,13 @@ def autofit(
 <span>def <span class="ident">autofit</span></span>(<span>signal_result: <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a>, solver_information: <a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a>, fitter_information: <a title="pyangstrom.fit.FitterInformation" href="#pyangstrom.fit.FitterInformation">FitterInformation</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.fit.FittingResult" href="#pyangstrom.fit.FittingResult">FittingResult</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in information.
-ValueError
-Named solver or fitter not found.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in information.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Named solver or fitter not found.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -215,8 +217,8 @@ Named solver or fitter not found.</p></div>
         setup: ExperimentalSetup,
 ) -&gt; FittingResult:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -244,19 +246,21 @@ Named solver or fitter not found.</p></div>
 <span>def <span class="ident">extract_fit</span></span>(<span>fitter_information: <a title="pyangstrom.fit.FitterInformation" href="#pyangstrom.fit.FitterInformation">FitterInformation</a>) ‑> <a title="pyangstrom.fit.Fitter" href="#pyangstrom.fit.Fitter">Fitter</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in information.
-ValueError
-Named fitter not found.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in information.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Named fitter not found.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def extract_fit(fitter_information: FitterInformation) -&gt; Fitter:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -283,11 +287,13 @@ Named fitter not found.</p></div>
 <span>def <span class="ident">extract_solution</span></span>(<span>solver_information: <a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a>, signal_result: <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.fit.EquationPackage" href="#pyangstrom.fit.EquationPackage">EquationPackage</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in information.
-ValueError
-Named solver not found.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in information.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Named solver not found.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -298,8 +304,8 @@ Named solver not found.</p></div>
         setup: ExperimentalSetup,
 ) -&gt; EquationPackage:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -323,9 +329,11 @@ Named solver not found.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns None if 'name' not in solver_information.</p>
-<h2 id="exceptions">Exceptions</h2>
-<p>ValueError
-Named solver not found.</p></div>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Named solver not found.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -335,8 +343,8 @@ Named solver not found.</p></div>
 ) -&gt; Optional[Type[EquationPackage]]:
     &#34;&#34;&#34;Returns None if &#39;name&#39; not in solver_information.
 
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Named solver not found.
     &#34;&#34;&#34;

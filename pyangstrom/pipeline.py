@@ -131,8 +131,8 @@ def analyze_recording(
 ):
     """Compute the thermal conductivity of the recorded sample.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     recording_path
         Path to the directory holding CSV IR camera data. Does not have to be a
         real path if there is a cache file with a matching name in
@@ -140,8 +140,8 @@ def analyze_recording(
     config
         Path to a YAML config file or the deserialized config object itself.
 
-    Keyword Arguments
-    -----------------
+    Other Parameters
+    ----------------
     verbose
         If True, print status messages while processing data.
     memory_cache

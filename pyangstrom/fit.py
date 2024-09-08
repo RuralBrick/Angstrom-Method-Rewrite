@@ -58,8 +58,8 @@ def extract_solution_class(
 ) -> Optional[Type[EquationPackage]]:
     """Returns None if 'name' not in solver_information.
 
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Named solver not found.
     """
@@ -84,8 +84,8 @@ def extract_solution(
         setup: ExperimentalSetup,
 ) -> EquationPackage:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -105,8 +105,8 @@ def extract_solution(
 
 def extract_fit(fitter_information: FitterInformation) -> Fitter:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -135,8 +135,8 @@ def autofit(
         setup: ExperimentalSetup,
 ) -> FittingResult:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError

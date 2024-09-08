@@ -128,8 +128,8 @@ def convert_temperatures_to_kelvin(
 
 def find_heat_source_direction(geometry: CartesianGeometry) -> Direction:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -173,8 +173,8 @@ def extract_cartesian_region(
         setup: ExperimentalSetup,
 ) -> Region:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -394,8 +394,8 @@ def fully_extract_region(
         setup: ExperimentalSetup,
 ) -> Region | list[Region] | list[list[Region]]:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Malformed information.
     """

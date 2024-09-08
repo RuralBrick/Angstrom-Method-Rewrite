@@ -156,8 +156,8 @@ def convert_temperatures_to_kelvin(
 
 def find_heat_source_direction(geometry: CartesianGeometry) -&gt; Direction:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -201,8 +201,8 @@ def extract_cartesian_region(
         setup: ExperimentalSetup,
 ) -&gt; Region:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -422,8 +422,8 @@ def fully_extract_region(
         setup: ExperimentalSetup,
 ) -&gt; Region | list[Region] | list[list[Region]]:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Malformed information.
     &#34;&#34;&#34;
@@ -585,11 +585,13 @@ def collapse_region(region: Region) -&gt; Region:
 <span>def <span class="ident">extract_cartesian_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, geometry: <a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in geometry.
-ValueError
-Invalid geometry.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in geometry.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Invalid geometry.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -600,8 +602,8 @@ Invalid geometry.</p></div>
         setup: ExperimentalSetup,
 ) -&gt; Region:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -713,19 +715,21 @@ Invalid geometry.</p></div>
 <span>def <span class="ident">find_heat_source_direction</span></span>(<span>geometry: <a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a>) ‑> <a title="pyangstrom.transform.Direction" href="#pyangstrom.transform.Direction">Direction</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>KeyError
-Field not found in geometry.
-ValueError
-Invalid geometry.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in geometry.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Invalid geometry.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def find_heat_source_direction(geometry: CartesianGeometry) -&gt; Direction:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -768,9 +772,11 @@ Invalid geometry.</p></div>
 <span>def <span class="ident">fully_extract_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, information: <a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a> | <a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a> | list[<a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a>] | list[<a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a>], setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a> | list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>] | list[list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]]</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>ValueError
-Malformed information.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Malformed information.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -781,8 +787,8 @@ Malformed information.</p></div>
         setup: ExperimentalSetup,
 ) -&gt; Region | list[Region] | list[list[Region]]:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Malformed information.
     &#34;&#34;&#34;

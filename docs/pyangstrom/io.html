@@ -43,8 +43,8 @@ logger = logging.getLogger(&#39;io&#39;)
 
 def load_config(p_config: Path) -&gt; Config:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         File extension not recognized.
     &#34;&#34;&#34;
@@ -66,8 +66,8 @@ def save_config(
         file_extension=&#39;json&#39;,
 ):
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Invalid file extension.
     &#34;&#34;&#34;
@@ -161,17 +161,19 @@ def save_animation(anim: Animation, p_directory: Path, name: str):
 <span>def <span class="ident">load_config</span></span>(<span>p_config: pathlib.Path) ‑> <a title="pyangstrom.config.Config" href="config.html#pyangstrom.config.Config">Config</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>ValueError
-File extension not recognized.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>File extension not recognized.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def load_config(p_config: Path) -&gt; Config:
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         File extension not recognized.
     &#34;&#34;&#34;
@@ -286,9 +288,11 @@ File extension not recognized.</p></div>
 <span>def <span class="ident">save_config</span></span>(<span>config: <a title="pyangstrom.config.Config" href="config.html#pyangstrom.config.Config">Config</a>, p_directory: pathlib.Path, name: str, file_extension='json')</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="exceptions">Exceptions</h2>
-<p>ValueError
-Invalid file extension.</p></div>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Invalid file extension.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -300,8 +304,8 @@ Invalid file extension.</p></div>
         file_extension=&#39;json&#39;,
 ):
     &#34;&#34;&#34;
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Invalid file extension.
     &#34;&#34;&#34;

@@ -39,8 +39,8 @@ def hu_batch_process(
 ):
     """Compute thermal conductivity using old configuration.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     df_exp_condition_filename
         Name of the CSV file containing batch processing information; equivalent
         to HT's df_exp_condition_spreadsheet_filename and RT's
@@ -54,8 +54,8 @@ def hu_batch_process(
         Path to the directory holding data files; equivalent to HT's
         data_directory, but also supports Path objects.
 
-    Keyword Arguments
-    -----------------
+    Other Parameters
+    ----------------
     verbose
         If True, print status messages while processing data.
     memory_cache

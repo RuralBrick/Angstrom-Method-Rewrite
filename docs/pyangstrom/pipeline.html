@@ -159,8 +159,8 @@ def analyze_recording(
 ):
     &#34;&#34;&#34;Compute the thermal conductivity of the recorded sample.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     recording_path
         Path to the directory holding CSV IR camera data. Does not have to be a
         real path if there is a cache file with a matching name in
@@ -168,8 +168,8 @@ def analyze_recording(
     config
         Path to a YAML config file or the deserialized config object itself.
 
-    Keyword Arguments
-    -----------------
+    Other Parameters
+    ----------------
     verbose
         If True, print status messages while processing data.
     memory_cache
@@ -334,7 +334,7 @@ def analyze_recording(
 </code></dt>
 <dd>
 <div class="desc"><p>Compute the thermal conductivity of the recorded sample.</p>
-<h2 id="arguments">Arguments</h2>
+<h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>recording_path</code></strong></dt>
 <dd>Path to the directory holding CSV IR camera data. Does not have to be a
@@ -343,13 +343,15 @@ recording_cache_path.</dd>
 <dt><strong><code>config</code></strong></dt>
 <dd>Path to a YAML config file or the deserialized config object itself.</dd>
 </dl>
-<h2 id="keyword-arguments">Keyword Arguments</h2>
-<p>verbose
-If True, print status messages while processing data.
-memory_cache
-Holds intermediate results in memory, allowing for faster reruns.
-recording_cache_path
-Path to a directory in which cached IR camera data will be saved.</p></div>
+<h2 id="other-parameters">Other Parameters</h2>
+<dl>
+<dt><strong><code>verbose</code></strong></dt>
+<dd>If True, print status messages while processing data.</dd>
+<dt><strong><code>memory_cache</code></strong></dt>
+<dd>Holds intermediate results in memory, allowing for faster reruns.</dd>
+<dt><strong><code>recording_cache_path</code></strong></dt>
+<dd>Path to a directory in which cached IR camera data will be saved.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -365,8 +367,8 @@ Path to a directory in which cached IR camera data will be saved.</p></div>
 ):
     &#34;&#34;&#34;Compute the thermal conductivity of the recorded sample.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     recording_path
         Path to the directory holding CSV IR camera data. Does not have to be a
         real path if there is a cache file with a matching name in
@@ -374,8 +376,8 @@ Path to a directory in which cached IR camera data will be saved.</p></div>
     config
         Path to a YAML config file or the deserialized config object itself.
 
-    Keyword Arguments
-    -----------------
+    Other Parameters
+    ----------------
     verbose
         If True, print status messages while processing data.
     memory_cache

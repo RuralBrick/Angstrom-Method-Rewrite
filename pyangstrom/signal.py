@@ -199,8 +199,8 @@ def extract_processor(
         information: SignalProcessorInformation
 ) -> SignalProcessor:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -229,8 +229,8 @@ def signal_process_region(
         setup: ExperimentalSetup,
 ) -> SignalResult:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
