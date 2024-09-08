@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.fit API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.fit</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import logging
+from typing import TypedDict, Protocol, Optional, Type
+import abc
+from dataclasses import dataclass
+
+from pyangstrom.exp_setup import ExperimentalSetup
+from pyangstrom.transform import Margins
+from pyangstrom.signal import SignalProperties, SignalResult
+
+
+logger = logging.getLogger(&#39;fit&#39;)
+
+Unknowns = dict
+
+@dataclass
+class FitterOutput:
+    unknowns_solutions: Unknowns
+
+@dataclass
+class FittingResult:
+    unknowns_solutions: Unknowns
+    theoretical_properties: SignalProperties
+
+class EquationPackage(abc.ABC):
+    @abc.abstractmethod
+    def __init__(
+            self,
+            margins: Margins,
+            setup: ExperimentalSetup,
+            **kwargs,
+    ) -&gt; None: ...
+
+    @abc.abstractmethod
+    def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...
+
+class Fitter(Protocol):
+    def __call__(
+            self,
+            unknowns_guesses: Unknowns,
+            solution: EquationPackage,
+            observed_properties: SignalProperties,
+            **kwargs,
+    ) -&gt; FitterOutput: ...
+
+class SolverInformation(TypedDict, total=False):
+    name: str
+    solution: EquationPackage
+    guesses: Unknowns
+    parameters: dict
+
+class FitterInformation(TypedDict, total=False):
+    name: str
+    fitter: Fitter
+    parameters: dict
+
+def extract_solution_class(
+        solver_information: SolverInformation
+) -&gt; Optional[Type[EquationPackage]]:
+    &#34;&#34;&#34;Returns None if &#39;name&#39; not in solver_information.
+
+    Exceptions
+    ----------
+    ValueError
+        Named solver not found.
+    &#34;&#34;&#34;
+    if &#39;name&#39; not in solver_information:
+        return None
+    match solver_information[&#39;name&#39;]:
+        case &#39;lopez-baeza&#39;:
+            from pyangstrom.sample_solutions.lopez_baeza_short import Solution
+        case &#39;log_lopez-baeza&#39;:
+            from pyangstrom.sample_solutions.lopez_baeza_short import LogSolution as Solution
+        case &#39;kil&#39;:
+            from pyangstrom.sample_solutions.kil_circular_room_temp import Solution
+        case &#39;log_kil&#39;:
+            from pyangstrom.sample_solutions.kil_circular_room_temp import LogSolution as Solution
+        case _:
+            raise ValueError(f&#34;Solver {solver_information[&#39;name&#39;]} not found.&#34;)
+    return Solution
+
+def extract_solution(
+        solver_information: SolverInformation,
+        signal_result: SignalResult,
+        setup: ExperimentalSetup,
+) -&gt; EquationPackage:
+    &#34;&#34;&#34;
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named solver not found.
+    &#34;&#34;&#34;
+    if &#39;solution&#39; in solver_information:
+        return solver_information[&#39;solution&#39;]
+    elif Solution := extract_solution_class(solver_information):
+        solver_params = (solver_information[&#39;parameters&#39;]
+                         if &#39;parameters&#39; in solver_information
+                         else {})
+        return Solution(signal_result.margins, setup, **solver_params)
+    else:
+        raise KeyError(
+            &#34;Must have either name or solution in solver_information.&#34;
+        )
+
+def extract_fit(fitter_information: FitterInformation) -&gt; Fitter:
+    &#34;&#34;&#34;
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named fitter not found.
+    &#34;&#34;&#34;
+    if &#39;fitter&#39; in fitter_information:
+        return fitter_information[&#39;fitter&#39;]
+    elif &#39;name&#39; in fitter_information:
+        match fitter_information[&#39;name&#39;]:
+            case &#39;least_squares_regression&#39; | &#39;lsr&#39;:
+                from pyangstrom.fitting_methods.lsr import fit
+            case &#39;nelder-mead&#39;:
+                from pyangstrom.fitting_methods.nelder_mead import fit
+            case _:
+                raise ValueError(
+                    f&#34;Fitter {fitter_information[&#39;name&#39;]} not found.&#34;
+                )
+        return fit
+    else:
+        raise KeyError(&#34;Must have either name or fitter in fitter_information.&#34;)
+
+def autofit(
+        signal_result: SignalResult,
+        solver_information: SolverInformation,
+        fitter_information: FitterInformation,
+        setup: ExperimentalSetup,
+) -&gt; FittingResult:
+    &#34;&#34;&#34;
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named solver or fitter not found.
+    &#34;&#34;&#34;
+    solution = extract_solution(solver_information, signal_result, setup)
+    fit = extract_fit(fitter_information)
+    fitter_params = (fitter_information[&#39;parameters&#39;]
+                     if &#39;parameters&#39; in fitter_information
+                     else {})
+    output = fit(
+        solver_information[&#39;guesses&#39;],
+        solution,
+        signal_result.signal_properties,
+        **fitter_params,
+    )
+    result = FittingResult(
+        output.unknowns_solutions,
+        solution.solve(output.unknowns_solutions),
+    )
+    return result</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.fit.autofit"><code class="name flex">
+<span>def <span class="ident">autofit</span></span>(<span>signal_result: <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a>, solver_information: <a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a>, fitter_information: <a title="pyangstrom.fit.FitterInformation" href="#pyangstrom.fit.FitterInformation">FitterInformation</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.fit.FittingResult" href="#pyangstrom.fit.FittingResult">FittingResult</a></span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="exceptions">Exceptions</h2>
+<p>KeyError
+Field not found in information.
+ValueError
+Named solver or fitter not found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def autofit(
+        signal_result: SignalResult,
+        solver_information: SolverInformation,
+        fitter_information: FitterInformation,
+        setup: ExperimentalSetup,
+) -&gt; FittingResult:
+    &#34;&#34;&#34;
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named solver or fitter not found.
+    &#34;&#34;&#34;
+    solution = extract_solution(solver_information, signal_result, setup)
+    fit = extract_fit(fitter_information)
+    fitter_params = (fitter_information[&#39;parameters&#39;]
+                     if &#39;parameters&#39; in fitter_information
+                     else {})
+    output = fit(
+        solver_information[&#39;guesses&#39;],
+        solution,
+        signal_result.signal_properties,
+        **fitter_params,
+    )
+    result = FittingResult(
+        output.unknowns_solutions,
+        solution.solve(output.unknowns_solutions),
+    )
+    return result</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.fit.extract_fit"><code class="name flex">
+<span>def <span class="ident">extract_fit</span></span>(<span>fitter_information: <a title="pyangstrom.fit.FitterInformation" href="#pyangstrom.fit.FitterInformation">FitterInformation</a>) ‑> <a title="pyangstrom.fit.Fitter" href="#pyangstrom.fit.Fitter">Fitter</a></span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="exceptions">Exceptions</h2>
+<p>KeyError
+Field not found in information.
+ValueError
+Named fitter not found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_fit(fitter_information: FitterInformation) -&gt; Fitter:
+    &#34;&#34;&#34;
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named fitter not found.
+    &#34;&#34;&#34;
+    if &#39;fitter&#39; in fitter_information:
+        return fitter_information[&#39;fitter&#39;]
+    elif &#39;name&#39; in fitter_information:
+        match fitter_information[&#39;name&#39;]:
+            case &#39;least_squares_regression&#39; | &#39;lsr&#39;:
+                from pyangstrom.fitting_methods.lsr import fit
+            case &#39;nelder-mead&#39;:
+                from pyangstrom.fitting_methods.nelder_mead import fit
+            case _:
+                raise ValueError(
+                    f&#34;Fitter {fitter_information[&#39;name&#39;]} not found.&#34;
+                )
+        return fit
+    else:
+        raise KeyError(&#34;Must have either name or fitter in fitter_information.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.fit.extract_solution"><code class="name flex">
+<span>def <span class="ident">extract_solution</span></span>(<span>solver_information: <a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a>, signal_result: <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.fit.EquationPackage" href="#pyangstrom.fit.EquationPackage">EquationPackage</a></span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="exceptions">Exceptions</h2>
+<p>KeyError
+Field not found in information.
+ValueError
+Named solver not found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_solution(
+        solver_information: SolverInformation,
+        signal_result: SignalResult,
+        setup: ExperimentalSetup,
+) -&gt; EquationPackage:
+    &#34;&#34;&#34;
+    Exceptions
+    ----------
+    KeyError
+        Field not found in information.
+    ValueError
+        Named solver not found.
+    &#34;&#34;&#34;
+    if &#39;solution&#39; in solver_information:
+        return solver_information[&#39;solution&#39;]
+    elif Solution := extract_solution_class(solver_information):
+        solver_params = (solver_information[&#39;parameters&#39;]
+                         if &#39;parameters&#39; in solver_information
+                         else {})
+        return Solution(signal_result.margins, setup, **solver_params)
+    else:
+        raise KeyError(
+            &#34;Must have either name or solution in solver_information.&#34;
+        )</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.fit.extract_solution_class"><code class="name flex">
+<span>def <span class="ident">extract_solution_class</span></span>(<span>solver_information: <a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a>) ‑> Optional[Type[<a title="pyangstrom.fit.EquationPackage" href="#pyangstrom.fit.EquationPackage">EquationPackage</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns None if 'name' not in solver_information.</p>
+<h2 id="exceptions">Exceptions</h2>
+<p>ValueError
+Named solver not found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_solution_class(
+        solver_information: SolverInformation
+) -&gt; Optional[Type[EquationPackage]]:
+    &#34;&#34;&#34;Returns None if &#39;name&#39; not in solver_information.
+
+    Exceptions
+    ----------
+    ValueError
+        Named solver not found.
+    &#34;&#34;&#34;
+    if &#39;name&#39; not in solver_information:
+        return None
+    match solver_information[&#39;name&#39;]:
+        case &#39;lopez-baeza&#39;:
+            from pyangstrom.sample_solutions.lopez_baeza_short import Solution
+        case &#39;log_lopez-baeza&#39;:
+            from pyangstrom.sample_solutions.lopez_baeza_short import LogSolution as Solution
+        case &#39;kil&#39;:
+            from pyangstrom.sample_solutions.kil_circular_room_temp import Solution
+        case &#39;log_kil&#39;:
+            from pyangstrom.sample_solutions.kil_circular_room_temp import LogSolution as Solution
+        case _:
+            raise ValueError(f&#34;Solver {solver_information[&#39;name&#39;]} not found.&#34;)
+    return Solution</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyangstrom.fit.EquationPackage"><code class="flex name class">
+<span>class <span class="ident">EquationPackage</span></span>
+<span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EquationPackage(abc.ABC):
+    @abc.abstractmethod
+    def __init__(
+            self,
+            margins: Margins,
+            setup: ExperimentalSetup,
+            **kwargs,
+    ) -&gt; None: ...
+
+    @abc.abstractmethod
+    def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.fitting_methods.lsr.LsrEquations" href="fitting_methods/lsr.html#pyangstrom.fitting_methods.lsr.LsrEquations">LsrEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations" href="fitting_methods/metropolis_hastings.html#pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations">MetropolisHastingsEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.fit.EquationPackage.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, unknowns: dict) ‑> <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abc.abstractmethod
+def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.fit.Fitter"><code class="flex name class">
+<span>class <span class="ident">Fitter</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for protocol classes.</p>
+<p>Protocol classes are defined as::</p>
+<pre><code>class Proto(Protocol):
+    def meth(self) -&gt; int:
+        ...
+</code></pre>
+<p>Such classes are primarily used with static type checkers that recognize
+structural subtyping (static duck-typing).</p>
+<p>For example::</p>
+<pre><code>class C:
+    def meth(self) -&gt; int:
+        return 0
+
+def func(x: Proto) -&gt; int:
+    return x.meth()
+
+func(C())  # Passes static type check
+</code></pre>
+<p>See PEP 544 for details. Protocol classes decorated with
+@typing.runtime_checkable act as simple-minded runtime protocols that check
+only the presence of given attributes, ignoring their type signatures.
+Protocol classes can be generic, they are defined as::</p>
+<pre><code>class GenProto(Protocol[T]):
+    def meth(self) -&gt; T:
+        ...
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Fitter(Protocol):
+    def __call__(
+            self,
+            unknowns_guesses: Unknowns,
+            solution: EquationPackage,
+            observed_properties: SignalProperties,
+            **kwargs,
+    ) -&gt; FitterOutput: ...</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Protocol</li>
+<li>typing.Generic</li>
+</ul>
+</dd>
+<dt id="pyangstrom.fit.FitterInformation"><code class="flex name class">
+<span>class <span class="ident">FitterInformation</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FitterInformation(TypedDict, total=False):
+    name: str
+    fitter: Fitter
+    parameters: dict</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.fit.FitterInformation.fitter"><code class="name">var <span class="ident">fitter</span> : <a title="pyangstrom.fit.Fitter" href="#pyangstrom.fit.Fitter">Fitter</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.fit.FitterInformation.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.fit.FitterInformation.parameters"><code class="name">var <span class="ident">parameters</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.fit.FitterOutput"><code class="flex name class">
+<span>class <span class="ident">FitterOutput</span></span>
+<span>(</span><span>unknowns_solutions: dict)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>FitterOutput(unknowns_solutions: dict)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class FitterOutput:
+    unknowns_solutions: Unknowns</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.fit.FitterOutput.unknowns_solutions"><code class="name">var <span class="ident">unknowns_solutions</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.fit.FittingResult"><code class="flex name class">
+<span>class <span class="ident">FittingResult</span></span>
+<span>(</span><span>unknowns_solutions: dict, theoretical_properties: <a title="pyangstrom.signal.SignalProperties" href="signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>FittingResult(unknowns_solutions: dict, theoretical_properties: pyangstrom.signal.SignalProperties)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class FittingResult:
+    unknowns_solutions: Unknowns
+    theoretical_properties: SignalProperties</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.fit.FittingResult.theoretical_properties"><code class="name">var <span class="ident">theoretical_properties</span> : <a title="pyangstrom.signal.SignalProperties" href="signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.fit.FittingResult.unknowns_solutions"><code class="name">var <span class="ident">unknowns_solutions</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.fit.SolverInformation"><code class="flex name class">
+<span>class <span class="ident">SolverInformation</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SolverInformation(TypedDict, total=False):
+    name: str
+    solution: EquationPackage
+    guesses: Unknowns
+    parameters: dict</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.fit.SolverInformation.guesses"><code class="name">var <span class="ident">guesses</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.fit.SolverInformation.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.fit.SolverInformation.parameters"><code class="name">var <span class="ident">parameters</span> : dict</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.fit.SolverInformation.solution"><code class="name">var <span class="ident">solution</span> : <a title="pyangstrom.fit.EquationPackage" href="#pyangstrom.fit.EquationPackage">EquationPackage</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom" href="index.html">pyangstrom</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.fit.autofit" href="#pyangstrom.fit.autofit">autofit</a></code></li>
+<li><code><a title="pyangstrom.fit.extract_fit" href="#pyangstrom.fit.extract_fit">extract_fit</a></code></li>
+<li><code><a title="pyangstrom.fit.extract_solution" href="#pyangstrom.fit.extract_solution">extract_solution</a></code></li>
+<li><code><a title="pyangstrom.fit.extract_solution_class" href="#pyangstrom.fit.extract_solution_class">extract_solution_class</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyangstrom.fit.EquationPackage" href="#pyangstrom.fit.EquationPackage">EquationPackage</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.fit.EquationPackage.solve" href="#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.fit.Fitter" href="#pyangstrom.fit.Fitter">Fitter</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyangstrom.fit.FitterInformation" href="#pyangstrom.fit.FitterInformation">FitterInformation</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.fit.FitterInformation.fitter" href="#pyangstrom.fit.FitterInformation.fitter">fitter</a></code></li>
+<li><code><a title="pyangstrom.fit.FitterInformation.name" href="#pyangstrom.fit.FitterInformation.name">name</a></code></li>
+<li><code><a title="pyangstrom.fit.FitterInformation.parameters" href="#pyangstrom.fit.FitterInformation.parameters">parameters</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.fit.FitterOutput" href="#pyangstrom.fit.FitterOutput">FitterOutput</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.fit.FitterOutput.unknowns_solutions" href="#pyangstrom.fit.FitterOutput.unknowns_solutions">unknowns_solutions</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.fit.FittingResult" href="#pyangstrom.fit.FittingResult">FittingResult</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.fit.FittingResult.theoretical_properties" href="#pyangstrom.fit.FittingResult.theoretical_properties">theoretical_properties</a></code></li>
+<li><code><a title="pyangstrom.fit.FittingResult.unknowns_solutions" href="#pyangstrom.fit.FittingResult.unknowns_solutions">unknowns_solutions</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.fit.SolverInformation.guesses" href="#pyangstrom.fit.SolverInformation.guesses">guesses</a></code></li>
+<li><code><a title="pyangstrom.fit.SolverInformation.name" href="#pyangstrom.fit.SolverInformation.name">name</a></code></li>
+<li><code><a title="pyangstrom.fit.SolverInformation.parameters" href="#pyangstrom.fit.SolverInformation.parameters">parameters</a></code></li>
+<li><code><a title="pyangstrom.fit.SolverInformation.solution" href="#pyangstrom.fit.SolverInformation.solution">solution</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

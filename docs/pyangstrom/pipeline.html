@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.pipeline API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.pipeline</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import logging
+import warnings
+from typing import Optional
+from pathlib import PurePath, Path
+
+import matplotlib.pyplot as plt
+
+from pyangstrom.config import Config
+from pyangstrom.caching import Cache
+from pyangstrom.io import (
+    recording_cache_exists,
+    load_recording_csv,
+    save_recording_cache,
+    load_recording_cache,
+    load_config,
+)
+from pyangstrom.transform import fully_extract_region
+from pyangstrom.signal import signal_process_region
+from pyangstrom.fit import autofit
+from pyangstrom.visualization.recording import animate_recording
+from pyangstrom.visualization.region import (
+    plot_geometry,
+    plot_spatiotemporal_heat_map,
+    plot_isotherms,
+    plot_groups,
+)
+from pyangstrom.visualization.signal import (
+    plot_amplitude_ratios,
+    plot_phase_differences,
+)
+
+
+logger = logging.getLogger(&#39;pipeline&#39;)
+
+def fully_extract_result(func, data, *args):
+    if isinstance(data, list):
+        return [fully_extract_result(func, d, *args) for d in data]
+    return func(data, *args)
+
+def visualize_recording(df_recording):
+    return df_recording, animate_recording(df_recording)
+
+def visualize_region(df_recording, region_result, region_information):
+    if isinstance(region_result, list):
+        _, figs = zip(*(
+            visualize_region(df_recording, r, i) for r, i
+            in zip(
+                region_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{&#39;geometry&#39;: g} for g in region_information[&#39;geometries&#39;]]
+            )
+        ))
+        return region_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if &#39;geometry&#39; in region_information:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometry&#39;])
+    else:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometries&#39;])
+    plot_spatiotemporal_heat_map(ax2, region_result)
+    plot_isotherms(ax3, region_result)
+    plot_groups(ax4, region_result)
+    return region_result, fig
+
+def visualize_signal(df_recording, signal_result, region_information):
+    if isinstance(signal_result, list):
+        _, figs = zip(*(
+            visualize_signal(df_recording, s, i) for s, i
+            in zip(
+                signal_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{&#39;geometry&#39;: g} for g in region_information[&#39;geometries&#39;]]
+            )
+        ))
+        return signal_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if &#39;geometry&#39; in region_information:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometry&#39;])
+    else:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometries&#39;])
+    plot_isotherms(ax2, signal_result.processed_region)
+    plot_amplitude_ratios(ax3, signal_result)
+    plot_phase_differences(ax4, signal_result)
+    return signal_result, fig
+
+def visualize_fit(
+        df_recording,
+        signal_result,
+        fitting_result,
+        region_information,
+):
+    if isinstance(fitting_result, list):
+        _, figs = zip(*(
+            visualize_fit(df_recording, s, f, i) for s, f, i
+            in zip(
+                signal_result,
+                fitting_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{&#39;geometry&#39;: g} for g in region_information[&#39;geometries&#39;]]
+            )
+        ))
+        return fitting_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if &#39;geometry&#39; in region_information:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometry&#39;])
+    else:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometries&#39;])
+    plot_isotherms(ax2, signal_result.processed_region)
+    plot_amplitude_ratios(ax3, signal_result, fitting_result)
+    plot_phase_differences(ax4, signal_result, fitting_result)
+    # ax1: geometry
+    # ax2: isotherms (maybe observed + theoretical)
+    # ax3: amp ratio / displacement (observed + theoretical)
+    # ax4: phase diff / displacement (observed + theoretical)
+    # axN: fitting method-specific plots
+    return fitting_result, fig
+
+def analyze_recording(
+        recording_path: str | Path,
+        config: str | Path | Config,
+        *,
+        debug: bool = False,
+        return_visualization: bool = False,
+        memory_cache: Optional[Cache] = None,
+        recording_cache_path: Optional[str | Path] = None,
+):
+    &#34;&#34;&#34;Compute the thermal conductivity of the recorded sample.
+
+    Arguments
+    ---------
+    recording_path
+        Path to the directory holding CSV IR camera data. Does not have to be a
+        real path if there is a cache file with a matching name in
+        recording_cache_path.
+    config
+        Path to a YAML config file or the deserialized config object itself.
+
+    Keyword Arguments
+    -----------------
+    verbose
+        If True, print status messages while processing data.
+    memory_cache
+        Holds intermediate results in memory, allowing for faster reruns.
+    recording_cache_path
+        Path to a directory in which cached IR camera data will be saved.
+    &#34;&#34;&#34;
+    logger.info(&#34;Loading recording&#34;)
+    if recording_cache_path:
+        recording_path = PurePath(recording_path)
+        recording_cache_path = Path(recording_cache_path)
+        if recording_cache_exists(recording_cache_path, recording_path.stem):
+            logger.debug(&#34;Recording cache found&#34;)
+            df_recording = load_recording_cache(
+                recording_cache_path,
+                recording_path.stem,
+            )
+            logger.debug(f&#34;{df_recording[:1]=}&#34;)
+        else:
+            logger.debug(&#34;Recording cache not found&#34;)
+            recording_path = Path(recording_path)
+            df_recording = load_recording_csv(recording_path)
+            save_recording_cache(
+                df_recording,
+                recording_cache_path,
+                recording_path.stem,
+            )
+            logger.debug(f&#34;Saved to cache: {df_recording[:1]=}&#34;)
+    else:
+        recording_path = Path(recording_path)
+        df_recording = load_recording_csv(recording_path)
+        logger.debug(f&#34;Loaded csv: {df_recording[:1]=}&#34;)
+    if not isinstance(config, dict):
+        logger.info(&#34;Loading config&#34;)
+        config = load_config(Path(config))
+        logger.debug(f&#34;{config=}&#34;)
+    if &#39;region_information&#39; not in config:
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
+    if &#39;experimental_setup&#39; not in config:
+        warnings.warn(&#34;Field experimental_setup required to extract regions&#34;)
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
+    logger.info(&#34;Extracting region(s)&#34;)
+    try:
+        region_result = fully_extract_region(
+            df_recording,
+            config[&#39;region_information&#39;],
+            config[&#39;experimental_setup&#39;],
+        )
+    except Exception as e:
+        if debug:
+            raise
+        warnings.warn(repr(e))
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
+    if &#39;signal_processor&#39; not in config:
+        if return_visualization:
+            return visualize_region(
+                df_recording,
+                region_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return region_result
+    if isinstance(region_result, list):
+        if isinstance(region_result[0], list):
+            debug_region = region_result[0][0]
+        else:
+            debug_region = region_result[0]
+    else:
+        debug_region = region_result
+    logger.debug(f&#34;{debug_region.timestamps[:1]=}&#34;)
+    logger.debug(f&#34;{debug_region.temperatures_kelvin.flatten()[:1]=}&#34;)
+    logger.debug(f&#34;{debug_region.margins.seconds_elapsed[:1]=}&#34;)
+    logger.debug(f&#34;{debug_region.margins.displacements_meters.flatten()[:1]=}&#34;)
+    logger.info(&#34;Signal processing&#34;)
+    try:
+        signal_result = fully_extract_result(
+            signal_process_region,
+            region_result,
+            config[&#39;signal_processor&#39;],
+            config[&#39;experimental_setup&#39;]
+        )
+    except Exception as e:
+        if debug:
+            raise
+        warnings.warn(repr(e))
+        if return_visualization:
+            return visualize_region(
+                df_recording,
+                region_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return region_result
+    if &#39;solver&#39; not in config or &#39;fitter&#39; not in config:
+        if return_visualization:
+            return visualize_signal(
+                df_recording,
+                signal_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return signal_result
+    if isinstance(signal_result, list):
+        if isinstance(signal_result[0], list):
+            debug_signal = signal_result[0][0]
+        else:
+            debug_signal = signal_result[0]
+    else:
+        debug_signal = signal_result
+    for name, prop in debug_signal.signal_properties._asdict().items():
+        logger.debug(f&#34;{name}={prop[:3]}&#34;)
+    logger.info(&#34;Fitting&#34;)
+    try:
+        fitting_result = fully_extract_result(
+            autofit,
+            signal_result,
+            config[&#39;solver&#39;],
+            config[&#39;fitter&#39;],
+            config[&#39;experimental_setup&#39;],
+        )
+    except Exception as e:
+        if debug:
+            raise
+        warnings.warn(repr(e))
+        if return_visualization:
+            return visualize_signal(
+                df_recording,
+                signal_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return signal_result
+    if return_visualization:
+        return visualize_fit(
+            df_recording,
+            signal_result,
+            fitting_result,
+            config[&#39;region_information&#39;],
+        )
+    else:
+        return fitting_result</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.pipeline.analyze_recording"><code class="name flex">
+<span>def <span class="ident">analyze_recording</span></span>(<span>recording_path: str | pathlib.Path, config: str | pathlib.Path | <a title="pyangstrom.config.Config" href="config.html#pyangstrom.config.Config">Config</a>, *, debug: bool = False, return_visualization: bool = False, memory_cache: Optional[<a title="pyangstrom.caching.Cache" href="caching.html#pyangstrom.caching.Cache">Cache</a>] = None, recording_cache_path: Union[str, pathlib.Path, NoneType] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute the thermal conductivity of the recorded sample.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>recording_path</code></strong></dt>
+<dd>Path to the directory holding CSV IR camera data. Does not have to be a
+real path if there is a cache file with a matching name in
+recording_cache_path.</dd>
+<dt><strong><code>config</code></strong></dt>
+<dd>Path to a YAML config file or the deserialized config object itself.</dd>
+</dl>
+<h2 id="keyword-arguments">Keyword Arguments</h2>
+<p>verbose
+If True, print status messages while processing data.
+memory_cache
+Holds intermediate results in memory, allowing for faster reruns.
+recording_cache_path
+Path to a directory in which cached IR camera data will be saved.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def analyze_recording(
+        recording_path: str | Path,
+        config: str | Path | Config,
+        *,
+        debug: bool = False,
+        return_visualization: bool = False,
+        memory_cache: Optional[Cache] = None,
+        recording_cache_path: Optional[str | Path] = None,
+):
+    &#34;&#34;&#34;Compute the thermal conductivity of the recorded sample.
+
+    Arguments
+    ---------
+    recording_path
+        Path to the directory holding CSV IR camera data. Does not have to be a
+        real path if there is a cache file with a matching name in
+        recording_cache_path.
+    config
+        Path to a YAML config file or the deserialized config object itself.
+
+    Keyword Arguments
+    -----------------
+    verbose
+        If True, print status messages while processing data.
+    memory_cache
+        Holds intermediate results in memory, allowing for faster reruns.
+    recording_cache_path
+        Path to a directory in which cached IR camera data will be saved.
+    &#34;&#34;&#34;
+    logger.info(&#34;Loading recording&#34;)
+    if recording_cache_path:
+        recording_path = PurePath(recording_path)
+        recording_cache_path = Path(recording_cache_path)
+        if recording_cache_exists(recording_cache_path, recording_path.stem):
+            logger.debug(&#34;Recording cache found&#34;)
+            df_recording = load_recording_cache(
+                recording_cache_path,
+                recording_path.stem,
+            )
+            logger.debug(f&#34;{df_recording[:1]=}&#34;)
+        else:
+            logger.debug(&#34;Recording cache not found&#34;)
+            recording_path = Path(recording_path)
+            df_recording = load_recording_csv(recording_path)
+            save_recording_cache(
+                df_recording,
+                recording_cache_path,
+                recording_path.stem,
+            )
+            logger.debug(f&#34;Saved to cache: {df_recording[:1]=}&#34;)
+    else:
+        recording_path = Path(recording_path)
+        df_recording = load_recording_csv(recording_path)
+        logger.debug(f&#34;Loaded csv: {df_recording[:1]=}&#34;)
+    if not isinstance(config, dict):
+        logger.info(&#34;Loading config&#34;)
+        config = load_config(Path(config))
+        logger.debug(f&#34;{config=}&#34;)
+    if &#39;region_information&#39; not in config:
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
+    if &#39;experimental_setup&#39; not in config:
+        warnings.warn(&#34;Field experimental_setup required to extract regions&#34;)
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
+    logger.info(&#34;Extracting region(s)&#34;)
+    try:
+        region_result = fully_extract_region(
+            df_recording,
+            config[&#39;region_information&#39;],
+            config[&#39;experimental_setup&#39;],
+        )
+    except Exception as e:
+        if debug:
+            raise
+        warnings.warn(repr(e))
+        if return_visualization:
+            return visualize_recording(df_recording)
+        else:
+            return df_recording
+    if &#39;signal_processor&#39; not in config:
+        if return_visualization:
+            return visualize_region(
+                df_recording,
+                region_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return region_result
+    if isinstance(region_result, list):
+        if isinstance(region_result[0], list):
+            debug_region = region_result[0][0]
+        else:
+            debug_region = region_result[0]
+    else:
+        debug_region = region_result
+    logger.debug(f&#34;{debug_region.timestamps[:1]=}&#34;)
+    logger.debug(f&#34;{debug_region.temperatures_kelvin.flatten()[:1]=}&#34;)
+    logger.debug(f&#34;{debug_region.margins.seconds_elapsed[:1]=}&#34;)
+    logger.debug(f&#34;{debug_region.margins.displacements_meters.flatten()[:1]=}&#34;)
+    logger.info(&#34;Signal processing&#34;)
+    try:
+        signal_result = fully_extract_result(
+            signal_process_region,
+            region_result,
+            config[&#39;signal_processor&#39;],
+            config[&#39;experimental_setup&#39;]
+        )
+    except Exception as e:
+        if debug:
+            raise
+        warnings.warn(repr(e))
+        if return_visualization:
+            return visualize_region(
+                df_recording,
+                region_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return region_result
+    if &#39;solver&#39; not in config or &#39;fitter&#39; not in config:
+        if return_visualization:
+            return visualize_signal(
+                df_recording,
+                signal_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return signal_result
+    if isinstance(signal_result, list):
+        if isinstance(signal_result[0], list):
+            debug_signal = signal_result[0][0]
+        else:
+            debug_signal = signal_result[0]
+    else:
+        debug_signal = signal_result
+    for name, prop in debug_signal.signal_properties._asdict().items():
+        logger.debug(f&#34;{name}={prop[:3]}&#34;)
+    logger.info(&#34;Fitting&#34;)
+    try:
+        fitting_result = fully_extract_result(
+            autofit,
+            signal_result,
+            config[&#39;solver&#39;],
+            config[&#39;fitter&#39;],
+            config[&#39;experimental_setup&#39;],
+        )
+    except Exception as e:
+        if debug:
+            raise
+        warnings.warn(repr(e))
+        if return_visualization:
+            return visualize_signal(
+                df_recording,
+                signal_result,
+                config[&#39;region_information&#39;],
+            )
+        else:
+            return signal_result
+    if return_visualization:
+        return visualize_fit(
+            df_recording,
+            signal_result,
+            fitting_result,
+            config[&#39;region_information&#39;],
+        )
+    else:
+        return fitting_result</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.pipeline.fully_extract_result"><code class="name flex">
+<span>def <span class="ident">fully_extract_result</span></span>(<span>func, data, *args)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fully_extract_result(func, data, *args):
+    if isinstance(data, list):
+        return [fully_extract_result(func, d, *args) for d in data]
+    return func(data, *args)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.pipeline.visualize_fit"><code class="name flex">
+<span>def <span class="ident">visualize_fit</span></span>(<span>df_recording, signal_result, fitting_result, region_information)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualize_fit(
+        df_recording,
+        signal_result,
+        fitting_result,
+        region_information,
+):
+    if isinstance(fitting_result, list):
+        _, figs = zip(*(
+            visualize_fit(df_recording, s, f, i) for s, f, i
+            in zip(
+                signal_result,
+                fitting_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{&#39;geometry&#39;: g} for g in region_information[&#39;geometries&#39;]]
+            )
+        ))
+        return fitting_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if &#39;geometry&#39; in region_information:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometry&#39;])
+    else:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometries&#39;])
+    plot_isotherms(ax2, signal_result.processed_region)
+    plot_amplitude_ratios(ax3, signal_result, fitting_result)
+    plot_phase_differences(ax4, signal_result, fitting_result)
+    # ax1: geometry
+    # ax2: isotherms (maybe observed + theoretical)
+    # ax3: amp ratio / displacement (observed + theoretical)
+    # ax4: phase diff / displacement (observed + theoretical)
+    # axN: fitting method-specific plots
+    return fitting_result, fig</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.pipeline.visualize_recording"><code class="name flex">
+<span>def <span class="ident">visualize_recording</span></span>(<span>df_recording)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualize_recording(df_recording):
+    return df_recording, animate_recording(df_recording)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.pipeline.visualize_region"><code class="name flex">
+<span>def <span class="ident">visualize_region</span></span>(<span>df_recording, region_result, region_information)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualize_region(df_recording, region_result, region_information):
+    if isinstance(region_result, list):
+        _, figs = zip(*(
+            visualize_region(df_recording, r, i) for r, i
+            in zip(
+                region_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{&#39;geometry&#39;: g} for g in region_information[&#39;geometries&#39;]]
+            )
+        ))
+        return region_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if &#39;geometry&#39; in region_information:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometry&#39;])
+    else:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometries&#39;])
+    plot_spatiotemporal_heat_map(ax2, region_result)
+    plot_isotherms(ax3, region_result)
+    plot_groups(ax4, region_result)
+    return region_result, fig</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.pipeline.visualize_signal"><code class="name flex">
+<span>def <span class="ident">visualize_signal</span></span>(<span>df_recording, signal_result, region_information)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def visualize_signal(df_recording, signal_result, region_information):
+    if isinstance(signal_result, list):
+        _, figs = zip(*(
+            visualize_signal(df_recording, s, i) for s, i
+            in zip(
+                signal_result,
+                region_information
+                if isinstance(region_information, list)
+                else [{&#39;geometry&#39;: g} for g in region_information[&#39;geometries&#39;]]
+            )
+        ))
+        return signal_result, list(figs)
+
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 16))
+    if &#39;geometry&#39; in region_information:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometry&#39;])
+    else:
+        plot_geometry(ax1, df_recording, region_information[&#39;geometries&#39;])
+    plot_isotherms(ax2, signal_result.processed_region)
+    plot_amplitude_ratios(ax3, signal_result)
+    plot_phase_differences(ax4, signal_result)
+    return signal_result, fig</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom" href="index.html">pyangstrom</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.pipeline.analyze_recording" href="#pyangstrom.pipeline.analyze_recording">analyze_recording</a></code></li>
+<li><code><a title="pyangstrom.pipeline.fully_extract_result" href="#pyangstrom.pipeline.fully_extract_result">fully_extract_result</a></code></li>
+<li><code><a title="pyangstrom.pipeline.visualize_fit" href="#pyangstrom.pipeline.visualize_fit">visualize_fit</a></code></li>
+<li><code><a title="pyangstrom.pipeline.visualize_recording" href="#pyangstrom.pipeline.visualize_recording">visualize_recording</a></code></li>
+<li><code><a title="pyangstrom.pipeline.visualize_region" href="#pyangstrom.pipeline.visualize_region">visualize_region</a></code></li>
+<li><code><a title="pyangstrom.pipeline.visualize_signal" href="#pyangstrom.pipeline.visualize_signal">visualize_signal</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

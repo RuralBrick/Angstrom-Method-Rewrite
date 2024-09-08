@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.sample_solutions.lopez_baeza_short API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.sample_solutions.lopez_baeza_short</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from typing import TypedDict
+
+import numpy as np
+
+from pyangstrom.helpers import calc_thermal_conductivity
+from pyangstrom.exp_setup import ExperimentalSetup
+from pyangstrom.transform import Margins
+from pyangstrom.signal import SignalProperties
+from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
+from pyangstrom.fitting_methods.lsr import LsrEquations
+from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
+
+
+class LopezBaezaShortUnknowns(TypedDict):
+    thermal_diffusivity_m2__s: float
+    heat_transfer_coefficient_W__m2_K: float
+
+class LogLopezBaezaShortUnknowns(TypedDict):
+    thermal_diffusivity_log10_m2__s: float
+    heat_transfer_coefficient_log10_W__m2_K: float
+
+class Solution(
+    NelderMeadEquations,
+    LsrEquations,
+    MetropolisHastingsEquations,
+):
+    def __init__(
+            self,
+            margins: Margins,
+            setup: ExperimentalSetup,
+            r_meters: float,
+            length_meters: float,
+    ) -&gt; None:
+        mp = setup[&#39;material_properties&#39;]
+        self.specific_heat_capacity_J__kg_K = mp[&#39;specific_heat_capacity_J__kg_K&#39;]
+        self.density_kg__m3 = mp[&#39;density_kg__m3&#39;]
+        self.displacements_meters = margins.displacements_meters
+        self.angular_frequency_hertz = 2*np.pi*setup[&#39;heating_frequency_hertz&#39;]
+        self.r_meters = r_meters
+        self.length_meters = length_meters
+
+    def unknowns_to_vector(
+            self,
+            unknowns: LopezBaezaShortUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;heat_transfer_coefficient_W__m2_K&#39;],
+        ])
+        return vector
+
+    def vector_to_unknowns(self, vector: np.ndarray) -&gt; LopezBaezaShortUnknowns:
+        unknowns: LopezBaezaShortUnknowns = {
+            &#39;thermal_diffusivity_m2__s&#39;: vector[0],
+            &#39;heat_transfer_coefficient_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def calc_wavenumber(
+            self,
+            thermal_diffusivity_m2__s,
+            heat_transfer_coefficient_W__m2_K,
+            thermal_conductivity_W__m_K,
+    ):
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2__s
+        h = heat_transfer_coefficient_W__m2_K
+        r = self.r_meters
+        K = thermal_conductivity_W__m_K
+
+        heat_conduction = w / (2.0*D)
+        thermal_losses = h / (r*K)
+        temp_var1 = np.sqrt(thermal_losses**2.0 + heat_conduction**2.0)
+        temp_var2 = np.sqrt(-thermal_losses + temp_var1)
+        temp_var3 = 1.0j*np.sqrt(thermal_losses + temp_var1)
+        wavenumber = temp_var2 + temp_var3
+        return wavenumber
+
+    def calc_xi(self, wavenumber):
+        k = wavenumber
+        L = self.length_meters
+        x = self.displacements_meters
+
+        xi = np.cos(k*(L - x)) / np.cos(k*L)
+        return xi
+
+    def solve(self, unknowns: LopezBaezaShortUnknowns) -&gt; SignalProperties:
+        wavenumber = self.calc_wavenumber(
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;heat_transfer_coefficient_W__m2_K&#39;],
+            calc_thermal_conductivity(
+                unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+                self.specific_heat_capacity_J__kg_K,
+                self.density_kg__m3,
+            ),
+        )
+        xi = self.calc_xi(wavenumber)
+
+        amps = np.abs(xi)
+        amp_ratio = amps / amps[0]
+
+        phases = np.angle(xi)
+        phase_diff = phases - phases[0]
+
+        return SignalProperties(amp_ratio, phase_diff)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        thermal_diffusivity_m2__s, heat_transfer_coefficient_W__m2_K = unknowns_vector
+        wavenumber = self.calc_wavenumber(
+            thermal_diffusivity_m2__s,
+            heat_transfer_coefficient_W__m2_K,
+            calc_thermal_conductivity(
+                thermal_diffusivity_m2__s,
+                self.specific_heat_capacity_J__kg_K,
+                self.density_kg__m3,
+            ),
+        )
+        xi = self.calc_xi(wavenumber)
+
+        amps = np.abs(xi)
+        amp_ratio = amps / amps[0]
+
+        phases = np.angle(xi)
+        phase_diff = phases - phases[0]
+
+        return SignalProperties(amp_ratio, phase_diff)
+
+    def propose(
+            self,
+            unknowns: LopezBaezaShortUnknowns
+    ) -&gt; LopezBaezaShortUnknowns:
+        raise NotImplementedError()
+
+    def log_posterior(
+            self,
+            unknowns: LopezBaezaShortUnknowns,
+            observed_properties: SignalProperties,
+    ) -&gt; float:
+        raise NotImplementedError()
+
+class LogSolution(Solution):
+    def unknowns_to_vector(
+            self,
+            unknowns: LogLopezBaezaShortUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_log10_m2__s&#39;],
+            unknowns[&#39;heat_transfer_coefficient_log10_W__m2_K&#39;]
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -&gt; LogLopezBaezaShortUnknowns:
+        unknowns: LogLopezBaezaShortUnknowns = {
+            &#39;thermal_diffusivity_log10_m2__s&#39;: vector[0],
+            &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogLopezBaezaShortUnknowns) -&gt; SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns"><code class="flex name class">
+<span>class <span class="ident">LogLopezBaezaShortUnknowns</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LogLopezBaezaShortUnknowns(TypedDict):
+    thermal_diffusivity_log10_m2__s: float
+    heat_transfer_coefficient_log10_W__m2_K: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns.heat_transfer_coefficient_log10_W__m2_K"><code class="name">var <span class="ident">heat_transfer_coefficient_log10_W__m2_K</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns.thermal_diffusivity_log10_m2__s"><code class="name">var <span class="ident">thermal_diffusivity_log10_m2__s</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution"><code class="flex name class">
+<span>class <span class="ident">LogSolution</span></span>
+<span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, r_meters: float, length_meters: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LogSolution(Solution):
+    def unknowns_to_vector(
+            self,
+            unknowns: LogLopezBaezaShortUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_log10_m2__s&#39;],
+            unknowns[&#39;heat_transfer_coefficient_log10_W__m2_K&#39;]
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -&gt; LogLopezBaezaShortUnknowns:
+        unknowns: LogLopezBaezaShortUnknowns = {
+            &#39;thermal_diffusivity_log10_m2__s&#39;: vector[0],
+            &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogLopezBaezaShortUnknowns) -&gt; SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution">Solution</a></li>
+<li><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.lsr.LsrEquations" href="../fitting_methods/lsr.html#pyangstrom.fitting_methods.lsr.LsrEquations">LsrEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations" href="../fitting_methods/metropolis_hastings.html#pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations">MetropolisHastingsEquations</a></li>
+<li><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns">LogLopezBaezaShortUnknowns</a>) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, unknowns: LogLopezBaezaShortUnknowns) -&gt; SignalProperties:
+    unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+    return super().vector_solve(unknowns_vector)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.unknowns_to_vector"><code class="name flex">
+<span>def <span class="ident">unknowns_to_vector</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns">LogLopezBaezaShortUnknowns</a>) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unknowns_to_vector(
+        self,
+        unknowns: LogLopezBaezaShortUnknowns,
+) -&gt; np.ndarray:
+    vector = np.array([
+        unknowns[&#39;thermal_diffusivity_log10_m2__s&#39;],
+        unknowns[&#39;heat_transfer_coefficient_log10_W__m2_K&#39;]
+    ])
+    return vector</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.vector_solve"><code class="name flex">
+<span>def <span class="ident">vector_solve</span></span>(<span>self, unknowns_vector: numpy.ndarray) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+    return super().vector_solve(np.power(10.0, unknowns_vector))</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.vector_to_unknowns"><code class="name flex">
+<span>def <span class="ident">vector_to_unknowns</span></span>(<span>self, vector: numpy.ndarray) ‑> <a title="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns">LogLopezBaezaShortUnknowns</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def vector_to_unknowns(
+        self,
+        vector: np.ndarray,
+) -&gt; LogLopezBaezaShortUnknowns:
+    unknowns: LogLopezBaezaShortUnknowns = {
+        &#39;thermal_diffusivity_log10_m2__s&#39;: vector[0],
+        &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: vector[1],
+    }
+    return unknowns</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns"><code class="flex name class">
+<span>class <span class="ident">LopezBaezaShortUnknowns</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LopezBaezaShortUnknowns(TypedDict):
+    thermal_diffusivity_m2__s: float
+    heat_transfer_coefficient_W__m2_K: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns.heat_transfer_coefficient_W__m2_K"><code class="name">var <span class="ident">heat_transfer_coefficient_W__m2_K</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns.thermal_diffusivity_m2__s"><code class="name">var <span class="ident">thermal_diffusivity_m2__s</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution"><code class="flex name class">
+<span>class <span class="ident">Solution</span></span>
+<span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, r_meters: float, length_meters: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Solution(
+    NelderMeadEquations,
+    LsrEquations,
+    MetropolisHastingsEquations,
+):
+    def __init__(
+            self,
+            margins: Margins,
+            setup: ExperimentalSetup,
+            r_meters: float,
+            length_meters: float,
+    ) -&gt; None:
+        mp = setup[&#39;material_properties&#39;]
+        self.specific_heat_capacity_J__kg_K = mp[&#39;specific_heat_capacity_J__kg_K&#39;]
+        self.density_kg__m3 = mp[&#39;density_kg__m3&#39;]
+        self.displacements_meters = margins.displacements_meters
+        self.angular_frequency_hertz = 2*np.pi*setup[&#39;heating_frequency_hertz&#39;]
+        self.r_meters = r_meters
+        self.length_meters = length_meters
+
+    def unknowns_to_vector(
+            self,
+            unknowns: LopezBaezaShortUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;heat_transfer_coefficient_W__m2_K&#39;],
+        ])
+        return vector
+
+    def vector_to_unknowns(self, vector: np.ndarray) -&gt; LopezBaezaShortUnknowns:
+        unknowns: LopezBaezaShortUnknowns = {
+            &#39;thermal_diffusivity_m2__s&#39;: vector[0],
+            &#39;heat_transfer_coefficient_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def calc_wavenumber(
+            self,
+            thermal_diffusivity_m2__s,
+            heat_transfer_coefficient_W__m2_K,
+            thermal_conductivity_W__m_K,
+    ):
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2__s
+        h = heat_transfer_coefficient_W__m2_K
+        r = self.r_meters
+        K = thermal_conductivity_W__m_K
+
+        heat_conduction = w / (2.0*D)
+        thermal_losses = h / (r*K)
+        temp_var1 = np.sqrt(thermal_losses**2.0 + heat_conduction**2.0)
+        temp_var2 = np.sqrt(-thermal_losses + temp_var1)
+        temp_var3 = 1.0j*np.sqrt(thermal_losses + temp_var1)
+        wavenumber = temp_var2 + temp_var3
+        return wavenumber
+
+    def calc_xi(self, wavenumber):
+        k = wavenumber
+        L = self.length_meters
+        x = self.displacements_meters
+
+        xi = np.cos(k*(L - x)) / np.cos(k*L)
+        return xi
+
+    def solve(self, unknowns: LopezBaezaShortUnknowns) -&gt; SignalProperties:
+        wavenumber = self.calc_wavenumber(
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;heat_transfer_coefficient_W__m2_K&#39;],
+            calc_thermal_conductivity(
+                unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+                self.specific_heat_capacity_J__kg_K,
+                self.density_kg__m3,
+            ),
+        )
+        xi = self.calc_xi(wavenumber)
+
+        amps = np.abs(xi)
+        amp_ratio = amps / amps[0]
+
+        phases = np.angle(xi)
+        phase_diff = phases - phases[0]
+
+        return SignalProperties(amp_ratio, phase_diff)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        thermal_diffusivity_m2__s, heat_transfer_coefficient_W__m2_K = unknowns_vector
+        wavenumber = self.calc_wavenumber(
+            thermal_diffusivity_m2__s,
+            heat_transfer_coefficient_W__m2_K,
+            calc_thermal_conductivity(
+                thermal_diffusivity_m2__s,
+                self.specific_heat_capacity_J__kg_K,
+                self.density_kg__m3,
+            ),
+        )
+        xi = self.calc_xi(wavenumber)
+
+        amps = np.abs(xi)
+        amp_ratio = amps / amps[0]
+
+        phases = np.angle(xi)
+        phase_diff = phases - phases[0]
+
+        return SignalProperties(amp_ratio, phase_diff)
+
+    def propose(
+            self,
+            unknowns: LopezBaezaShortUnknowns
+    ) -&gt; LopezBaezaShortUnknowns:
+        raise NotImplementedError()
+
+    def log_posterior(
+            self,
+            unknowns: LopezBaezaShortUnknowns,
+            observed_properties: SignalProperties,
+    ) -&gt; float:
+        raise NotImplementedError()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.lsr.LsrEquations" href="../fitting_methods/lsr.html#pyangstrom.fitting_methods.lsr.LsrEquations">LsrEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations" href="../fitting_methods/metropolis_hastings.html#pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations">MetropolisHastingsEquations</a></li>
+<li><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogSolution">LogSolution</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.calc_wavenumber"><code class="name flex">
+<span>def <span class="ident">calc_wavenumber</span></span>(<span>self, thermal_diffusivity_m2__s, heat_transfer_coefficient_W__m2_K, thermal_conductivity_W__m_K)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_wavenumber(
+        self,
+        thermal_diffusivity_m2__s,
+        heat_transfer_coefficient_W__m2_K,
+        thermal_conductivity_W__m_K,
+):
+    w = self.angular_frequency_hertz
+    D = thermal_diffusivity_m2__s
+    h = heat_transfer_coefficient_W__m2_K
+    r = self.r_meters
+    K = thermal_conductivity_W__m_K
+
+    heat_conduction = w / (2.0*D)
+    thermal_losses = h / (r*K)
+    temp_var1 = np.sqrt(thermal_losses**2.0 + heat_conduction**2.0)
+    temp_var2 = np.sqrt(-thermal_losses + temp_var1)
+    temp_var3 = 1.0j*np.sqrt(thermal_losses + temp_var1)
+    wavenumber = temp_var2 + temp_var3
+    return wavenumber</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.calc_xi"><code class="name flex">
+<span>def <span class="ident">calc_xi</span></span>(<span>self, wavenumber)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_xi(self, wavenumber):
+    k = wavenumber
+    L = self.length_meters
+    x = self.displacements_meters
+
+    xi = np.cos(k*(L - x)) / np.cos(k*L)
+    return xi</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.log_posterior"><code class="name flex">
+<span>def <span class="ident">log_posterior</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a>, observed_properties: <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a>) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def log_posterior(
+        self,
+        unknowns: LopezBaezaShortUnknowns,
+        observed_properties: SignalProperties,
+) -&gt; float:
+    raise NotImplementedError()</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.propose"><code class="name flex">
+<span>def <span class="ident">propose</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a>) ‑> <a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def propose(
+        self,
+        unknowns: LopezBaezaShortUnknowns
+) -&gt; LopezBaezaShortUnknowns:
+    raise NotImplementedError()</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.solve"><code class="name flex">
+<span>def <span class="ident">solve</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a>) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def solve(self, unknowns: LopezBaezaShortUnknowns) -&gt; SignalProperties:
+    wavenumber = self.calc_wavenumber(
+        unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+        unknowns[&#39;heat_transfer_coefficient_W__m2_K&#39;],
+        calc_thermal_conductivity(
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            self.specific_heat_capacity_J__kg_K,
+            self.density_kg__m3,
+        ),
+    )
+    xi = self.calc_xi(wavenumber)
+
+    amps = np.abs(xi)
+    amp_ratio = amps / amps[0]
+
+    phases = np.angle(xi)
+    phase_diff = phases - phases[0]
+
+    return SignalProperties(amp_ratio, phase_diff)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.unknowns_to_vector"><code class="name flex">
+<span>def <span class="ident">unknowns_to_vector</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a>) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def unknowns_to_vector(
+        self,
+        unknowns: LopezBaezaShortUnknowns,
+) -&gt; np.ndarray:
+    vector = np.array([
+        unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+        unknowns[&#39;heat_transfer_coefficient_W__m2_K&#39;],
+    ])
+    return vector</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.vector_solve"><code class="name flex">
+<span>def <span class="ident">vector_solve</span></span>(<span>self, unknowns_vector: numpy.ndarray) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+    thermal_diffusivity_m2__s, heat_transfer_coefficient_W__m2_K = unknowns_vector
+    wavenumber = self.calc_wavenumber(
+        thermal_diffusivity_m2__s,
+        heat_transfer_coefficient_W__m2_K,
+        calc_thermal_conductivity(
+            thermal_diffusivity_m2__s,
+            self.specific_heat_capacity_J__kg_K,
+            self.density_kg__m3,
+        ),
+    )
+    xi = self.calc_xi(wavenumber)
+
+    amps = np.abs(xi)
+    amp_ratio = amps / amps[0]
+
+    phases = np.angle(xi)
+    phase_diff = phases - phases[0]
+
+    return SignalProperties(amp_ratio, phase_diff)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.lopez_baeza_short.Solution.vector_to_unknowns"><code class="name flex">
+<span>def <span class="ident">vector_to_unknowns</span></span>(<span>self, vector: numpy.ndarray) ‑> <a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def vector_to_unknowns(self, vector: np.ndarray) -&gt; LopezBaezaShortUnknowns:
+    unknowns: LopezBaezaShortUnknowns = {
+        &#39;thermal_diffusivity_m2__s&#39;: vector[0],
+        &#39;heat_transfer_coefficient_W__m2_K&#39;: vector[1],
+    }
+    return unknowns</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom.sample_solutions" href="index.html">pyangstrom.sample_solutions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns">LogLopezBaezaShortUnknowns</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns.heat_transfer_coefficient_log10_W__m2_K" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns.heat_transfer_coefficient_log10_W__m2_K">heat_transfer_coefficient_log10_W__m2_K</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns.thermal_diffusivity_log10_m2__s" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogLopezBaezaShortUnknowns.thermal_diffusivity_log10_m2__s">thermal_diffusivity_log10_m2__s</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogSolution">LogSolution</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.solve" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.solve">solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.unknowns_to_vector" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.unknowns_to_vector">unknowns_to_vector</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.vector_solve" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.vector_solve">vector_solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.vector_to_unknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LogSolution.vector_to_unknowns">vector_to_unknowns</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns">LopezBaezaShortUnknowns</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns.heat_transfer_coefficient_W__m2_K" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns.heat_transfer_coefficient_W__m2_K">heat_transfer_coefficient_W__m2_K</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns.thermal_diffusivity_m2__s" href="#pyangstrom.sample_solutions.lopez_baeza_short.LopezBaezaShortUnknowns.thermal_diffusivity_m2__s">thermal_diffusivity_m2__s</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution">Solution</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.calc_wavenumber" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.calc_wavenumber">calc_wavenumber</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.calc_xi" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.calc_xi">calc_xi</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.log_posterior" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.log_posterior">log_posterior</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.propose" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.propose">propose</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.solve" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.solve">solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.unknowns_to_vector" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.unknowns_to_vector">unknowns_to_vector</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.vector_solve" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.vector_solve">vector_solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.lopez_baeza_short.Solution.vector_to_unknowns" href="#pyangstrom.sample_solutions.lopez_baeza_short.Solution.vector_to_unknowns">vector_to_unknowns</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

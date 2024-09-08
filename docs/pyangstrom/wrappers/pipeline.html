@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.wrappers.pipeline API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.wrappers.pipeline</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import logging
+from typing import Optional
+from pathlib import Path
+
+from pyangstrom.wrappers.config import exp_condition_to_config
+from pyangstrom.wrappers.io import load_exp_condition
+from pyangstrom.config import Config
+from pyangstrom.pipeline import analyze_recording
+from pyangstrom.io import save_config
+from pyangstrom.caching import Cache
+
+
+logger = logging.getLogger(&#39;pipeline&#39;)
+
+def convert_old_csv_to_new_config(
+        exp_condition_path: str | Path,
+        config_directory_path: Optional[str | Path] = None,
+) -&gt; dict[str, Config]:
+    p_exp_cond = Path(exp_condition_path)
+    exp_cond = load_exp_condition(p_exp_cond)
+    logger.debug(f&#39;{exp_cond=}&#39;)
+    dict_config = exp_condition_to_config(exp_cond)
+    if config_directory_path:
+        config_directory_path = Path(config_directory_path)
+        for recording_name, config in dict_config.items():
+            save_config(config, config_directory_path, recording_name)
+    return dict_config
+
+def hu_batch_process(
+        df_exp_condition_filename: str,
+        code_directory: str | Path,
+        data_directory: Optional[str | Path] = None,
+        *,
+        debug: bool = False,
+        return_visualization: bool = False,
+        memory_cache: Optional[Cache] = None,
+        config_directory_path: Optional[str | Path] = None,
+        recording_cache_path: Optional[str | Path] = None,
+):
+    &#34;&#34;&#34;Compute thermal conductivity using old configuration.
+
+    Arguments
+    ---------
+    df_exp_condition_filename
+        Name of the CSV file containing batch processing information; equivalent
+        to HT&#39;s df_exp_condition_spreadsheet_filename and RT&#39;s
+        df_exp_condition_spreadsheet_filename, df_exp_condition_file_name, and
+        df_exp_conditions_file_name.
+    code_directory
+        Path to the directory holding information, dump, and optionally data
+        files; equivalent to HT&#39;s code_directory and RT&#39;s directory_path, but
+        also supports Path objects.
+    data_directory
+        Path to the directory holding data files; equivalent to HT&#39;s
+        data_directory, but also supports Path objects.
+
+    Keyword Arguments
+    -----------------
+    verbose
+        If True, print status messages while processing data.
+    memory_cache
+        Holds intermediate results in memory, allowing for faster reruns.
+    config_directory_path
+        Path to a directory in which new config files equivalent to
+        df_exp_condition_filename will be saved.
+    recording_cache_path
+        Path to a directory in which cached IR camera data will be saved.
+    &#34;&#34;&#34;
+    code_directory = Path(code_directory)
+    if data_directory:
+        data_directory = Path(data_directory)
+    else:
+        data_directory = code_directory / &#39;temperature data&#39;
+    logger.info(&#34;Loading exp_condition&#34;)
+    p_exp_cond = code_directory / &#39;batch process information&#39; / df_exp_condition_filename
+    dict_config = convert_old_csv_to_new_config(
+        p_exp_cond,
+        config_directory_path,
+    )
+    logger.debug(f&#39;{dict_config=}&#39;)
+    results = []
+    for recording_name, config in dict_config.items():
+        logger.info(f&#34;Processing {recording_name}&#34;)
+        result = analyze_recording(
+            data_directory / recording_name,
+            config,
+            debug=debug,
+            return_visualization=return_visualization,
+            memory_cache=memory_cache,
+            recording_cache_path=recording_cache_path,
+        )
+        results.append(result)
+    return results</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.wrappers.pipeline.convert_old_csv_to_new_config"><code class="name flex">
+<span>def <span class="ident">convert_old_csv_to_new_config</span></span>(<span>exp_condition_path: str | pathlib.Path, config_directory_path: Union[str, pathlib.Path, NoneType] = None) ‑> dict[str, <a title="pyangstrom.config.Config" href="../config.html#pyangstrom.config.Config">Config</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_old_csv_to_new_config(
+        exp_condition_path: str | Path,
+        config_directory_path: Optional[str | Path] = None,
+) -&gt; dict[str, Config]:
+    p_exp_cond = Path(exp_condition_path)
+    exp_cond = load_exp_condition(p_exp_cond)
+    logger.debug(f&#39;{exp_cond=}&#39;)
+    dict_config = exp_condition_to_config(exp_cond)
+    if config_directory_path:
+        config_directory_path = Path(config_directory_path)
+        for recording_name, config in dict_config.items():
+            save_config(config, config_directory_path, recording_name)
+    return dict_config</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.pipeline.hu_batch_process"><code class="name flex">
+<span>def <span class="ident">hu_batch_process</span></span>(<span>df_exp_condition_filename: str, code_directory: str | pathlib.Path, data_directory: Union[str, pathlib.Path, NoneType] = None, *, debug: bool = False, return_visualization: bool = False, memory_cache: Optional[<a title="pyangstrom.caching.Cache" href="../caching.html#pyangstrom.caching.Cache">Cache</a>] = None, config_directory_path: Union[str, pathlib.Path, NoneType] = None, recording_cache_path: Union[str, pathlib.Path, NoneType] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute thermal conductivity using old configuration.</p>
+<h2 id="arguments">Arguments</h2>
+<dl>
+<dt><strong><code>df_exp_condition_filename</code></strong></dt>
+<dd>Name of the CSV file containing batch processing information; equivalent
+to HT's df_exp_condition_spreadsheet_filename and RT's
+df_exp_condition_spreadsheet_filename, df_exp_condition_file_name, and
+df_exp_conditions_file_name.</dd>
+<dt><strong><code>code_directory</code></strong></dt>
+<dd>Path to the directory holding information, dump, and optionally data
+files; equivalent to HT's code_directory and RT's directory_path, but
+also supports Path objects.</dd>
+<dt><strong><code>data_directory</code></strong></dt>
+<dd>Path to the directory holding data files; equivalent to HT's
+data_directory, but also supports Path objects.</dd>
+</dl>
+<h2 id="keyword-arguments">Keyword Arguments</h2>
+<p>verbose
+If True, print status messages while processing data.
+memory_cache
+Holds intermediate results in memory, allowing for faster reruns.
+config_directory_path
+Path to a directory in which new config files equivalent to
+df_exp_condition_filename will be saved.
+recording_cache_path
+Path to a directory in which cached IR camera data will be saved.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hu_batch_process(
+        df_exp_condition_filename: str,
+        code_directory: str | Path,
+        data_directory: Optional[str | Path] = None,
+        *,
+        debug: bool = False,
+        return_visualization: bool = False,
+        memory_cache: Optional[Cache] = None,
+        config_directory_path: Optional[str | Path] = None,
+        recording_cache_path: Optional[str | Path] = None,
+):
+    &#34;&#34;&#34;Compute thermal conductivity using old configuration.
+
+    Arguments
+    ---------
+    df_exp_condition_filename
+        Name of the CSV file containing batch processing information; equivalent
+        to HT&#39;s df_exp_condition_spreadsheet_filename and RT&#39;s
+        df_exp_condition_spreadsheet_filename, df_exp_condition_file_name, and
+        df_exp_conditions_file_name.
+    code_directory
+        Path to the directory holding information, dump, and optionally data
+        files; equivalent to HT&#39;s code_directory and RT&#39;s directory_path, but
+        also supports Path objects.
+    data_directory
+        Path to the directory holding data files; equivalent to HT&#39;s
+        data_directory, but also supports Path objects.
+
+    Keyword Arguments
+    -----------------
+    verbose
+        If True, print status messages while processing data.
+    memory_cache
+        Holds intermediate results in memory, allowing for faster reruns.
+    config_directory_path
+        Path to a directory in which new config files equivalent to
+        df_exp_condition_filename will be saved.
+    recording_cache_path
+        Path to a directory in which cached IR camera data will be saved.
+    &#34;&#34;&#34;
+    code_directory = Path(code_directory)
+    if data_directory:
+        data_directory = Path(data_directory)
+    else:
+        data_directory = code_directory / &#39;temperature data&#39;
+    logger.info(&#34;Loading exp_condition&#34;)
+    p_exp_cond = code_directory / &#39;batch process information&#39; / df_exp_condition_filename
+    dict_config = convert_old_csv_to_new_config(
+        p_exp_cond,
+        config_directory_path,
+    )
+    logger.debug(f&#39;{dict_config=}&#39;)
+    results = []
+    for recording_name, config in dict_config.items():
+        logger.info(f&#34;Processing {recording_name}&#34;)
+        result = analyze_recording(
+            data_directory / recording_name,
+            config,
+            debug=debug,
+            return_visualization=return_visualization,
+            memory_cache=memory_cache,
+            recording_cache_path=recording_cache_path,
+        )
+        results.append(result)
+    return results</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom.wrappers" href="index.html">pyangstrom.wrappers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.pipeline.convert_old_csv_to_new_config" href="#pyangstrom.wrappers.pipeline.convert_old_csv_to_new_config">convert_old_csv_to_new_config</a></code></li>
+<li><code><a title="pyangstrom.wrappers.pipeline.hu_batch_process" href="#pyangstrom.wrappers.pipeline.hu_batch_process">hu_batch_process</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

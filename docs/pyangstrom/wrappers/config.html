@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.wrappers.config API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.wrappers.config</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import logging
+import warnings
+from typing import Optional
+from copy import copy
+import json
+from collections import defaultdict
+
+from pyangstrom.config import Config
+from pyangstrom.exp_setup import ExperimentalSetup
+from pyangstrom.transform import (
+    CartesianGeometry,
+    PolarGeometry,
+    Point,
+    RegionStructure,
+    RegionBatchConfig,
+)
+from pyangstrom.fit import SolverInformation, FitterInformation
+
+
+logger = logging.getLogger(&#39;config&#39;)
+
+
+def create_config() -&gt; Config:
+    setup: ExperimentalSetup = {
+        &#39;meters_per_pixel&#39;: 25e-6,
+        &#39;material_properties&#39;: {},
+    }
+    config: Config = {
+        &#39;experimental_setup&#39;: setup,
+        &#39;region_information&#39;: [],
+    }
+    return config
+
+def record_to_cartesian_geometry(record) -&gt; Optional[CartesianGeometry]:
+    try:
+        match record[&#39;direction&#39;]:
+            case &#39;right-left&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) - int(record[&#39;dx&#39;]),
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]),
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) - int(record[&#39;dy&#39;])//2,
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) + int(record[&#39;dy&#39;])//2,
+                    &#39;heat_source_x_pixels&#39;: int(record[&#39;x_heater&#39;]),
+                }
+                return geometry
+            case &#39;left-right&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]),
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) + int(record[&#39;dx&#39;]),
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) - int(record[&#39;dy&#39;])//2,
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) + int(record[&#39;dy&#39;])//2,
+                    &#39;heat_source_x_pixels&#39;: int(record[&#39;x_heater&#39;]),
+                }
+                return geometry
+            case &#39;bottom-up&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) - int(record[&#39;dx&#39;])//2,
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) + int(record[&#39;dx&#39;])//2,
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) - int(record[&#39;dy&#39;]),
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]),
+                    &#39;heat_source_y_pixels&#39;: int(record[&#39;y_heater&#39;]),
+                }
+                return geometry
+            case &#39;up-bottom&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) - int(record[&#39;dx&#39;])//2,
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) + int(record[&#39;dx&#39;])//2,
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]),
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) + int(record[&#39;dy&#39;]),
+                    &#39;heat_source_y_pixels&#39;: int(record[&#39;y_heater&#39;]),
+                }
+                return geometry
+            case _:
+                warnings.warn(
+                    f&#34;Direction not recognized: {record[&#39;direction&#39;]}&#34;
+                )
+                return None
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for cartesian geometry&#34;)
+        return None
+
+def record_to_polar_geometries(record) -&gt; Optional[list[PolarGeometry]]:
+    try:
+        center: Point = {
+            &#39;x_pixels&#39;: float(record[&#39;x0_pixels&#39;]),
+            &#39;y_pixels&#39;: float(record[&#39;y0_pixels&#39;]),
+        }
+        geometries = []
+        for min_theta, max_theta in json.loads(record[&#39;anguler_range&#39;]):
+            geometry: PolarGeometry = {
+                &#39;center&#39;: copy(center),
+                &#39;min_r_pixels&#39;: float(record[&#39;R0_pixels&#39;]),
+                &#39;max_r_pixels&#39;: float(record[&#39;R0_pixels&#39;]) + float(record[&#39;R_analysis_pixels&#39;]),
+                &#39;num_r&#39;: int(record[&#39;R_analysis_pixels&#39;]),
+                &#39;min_theta_degrees&#39;: float(min_theta),
+                &#39;max_theta_degrees&#39;: float(max_theta),
+                &#39;num_theta&#39;: 180,
+            }
+            geometries.append(geometry)
+        return geometries
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for polar geometry&#34;)
+        return None
+
+def record_to_lopez_baeza_short(record) -&gt; Optional[SolverInformation]:
+    try:
+        solver: SolverInformation = {
+            &#39;name&#39;: &#39;log_lopez-baeza&#39;,
+            &#39;guesses&#39;: {
+                &#39;thermal_diffusivity_log10_m2__s&#39;: -5,
+                &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: -2,
+            },
+            &#39;parameters&#39;: {
+                &#39;r_meters&#39;: float(record[&#39;r&#39;]),
+                &#39;length_meters&#39;: float(record[&#39;L&#39;]),
+            },
+        }
+        return solver
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for lopez_baeza_short solver&#34;)
+        return None
+
+def record_to_kil_circular_room_temp(record) -&gt; Optional[SolverInformation]:
+    try:
+        solver: SolverInformation = {
+            &#39;name&#39;: &#39;kil&#39;,
+            &#39;guesses&#39;: {
+                &#39;thermal_diffusivity_m2__s&#39;: 1,
+                &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: 35,
+            },
+            &#39;parameters&#39;: {
+                &#39;sample_thickness_meters&#39;: 1e-3,
+                &#39;heating_source_radius_meters&#39;: float(record[&#39;R0_pixels&#39;]) * 25e-6,
+                &#39;outer_boundary_radius_meters&#39;: 4.8e-2,
+            },
+        }
+        return solver
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for kil_circular_room_temp solver&#34;)
+        return None
+
+def record_to_lsr(record) -&gt; Optional[FitterInformation]:
+    try:
+        fitter: FitterInformation = {
+            &#39;name&#39;: &#39;nelder-mead&#39;,
+        }
+        return fitter
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for lsr fitter&#34;)
+        return None
+
+def exp_condition_to_config(exp_condition: list[dict]) -&gt; dict[str, Config]:
+    &#34;&#34;&#34;Output: dict[recording_name] -&gt; config&#34;&#34;&#34;
+    dd_config = defaultdict(create_config)
+    for record in exp_condition:
+        if &#39;rec_name&#39; in record:
+            config: Config = dd_config[record[&#39;rec_name&#39;]]
+        elif &#39;rec_num&#39; in record:
+            config: Config = dd_config[record[&#39;rec_num&#39;]]
+        else:
+            warnings.warn(
+                &#34;No recording identification field found in exp_condition&#34;
+            )
+            continue
+        geometries = None
+        structure: RegionStructure = {&#39;average_out_span&#39;: True}
+        for key, value in record.items():
+            match key:
+                case &#39;rec_name&#39; | &#39;rec_num&#39;:
+                    continue
+                case &#39;f_heating&#39;:
+                    config[&#39;experimental_setup&#39;][&#39;heating_frequency_hertz&#39;] = float(value)
+                case &#39;cp&#39;:
+                    config[&#39;experimental_setup&#39;][&#39;material_properties&#39;][&#39;specific_heat_capacity_J__kg_K&#39;] = float(value)
+                case &#39;rho&#39;:
+                    config[&#39;experimental_setup&#39;][&#39;material_properties&#39;][&#39;density_kg__m3&#39;] = float(value)
+                case &#39;direction&#39; | &#39;x_region_line_center&#39; | &#39;y_region_line_center&#39; | &#39;dx&#39; | &#39;dy&#39; | &#39;x_heater&#39; | &#39;y_heater&#39;:
+                    if not geometries:
+                        geometries = [record_to_cartesian_geometry(record)]
+                case &#39;anguler_range&#39; | &#39;x0_pixels&#39; | &#39;y0_pixels&#39; | &#39;R0_pixels&#39; | &#39;R_analysis_pixels&#39;:
+                    if not geometries:
+                        geometries = record_to_polar_geometries(record)
+                    if &#39;solver&#39; not in config:
+                        config[&#39;solver&#39;] = record_to_kil_circular_room_temp(record)
+                case &#39;Nr_pixels&#39;:
+                    continue
+                case &#39;gap&#39; | &#39;gap_pixels&#39;:
+                    structure[&#39;num_deinterleaving_groups&#39;] = int(value)
+                case &#39;exp_amp_phase_extraction_method&#39; | &#39;analysis_method&#39;:
+                    if &#39;signal_processor&#39; not in config:
+                        config[&#39;signal_processor&#39;] = {
+                            &#39;name&#39;: value,
+                            &#39;apply_filter&#39;: False,
+                        }
+                case &#39;L&#39; | &#39;r&#39;:
+                    if &#39;solver&#39; not in config:
+                        config[&#39;solver&#39;] = record_to_lopez_baeza_short(record)
+                case _:
+                    logger.warn(f&#34;Unrecognized field: {key} -&gt; {value}&#34;)
+        batch_config: RegionBatchConfig = {
+            &#39;geometries&#39;: geometries,
+            &#39;structure&#39;: structure,
+            &#39;average_over_regions&#39;: True,
+        }
+        config[&#39;region_information&#39;].append(batch_config)
+        # HACK
+        config[&#39;fitter&#39;] = record_to_lsr(record)
+        # end HACK
+    return dict(dd_config)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.wrappers.config.create_config"><code class="name flex">
+<span>def <span class="ident">create_config</span></span>(<span>) ‑> <a title="pyangstrom.config.Config" href="../config.html#pyangstrom.config.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_config() -&gt; Config:
+    setup: ExperimentalSetup = {
+        &#39;meters_per_pixel&#39;: 25e-6,
+        &#39;material_properties&#39;: {},
+    }
+    config: Config = {
+        &#39;experimental_setup&#39;: setup,
+        &#39;region_information&#39;: [],
+    }
+    return config</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.config.exp_condition_to_config"><code class="name flex">
+<span>def <span class="ident">exp_condition_to_config</span></span>(<span>exp_condition: list[dict]) ‑> dict[str, <a title="pyangstrom.config.Config" href="../config.html#pyangstrom.config.Config">Config</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Output: dict[recording_name] -&gt; config</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def exp_condition_to_config(exp_condition: list[dict]) -&gt; dict[str, Config]:
+    &#34;&#34;&#34;Output: dict[recording_name] -&gt; config&#34;&#34;&#34;
+    dd_config = defaultdict(create_config)
+    for record in exp_condition:
+        if &#39;rec_name&#39; in record:
+            config: Config = dd_config[record[&#39;rec_name&#39;]]
+        elif &#39;rec_num&#39; in record:
+            config: Config = dd_config[record[&#39;rec_num&#39;]]
+        else:
+            warnings.warn(
+                &#34;No recording identification field found in exp_condition&#34;
+            )
+            continue
+        geometries = None
+        structure: RegionStructure = {&#39;average_out_span&#39;: True}
+        for key, value in record.items():
+            match key:
+                case &#39;rec_name&#39; | &#39;rec_num&#39;:
+                    continue
+                case &#39;f_heating&#39;:
+                    config[&#39;experimental_setup&#39;][&#39;heating_frequency_hertz&#39;] = float(value)
+                case &#39;cp&#39;:
+                    config[&#39;experimental_setup&#39;][&#39;material_properties&#39;][&#39;specific_heat_capacity_J__kg_K&#39;] = float(value)
+                case &#39;rho&#39;:
+                    config[&#39;experimental_setup&#39;][&#39;material_properties&#39;][&#39;density_kg__m3&#39;] = float(value)
+                case &#39;direction&#39; | &#39;x_region_line_center&#39; | &#39;y_region_line_center&#39; | &#39;dx&#39; | &#39;dy&#39; | &#39;x_heater&#39; | &#39;y_heater&#39;:
+                    if not geometries:
+                        geometries = [record_to_cartesian_geometry(record)]
+                case &#39;anguler_range&#39; | &#39;x0_pixels&#39; | &#39;y0_pixels&#39; | &#39;R0_pixels&#39; | &#39;R_analysis_pixels&#39;:
+                    if not geometries:
+                        geometries = record_to_polar_geometries(record)
+                    if &#39;solver&#39; not in config:
+                        config[&#39;solver&#39;] = record_to_kil_circular_room_temp(record)
+                case &#39;Nr_pixels&#39;:
+                    continue
+                case &#39;gap&#39; | &#39;gap_pixels&#39;:
+                    structure[&#39;num_deinterleaving_groups&#39;] = int(value)
+                case &#39;exp_amp_phase_extraction_method&#39; | &#39;analysis_method&#39;:
+                    if &#39;signal_processor&#39; not in config:
+                        config[&#39;signal_processor&#39;] = {
+                            &#39;name&#39;: value,
+                            &#39;apply_filter&#39;: False,
+                        }
+                case &#39;L&#39; | &#39;r&#39;:
+                    if &#39;solver&#39; not in config:
+                        config[&#39;solver&#39;] = record_to_lopez_baeza_short(record)
+                case _:
+                    logger.warn(f&#34;Unrecognized field: {key} -&gt; {value}&#34;)
+        batch_config: RegionBatchConfig = {
+            &#39;geometries&#39;: geometries,
+            &#39;structure&#39;: structure,
+            &#39;average_over_regions&#39;: True,
+        }
+        config[&#39;region_information&#39;].append(batch_config)
+        # HACK
+        config[&#39;fitter&#39;] = record_to_lsr(record)
+        # end HACK
+    return dict(dd_config)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.config.record_to_cartesian_geometry"><code class="name flex">
+<span>def <span class="ident">record_to_cartesian_geometry</span></span>(<span>record) ‑> Optional[<a title="pyangstrom.transform.CartesianGeometry" href="../transform.html#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def record_to_cartesian_geometry(record) -&gt; Optional[CartesianGeometry]:
+    try:
+        match record[&#39;direction&#39;]:
+            case &#39;right-left&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) - int(record[&#39;dx&#39;]),
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]),
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) - int(record[&#39;dy&#39;])//2,
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) + int(record[&#39;dy&#39;])//2,
+                    &#39;heat_source_x_pixels&#39;: int(record[&#39;x_heater&#39;]),
+                }
+                return geometry
+            case &#39;left-right&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]),
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) + int(record[&#39;dx&#39;]),
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) - int(record[&#39;dy&#39;])//2,
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) + int(record[&#39;dy&#39;])//2,
+                    &#39;heat_source_x_pixels&#39;: int(record[&#39;x_heater&#39;]),
+                }
+                return geometry
+            case &#39;bottom-up&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) - int(record[&#39;dx&#39;])//2,
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) + int(record[&#39;dx&#39;])//2,
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) - int(record[&#39;dy&#39;]),
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]),
+                    &#39;heat_source_y_pixels&#39;: int(record[&#39;y_heater&#39;]),
+                }
+                return geometry
+            case &#39;up-bottom&#39;:
+                geometry: CartesianGeometry = {
+                    &#39;min_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) - int(record[&#39;dx&#39;])//2,
+                    &#39;max_x_pixels&#39;: int(record[&#39;x_region_line_center&#39;]) + int(record[&#39;dx&#39;])//2,
+                    &#39;min_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]),
+                    &#39;max_y_pixels&#39;: int(record[&#39;y_region_line_center&#39;]) + int(record[&#39;dy&#39;]),
+                    &#39;heat_source_y_pixels&#39;: int(record[&#39;y_heater&#39;]),
+                }
+                return geometry
+            case _:
+                warnings.warn(
+                    f&#34;Direction not recognized: {record[&#39;direction&#39;]}&#34;
+                )
+                return None
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for cartesian geometry&#34;)
+        return None</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.config.record_to_kil_circular_room_temp"><code class="name flex">
+<span>def <span class="ident">record_to_kil_circular_room_temp</span></span>(<span>record) ‑> Optional[<a title="pyangstrom.fit.SolverInformation" href="../fit.html#pyangstrom.fit.SolverInformation">SolverInformation</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def record_to_kil_circular_room_temp(record) -&gt; Optional[SolverInformation]:
+    try:
+        solver: SolverInformation = {
+            &#39;name&#39;: &#39;kil&#39;,
+            &#39;guesses&#39;: {
+                &#39;thermal_diffusivity_m2__s&#39;: 1,
+                &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: 35,
+            },
+            &#39;parameters&#39;: {
+                &#39;sample_thickness_meters&#39;: 1e-3,
+                &#39;heating_source_radius_meters&#39;: float(record[&#39;R0_pixels&#39;]) * 25e-6,
+                &#39;outer_boundary_radius_meters&#39;: 4.8e-2,
+            },
+        }
+        return solver
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for kil_circular_room_temp solver&#34;)
+        return None</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.config.record_to_lopez_baeza_short"><code class="name flex">
+<span>def <span class="ident">record_to_lopez_baeza_short</span></span>(<span>record) ‑> Optional[<a title="pyangstrom.fit.SolverInformation" href="../fit.html#pyangstrom.fit.SolverInformation">SolverInformation</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def record_to_lopez_baeza_short(record) -&gt; Optional[SolverInformation]:
+    try:
+        solver: SolverInformation = {
+            &#39;name&#39;: &#39;log_lopez-baeza&#39;,
+            &#39;guesses&#39;: {
+                &#39;thermal_diffusivity_log10_m2__s&#39;: -5,
+                &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: -2,
+            },
+            &#39;parameters&#39;: {
+                &#39;r_meters&#39;: float(record[&#39;r&#39;]),
+                &#39;length_meters&#39;: float(record[&#39;L&#39;]),
+            },
+        }
+        return solver
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for lopez_baeza_short solver&#34;)
+        return None</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.config.record_to_lsr"><code class="name flex">
+<span>def <span class="ident">record_to_lsr</span></span>(<span>record) ‑> Optional[<a title="pyangstrom.fit.FitterInformation" href="../fit.html#pyangstrom.fit.FitterInformation">FitterInformation</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def record_to_lsr(record) -&gt; Optional[FitterInformation]:
+    try:
+        fitter: FitterInformation = {
+            &#39;name&#39;: &#39;nelder-mead&#39;,
+        }
+        return fitter
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for lsr fitter&#34;)
+        return None</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.config.record_to_polar_geometries"><code class="name flex">
+<span>def <span class="ident">record_to_polar_geometries</span></span>(<span>record) ‑> Optional[list[<a title="pyangstrom.transform.PolarGeometry" href="../transform.html#pyangstrom.transform.PolarGeometry">PolarGeometry</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def record_to_polar_geometries(record) -&gt; Optional[list[PolarGeometry]]:
+    try:
+        center: Point = {
+            &#39;x_pixels&#39;: float(record[&#39;x0_pixels&#39;]),
+            &#39;y_pixels&#39;: float(record[&#39;y0_pixels&#39;]),
+        }
+        geometries = []
+        for min_theta, max_theta in json.loads(record[&#39;anguler_range&#39;]):
+            geometry: PolarGeometry = {
+                &#39;center&#39;: copy(center),
+                &#39;min_r_pixels&#39;: float(record[&#39;R0_pixels&#39;]),
+                &#39;max_r_pixels&#39;: float(record[&#39;R0_pixels&#39;]) + float(record[&#39;R_analysis_pixels&#39;]),
+                &#39;num_r&#39;: int(record[&#39;R_analysis_pixels&#39;]),
+                &#39;min_theta_degrees&#39;: float(min_theta),
+                &#39;max_theta_degrees&#39;: float(max_theta),
+                &#39;num_theta&#39;: 180,
+            }
+            geometries.append(geometry)
+        return geometries
+    except KeyError as e:
+        warnings.warn(f&#34;Could not find {e} field for polar geometry&#34;)
+        return None</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom.wrappers" href="index.html">pyangstrom.wrappers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.config.create_config" href="#pyangstrom.wrappers.config.create_config">create_config</a></code></li>
+<li><code><a title="pyangstrom.wrappers.config.exp_condition_to_config" href="#pyangstrom.wrappers.config.exp_condition_to_config">exp_condition_to_config</a></code></li>
+<li><code><a title="pyangstrom.wrappers.config.record_to_cartesian_geometry" href="#pyangstrom.wrappers.config.record_to_cartesian_geometry">record_to_cartesian_geometry</a></code></li>
+<li><code><a title="pyangstrom.wrappers.config.record_to_kil_circular_room_temp" href="#pyangstrom.wrappers.config.record_to_kil_circular_room_temp">record_to_kil_circular_room_temp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.config.record_to_lopez_baeza_short" href="#pyangstrom.wrappers.config.record_to_lopez_baeza_short">record_to_lopez_baeza_short</a></code></li>
+<li><code><a title="pyangstrom.wrappers.config.record_to_lsr" href="#pyangstrom.wrappers.config.record_to_lsr">record_to_lsr</a></code></li>
+<li><code><a title="pyangstrom.wrappers.config.record_to_polar_geometries" href="#pyangstrom.wrappers.config.record_to_polar_geometries">record_to_polar_geometries</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
