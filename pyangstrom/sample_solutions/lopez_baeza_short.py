@@ -24,6 +24,8 @@ class Solution(
     LsrEquations,
     MetropolisHastingsEquations,
 ):
+    # TODO: Docstring
+
     def __init__(
             self,
             margins: Margins,
@@ -139,6 +141,8 @@ class Solution(
         raise NotImplementedError()
 
 class LogSolution(Solution):
+    # TODO: Docstring
+
     def unknowns_to_vector(
             self,
             unknowns: LogLopezBaezaShortUnknowns,

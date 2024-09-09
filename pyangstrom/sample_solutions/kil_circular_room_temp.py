@@ -27,6 +27,8 @@ def Y0(x):
     return yv(0, x)
 
 class Solution(NelderMeadEquations, LsrEquations):
+    # TODO: Docstring
+
     def __init__(
             self,
             margins: Margins,
@@ -185,6 +187,8 @@ class Solution(NelderMeadEquations, LsrEquations):
         return fft_signal_processing(region, self.setup)
 
 class LogSolution(Solution):
+    # TODO: Docstring
+
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,

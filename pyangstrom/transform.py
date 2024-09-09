@@ -24,10 +24,12 @@ class Direction(Enum):
 
 
 class Point(TypedDict):
+    # TODO: Docstring
     x_pixels: int | float
     y_pixels: int | float
 
 class CartesianGeometry(TypedDict, total=False):
+    # TODO: Docstring
     min_x_pixels: int
     max_x_pixels: int
     min_y_pixels: int
@@ -36,6 +38,7 @@ class CartesianGeometry(TypedDict, total=False):
     heat_source_y_pixels: int
 
 class PolarGeometry(TypedDict):
+    # TODO: Docstring
     center: Point
     min_r_pixels: int | float
     max_r_pixels: int | float
@@ -47,15 +50,18 @@ class PolarGeometry(TypedDict):
 Geometry = CartesianGeometry | PolarGeometry
 
 class RegionStructure(TypedDict, total=False):
+    # TODO: Docstring
     subtract_temperatures_by: str
     average_out_span: bool
     num_deinterleaving_groups: int
 
 class RegionConfig(TypedDict, total=False):
+    # TODO: Docstring
     geometry: Geometry
     structure: RegionStructure
 
 class RegionBatchConfig(TypedDict, total=False):
+    # TODO: Docstring
     geometries: list[Geometry]
     structure: RegionStructure
     average_over_regions: bool
@@ -65,6 +71,8 @@ RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list
 
 @dataclass
 class Margins:
+    # TODO: Docstring
+
     seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
 
@@ -399,6 +407,7 @@ def fully_extract_region(
     ValueError
         Malformed information.
     """
+    # TODO: Improve docstring
     match information:
         case {'geometry': geometry}:
             region = geometry_to_region(df_recording, geometry, setup)
@@ -450,6 +459,8 @@ def fully_extract_region(
             raise ValueError(f"Invalid information format: {information}")
 
 def collapse_region(region: Region) -> Region:
+    # TODO: Docstring (maybe)
+
     num_times, num_disp, *_ = region.temperatures_kelvin.shape
     new_temps = (region.temperatures_kelvin
                        .reshape(num_times, num_disp, -1)

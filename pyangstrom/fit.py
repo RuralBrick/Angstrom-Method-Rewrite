@@ -22,6 +22,8 @@ class FittingResult:
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def __init__(
             self,
@@ -34,6 +36,8 @@ class EquationPackage(abc.ABC):
     def solve(self, unknowns: Unknowns) -> SignalResult: ...
 
 class Fitter(Protocol):
+    # TODO: Docstring
+
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -43,12 +47,14 @@ class Fitter(Protocol):
     ) -> FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
+    # TODO: Docstring
     name: str
     solution: EquationPackage
     guesses: Unknowns
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
+    # TODO: Docstring
     name: str
     fitter: Fitter
     parameters: dict
@@ -142,6 +148,7 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     """
+    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information['parameters']

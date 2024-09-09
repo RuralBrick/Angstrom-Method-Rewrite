@@ -7,6 +7,7 @@ from pyangstrom.fit import SolverInformation, FitterInformation
 
 
 class Config(TypedDict, total=False):
+    # TODO: Docstring
     experimental_setup: ExperimentalSetup
     region_information: RegionInformation
     signal_processor: SignalProcessorInformation

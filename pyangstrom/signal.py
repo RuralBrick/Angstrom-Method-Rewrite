@@ -25,6 +25,8 @@ class SignalResult:
     margins: Margins
 
 class SignalProcessor(Protocol):
+    # TODO: Docstring
+
     def __call__(
             self,
             region: Region,
@@ -33,12 +35,14 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 class SignalProcessorInformation(TypedDict, total=False):
+    # TODO: Docstring
     name: str
     processor: SignalProcessor
     parameters: dict
     apply_filter: bool
 
 class SineParameters(TypedDict):
+    # TODO: Docstring (internal)
     amplitude: float
     phase: float
     bias: float
@@ -50,6 +54,8 @@ def filter_signal(
         cutoff: float = 0.5,
         order: int = 5,
 ) -> Region:
+    # TODO: Docstring
+
     cutoff_frequency = cutoff * setup['heating_frequency_hertz']
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
@@ -110,6 +116,8 @@ def sine_signal_processing(
         initial_phase=0.1,
         initial_bias=298.0,
 ) -> SignalProperties:
+    # TODO: Docstring (maybe)
+
     params = Parameters()
     params.add_many(
         ('amplitude', initial_amplitude, True, 0.0, None, None, None),
@@ -137,6 +145,8 @@ def fft_signal_processing(
         setup: ExperimentalSetup,
         tol=2,
 ) -> SignalProperties:
+    # TODO: Docstring (maybe)
+
     fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup['heating_frequency_hertz'] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
@@ -183,6 +193,8 @@ def max_min_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
 ) -> SignalProperties:
+    # TODO: Docstring (maybe)
+
     amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
     amp_ratio = amps / amps[0]
 
@@ -236,6 +248,7 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     """
+    # TODO: Improve docstring
     if 'apply_filter' in information and information['apply_filter']:
         region = filter_signal(region, setup)
     processor = extract_processor(information)
