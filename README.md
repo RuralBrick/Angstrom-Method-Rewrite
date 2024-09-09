@@ -21,6 +21,14 @@ pip install git+https://github.com/RuralBrick/Angstrom-Method-Rewrite.git
 ```
 The `pyangstrom` package will be installed into your current environment.
 
+## Usage
+
+Instructions, examples, and much more can all be found in this repository’s
+[wiki](https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki)! Also, source
+code documentation can be found in this repository’s
+[Pages](https://ruralbrick.github.io/Angstrom-Method-Rewrite/pyangstrom/index.html),
+for those interested in all the nitty-gritty details.
+
 ## Citation + Previous Work
 
 This repository is a rewrite of the code found at
