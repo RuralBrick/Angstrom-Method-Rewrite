@@ -138,7 +138,7 @@ def analyze_recording(
         real path if there is a cache file with a matching name in
         recording_cache_path.
     config
-        Path to a YAML config file or the deserialized config object itself.
+        Path to a JSON config file or the deserialized config object itself.
 
     Other Parameters
     ----------------
