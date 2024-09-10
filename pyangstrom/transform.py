@@ -51,6 +51,8 @@ Geometry = CartesianGeometry | PolarGeometry
 
 class RegionStructure(TypedDict, total=False):
     # TODO: Docstring
+    #       * explain each attribute
+    #       * list valid values (str)
     subtract_temperatures_by: str
     average_out_span: bool
     num_deinterleaving_groups: int

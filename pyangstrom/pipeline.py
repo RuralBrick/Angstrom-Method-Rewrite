@@ -142,13 +142,12 @@ def analyze_recording(
 
     Other Parameters
     ----------------
-    verbose
-        If True, print status messages while processing data.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     """
+    # TODO: debug, return_visualization
     logger.info("Loading recording")
     if recording_cache_path:
         recording_path = PurePath(recording_path)

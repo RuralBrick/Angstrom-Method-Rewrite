@@ -57,8 +57,6 @@ def hu_batch_process(
 
     Other Parameters
     ----------------
-    verbose
-        If True, print status messages while processing data.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
@@ -67,6 +65,7 @@ def hu_batch_process(
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     """
+    # TODO: debug, return_visualization
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)

@@ -36,6 +36,10 @@ class SignalProcessor(Protocol):
 
 class SignalProcessorInformation(TypedDict, total=False):
     # TODO: Docstring
+    #       * explain apply_filter
+    #       * explain what's optional/mutually exclusive
+    #       * list valid names
+    #       * link to wiki page
     name: str
     processor: SignalProcessor
     parameters: dict

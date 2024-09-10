@@ -48,6 +48,8 @@ class Fitter(Protocol):
 
 class SolverInformation(TypedDict, total=False):
     # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
     name: str
     solution: EquationPackage
     guesses: Unknowns
@@ -55,6 +57,8 @@ class SolverInformation(TypedDict, total=False):
 
 class FitterInformation(TypedDict, total=False):
     # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
     name: str
     fitter: Fitter
     parameters: dict
