@@ -12,10 +12,12 @@ from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEqu
 
 
 class LopezBaezaShortUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_m2__s: float
     heat_transfer_coefficient_W__m2_K: float
 
 class LogLopezBaezaShortUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_log10_m2__s: float
     heat_transfer_coefficient_log10_W__m2_K: float
 

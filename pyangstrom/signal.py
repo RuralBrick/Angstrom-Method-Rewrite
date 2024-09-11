@@ -15,11 +15,13 @@ from pyangstrom.exp_setup import ExperimentalSetup
 logger = logging.getLogger('signal')
 
 class SignalProperties(NamedTuple):
+    # TODO: Docstring
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
 
 @dataclass
 class SignalResult:
+    # TODO: Docstring
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins

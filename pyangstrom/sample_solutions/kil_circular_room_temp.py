@@ -13,10 +13,12 @@ from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 class LogKilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 

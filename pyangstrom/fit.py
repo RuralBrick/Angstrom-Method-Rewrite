@@ -14,10 +14,12 @@ Unknowns = dict
 
 @dataclass
 class FitterOutput:
+    # TODO: Docstring
     unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
+    # TODO: Docstring
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties
 

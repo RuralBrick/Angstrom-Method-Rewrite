@@ -17,6 +17,7 @@ TEMPERATURE_OFFSET = {
 }
 
 class Direction(Enum):
+    # TODO: Docstring
     LESSER_X = auto()
     GREATER_X = auto()
     LESSER_Y = auto()
