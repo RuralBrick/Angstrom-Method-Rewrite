@@ -6,11 +6,13 @@
         {
             "label": "Regenerate Docs",
             "type": "shell",
-            "command": "pdoc",
+            "command": "${command:python.interpreterPath}",
             "options": {
                 "cwd": "${workspaceFolder}"
             },
             "args": [
+                "-m",
+                "pdoc",
                 "--html",
                 "--force",
                 "--output-dir",

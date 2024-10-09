@@ -43,16 +43,20 @@ from pyangstrom.exp_setup import ExperimentalSetup
 logger = logging.getLogger(&#39;signal&#39;)
 
 class SignalProperties(NamedTuple):
+    # TODO: Docstring
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
 
 @dataclass
 class SignalResult:
+    # TODO: Docstring
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins
 
 class SignalProcessor(Protocol):
+    # TODO: Docstring
+
     def __call__(
             self,
             region: Region,
@@ -61,12 +65,18 @@ class SignalProcessor(Protocol):
     ) -&gt; SignalProperties: ...
 
 class SignalProcessorInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * explain apply_filter
+    #       * explain what&#39;s optional/mutually exclusive
+    #       * list valid names
+    #       * link to wiki page
     name: str
     processor: SignalProcessor
     parameters: dict
     apply_filter: bool
 
 class SineParameters(TypedDict):
+    # TODO: Docstring (internal)
     amplitude: float
     phase: float
     bias: float
@@ -78,6 +88,8 @@ def filter_signal(
         cutoff: float = 0.5,
         order: int = 5,
 ) -&gt; Region:
+    # TODO: Docstring
+
     cutoff_frequency = cutoff * setup[&#39;heating_frequency_hertz&#39;]
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
@@ -138,6 +150,8 @@ def sine_signal_processing(
         initial_phase=0.1,
         initial_bias=298.0,
 ) -&gt; SignalProperties:
+    # TODO: Docstring (maybe)
+
     params = Parameters()
     params.add_many(
         (&#39;amplitude&#39;, initial_amplitude, True, 0.0, None, None, None),
@@ -165,6 +179,8 @@ def fft_signal_processing(
         setup: ExperimentalSetup,
         tol=2,
 ) -&gt; SignalProperties:
+    # TODO: Docstring (maybe)
+
     fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup[&#39;heating_frequency_hertz&#39;] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
@@ -211,6 +227,8 @@ def max_min_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
 ) -&gt; SignalProperties:
+    # TODO: Docstring (maybe)
+
     amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
     amp_ratio = amps / amps[0]
 
@@ -264,6 +282,7 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     &#34;&#34;&#34;
+    # TODO: Improve docstring
     if &#39;apply_filter&#39; in information and information[&#39;apply_filter&#39;]:
         region = filter_signal(region, setup)
     processor = extract_processor(information)
@@ -360,6 +379,8 @@ def signal_process_region(
         setup: ExperimentalSetup,
         tol=2,
 ) -&gt; SignalProperties:
+    # TODO: Docstring (maybe)
+
     fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup[&#39;heating_frequency_hertz&#39;] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
@@ -398,6 +419,8 @@ def signal_process_region(
         cutoff: float = 0.5,
         order: int = 5,
 ) -&gt; Region:
+    # TODO: Docstring
+
     cutoff_frequency = cutoff * setup[&#39;heating_frequency_hertz&#39;]
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
@@ -471,6 +494,8 @@ def signal_process_region(
         region: Region,
         setup: ExperimentalSetup,
 ) -&gt; SignalProperties:
+    # TODO: Docstring (maybe)
+
     amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
     amp_ratio = amps / amps[0]
 
@@ -536,6 +561,7 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     &#34;&#34;&#34;
+    # TODO: Improve docstring
     if &#39;apply_filter&#39; in information and information[&#39;apply_filter&#39;]:
         region = filter_signal(region, setup)
     processor = extract_processor(information)
@@ -561,6 +587,8 @@ def signal_process_region(
         initial_phase=0.1,
         initial_bias=298.0,
 ) -&gt; SignalProperties:
+    # TODO: Docstring (maybe)
+
     params = Parameters()
     params.add_many(
         (&#39;amplitude&#39;, initial_amplitude, True, 0.0, None, None, None),
@@ -601,8 +629,7 @@ def signal_process_region(
         ...
 </code></pre>
 <p>Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).</p>
-<p>For example::</p>
+structural subtyping (static duck-typing), for example::</p>
 <pre><code>class C:
     def meth(self) -&gt; int:
         return 0
@@ -625,6 +652,8 @@ Protocol classes can be generic, they are defined as::</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignalProcessor(Protocol):
+    # TODO: Docstring
+
     def __call__(
             self,
             region: Region,
@@ -659,6 +688,11 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignalProcessorInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * explain apply_filter
+    #       * explain what&#39;s optional/mutually exclusive
+    #       * list valid names
+    #       * link to wiki page
     name: str
     processor: SignalProcessor
     parameters: dict
@@ -699,6 +733,7 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignalProperties(NamedTuple):
+    # TODO: Docstring
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray</code></pre>
 </details>
@@ -730,6 +765,7 @@ dict(one=1, two=2)</p></div>
 </summary>
 <pre><code class="python">@dataclass
 class SignalResult:
+    # TODO: Docstring
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins</code></pre>
@@ -771,6 +807,7 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SineParameters(TypedDict):
+    # TODO: Docstring (internal)
     amplitude: float
     phase: float
     bias: float

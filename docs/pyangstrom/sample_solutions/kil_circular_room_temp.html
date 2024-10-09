@@ -41,10 +41,12 @@ from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 class LogKilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
@@ -55,6 +57,8 @@ def Y0(x):
     return yv(0, x)
 
 class Solution(NelderMeadEquations, LsrEquations):
+    # TODO: Docstring
+
     def __init__(
             self,
             margins: Margins,
@@ -213,6 +217,8 @@ class Solution(NelderMeadEquations, LsrEquations):
         return fft_signal_processing(region, self.setup)
 
 class LogSolution(Solution):
+    # TODO: Docstring
+
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,
@@ -300,6 +306,7 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class KilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float</code></pre>
 </details>
@@ -340,6 +347,7 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LogKilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float</code></pre>
 </details>
@@ -371,6 +379,8 @@ inheritance.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LogSolution(Solution):
+    # TODO: Docstring
+
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,
@@ -489,6 +499,8 @@ inheritance.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Solution(NelderMeadEquations, LsrEquations):
+    # TODO: Docstring
+
     def __init__(
             self,
             margins: Margins,

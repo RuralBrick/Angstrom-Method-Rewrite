@@ -151,10 +151,10 @@ def record_to_lopez_baeza_short(record) -&gt; Optional[SolverInformation]:
 def record_to_kil_circular_room_temp(record) -&gt; Optional[SolverInformation]:
     try:
         solver: SolverInformation = {
-            &#39;name&#39;: &#39;kil&#39;,
+            &#39;name&#39;: &#39;log_kil&#39;,
             &#39;guesses&#39;: {
-                &#39;thermal_diffusivity_m2__s&#39;: 1,
-                &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: 35,
+                &#39;thermal_diffusivity_m2__s&#39;: -5,
+                &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: 1,
             },
             &#39;parameters&#39;: {
                 &#39;sample_thickness_meters&#39;: 1e-3,
@@ -171,6 +171,9 @@ def record_to_lsr(record) -&gt; Optional[FitterInformation]:
     try:
         fitter: FitterInformation = {
             &#39;name&#39;: &#39;nelder-mead&#39;,
+            &#39;parameters&#39;: {
+                &#39;properties_to_use&#39;: &#39;phase-amplitude&#39;,
+            },
         }
         return fitter
     except KeyError as e:
@@ -404,10 +407,10 @@ def exp_condition_to_config(exp_condition: list[dict]) -&gt; dict[str, Config]:
 <pre><code class="python">def record_to_kil_circular_room_temp(record) -&gt; Optional[SolverInformation]:
     try:
         solver: SolverInformation = {
-            &#39;name&#39;: &#39;kil&#39;,
+            &#39;name&#39;: &#39;log_kil&#39;,
             &#39;guesses&#39;: {
-                &#39;thermal_diffusivity_m2__s&#39;: 1,
-                &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: 35,
+                &#39;thermal_diffusivity_m2__s&#39;: -5,
+                &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: 1,
             },
             &#39;parameters&#39;: {
                 &#39;sample_thickness_meters&#39;: 1e-3,
@@ -462,6 +465,9 @@ def exp_condition_to_config(exp_condition: list[dict]) -&gt; dict[str, Config]:
     try:
         fitter: FitterInformation = {
             &#39;name&#39;: &#39;nelder-mead&#39;,
+            &#39;parameters&#39;: {
+                &#39;properties_to_use&#39;: &#39;phase-amplitude&#39;,
+            },
         }
         return fitter
     except KeyError as e:

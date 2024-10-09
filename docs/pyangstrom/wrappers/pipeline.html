@@ -44,6 +44,7 @@ def convert_old_csv_to_new_config(
         exp_condition_path: str | Path,
         config_directory_path: Optional[str | Path] = None,
 ) -&gt; dict[str, Config]:
+    # TODO: Docstring (maybe)
     p_exp_cond = Path(exp_condition_path)
     exp_cond = load_exp_condition(p_exp_cond)
     logger.debug(f&#39;{exp_cond=}&#39;)
@@ -84,8 +85,6 @@ def hu_batch_process(
 
     Other Parameters
     ----------------
-    verbose
-        If True, print status messages while processing data.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
@@ -94,6 +93,7 @@ def hu_batch_process(
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     &#34;&#34;&#34;
+    # TODO: debug, return_visualization
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)
@@ -141,6 +141,7 @@ def hu_batch_process(
         exp_condition_path: str | Path,
         config_directory_path: Optional[str | Path] = None,
 ) -&gt; dict[str, Config]:
+    # TODO: Docstring (maybe)
     p_exp_cond = Path(exp_condition_path)
     exp_cond = load_exp_condition(p_exp_cond)
     logger.debug(f&#39;{exp_cond=}&#39;)
@@ -174,8 +175,6 @@ data_directory, but also supports Path objects.</dd>
 </dl>
 <h2 id="other-parameters">Other Parameters</h2>
 <dl>
-<dt><strong><code>verbose</code></strong></dt>
-<dd>If True, print status messages while processing data.</dd>
 <dt><strong><code>memory_cache</code></strong></dt>
 <dd>Holds intermediate results in memory, allowing for faster reruns.</dd>
 <dt><strong><code>config_directory_path</code></strong></dt>
@@ -218,8 +217,6 @@ df_exp_condition_filename will be saved.</dd>
 
     Other Parameters
     ----------------
-    verbose
-        If True, print status messages while processing data.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
@@ -228,6 +225,7 @@ df_exp_condition_filename will be saved.</dd>
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     &#34;&#34;&#34;
+    # TODO: debug, return_visualization
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)

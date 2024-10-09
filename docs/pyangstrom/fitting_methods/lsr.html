@@ -43,6 +43,8 @@ from pyangstrom.fit import (
 logger = logging.getLogger(&#39;fit&#39;)
 
 class LsrEquations(EquationPackage):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray: ...
 
@@ -63,6 +65,8 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -&gt; FitterOutput:
+    # TODO: Docstring
+
     level = logger.getEffectiveLevel()
     if level &lt;= logging.DEBUG:
         verbosity = 2
@@ -111,6 +115,8 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -&gt; FitterOutput:
+    # TODO: Docstring
+
     level = logger.getEffectiveLevel()
     if level &lt;= logging.DEBUG:
         verbosity = 2
@@ -169,6 +175,8 @@ inheritance.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LsrEquations(EquationPackage):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray: ...
 

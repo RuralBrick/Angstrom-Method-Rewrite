@@ -42,14 +42,18 @@ Unknowns = dict
 
 @dataclass
 class FitterOutput:
+    # TODO: Docstring
     unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
+    # TODO: Docstring
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def __init__(
             self,
@@ -62,6 +66,8 @@ class EquationPackage(abc.ABC):
     def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...
 
 class Fitter(Protocol):
+    # TODO: Docstring
+
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -71,12 +77,18 @@ class Fitter(Protocol):
     ) -&gt; FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
     name: str
     solution: EquationPackage
     guesses: Unknowns
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
     name: str
     fitter: Fitter
     parameters: dict
@@ -170,6 +182,7 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     &#34;&#34;&#34;
+    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information[&#39;parameters&#39;]
@@ -224,6 +237,7 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     &#34;&#34;&#34;
+    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information[&#39;parameters&#39;]
@@ -381,6 +395,8 @@ inheritance.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class EquationPackage(abc.ABC):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def __init__(
             self,
@@ -431,8 +447,7 @@ def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...</code></pre>
         ...
 </code></pre>
 <p>Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing).</p>
-<p>For example::</p>
+structural subtyping (static duck-typing), for example::</p>
 <pre><code>class C:
     def meth(self) -&gt; int:
         return 0
@@ -455,6 +470,8 @@ Protocol classes can be generic, they are defined as::</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Fitter(Protocol):
+    # TODO: Docstring
+
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -490,6 +507,9 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class FitterInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
     name: str
     fitter: Fitter
     parameters: dict</code></pre>
@@ -526,6 +546,7 @@ dict(one=1, two=2)</p></div>
 </summary>
 <pre><code class="python">@dataclass
 class FitterOutput:
+    # TODO: Docstring
     unknowns_solutions: Unknowns</code></pre>
 </details>
 <h3>Class variables</h3>
@@ -548,6 +569,7 @@ class FitterOutput:
 </summary>
 <pre><code class="python">@dataclass
 class FittingResult:
+    # TODO: Docstring
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties</code></pre>
 </details>
@@ -584,6 +606,9 @@ dict(one=1, two=2)</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SolverInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
     name: str
     solution: EquationPackage
     guesses: Unknowns

@@ -35,6 +35,7 @@ from pyangstrom.fit import SolverInformation, FitterInformation
 
 
 class Config(TypedDict, total=False):
+    &#34;&#34;&#34;The full specification of how a recording should be processed.&#34;&#34;&#34;
     experimental_setup: ExperimentalSetup
     region_information: RegionInformation
     signal_processor: SignalProcessorInformation
@@ -56,22 +57,13 @@ class Config(TypedDict, total=False):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The full specification of how a recording should be processed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Config(TypedDict, total=False):
+    &#34;&#34;&#34;The full specification of how a recording should be processed.&#34;&#34;&#34;
     experimental_setup: ExperimentalSetup
     region_information: RegionInformation
     signal_processor: SignalProcessorInformation

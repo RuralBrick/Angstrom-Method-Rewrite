@@ -30,10 +30,22 @@
 
 
 class MaterialProperties(TypedDict):
+    &#34;&#34;&#34;The material properties of the recorded sample.&#34;&#34;&#34;
     specific_heat_capacity_J__kg_K: float
     density_kg__m3: float
 
 class ExperimentalSetup(TypedDict):
+    &#34;&#34;&#34;Constant experimental conditions of the recording.
+
+    Attributes
+    ----------
+    heating_frequency_hertz
+        The frequency at which the heat source is turned on and off.
+    meters_per_pixel
+        The width one pixel covers on the recorded sample.
+    material_properties
+        Material properties of the recorded sample.
+    &#34;&#34;&#34;
     heating_frequency_hertz: float
     meters_per_pixel: float
     material_properties: MaterialProperties</code></pre>
@@ -53,22 +65,32 @@ class ExperimentalSetup(TypedDict):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Constant experimental conditions of the recording.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>heating_frequency_hertz</code></strong></dt>
+<dd>The frequency at which the heat source is turned on and off.</dd>
+<dt><strong><code>meters_per_pixel</code></strong></dt>
+<dd>The width one pixel covers on the recorded sample.</dd>
+<dt><strong><code>material_properties</code></strong></dt>
+<dd>Material properties of the recorded sample.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ExperimentalSetup(TypedDict):
+    &#34;&#34;&#34;Constant experimental conditions of the recording.
+
+    Attributes
+    ----------
+    heating_frequency_hertz
+        The frequency at which the heat source is turned on and off.
+    meters_per_pixel
+        The width one pixel covers on the recorded sample.
+    material_properties
+        Material properties of the recorded sample.
+    &#34;&#34;&#34;
     heating_frequency_hertz: float
     meters_per_pixel: float
     material_properties: MaterialProperties</code></pre>
@@ -98,22 +120,13 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The material properties of the recorded sample.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MaterialProperties(TypedDict):
+    &#34;&#34;&#34;The material properties of the recorded sample.&#34;&#34;&#34;
     specific_heat_capacity_J__kg_K: float
     density_kg__m3: float</code></pre>
 </details>

@@ -45,6 +45,7 @@ TEMPERATURE_OFFSET = {
 }
 
 class Direction(Enum):
+    &#34;&#34;&#34;The direction from which the sample is heated.&#34;&#34;&#34;
     LESSER_X = auto()
     GREATER_X = auto()
     LESSER_Y = auto()
@@ -52,10 +53,30 @@ class Direction(Enum):
 
 
 class Point(TypedDict):
+    &#34;&#34;&#34;The coordinates of one pixel in the recording.&#34;&#34;&#34;
     x_pixels: int | float
     y_pixels: int | float
 
 class CartesianGeometry(TypedDict, total=False):
+    &#34;&#34;&#34;The bounds of a rectangle and from where it is being heated.
+
+    Attributes
+    ----------
+    min_x_pixels
+        Lower x bound.
+    max_x_pixels
+        Upper x bound.
+    min_y_pixels
+        Lower y bound.
+    max_y_pixels
+        Upper y bound.
+    heat_source_x_pixels
+        The x-position of a vertical line heat source. Mutually exclusive from
+        heat_source_y_pixels.
+    heat_source_y_pixels
+        The y-position of a horizontal line heat source. Mutually exclusive from
+        heat_source_x_pixels.
+    &#34;&#34;&#34;
     min_x_pixels: int
     max_x_pixels: int
     min_y_pixels: int
@@ -64,6 +85,25 @@ class CartesianGeometry(TypedDict, total=False):
     heat_source_y_pixels: int
 
 class PolarGeometry(TypedDict):
+    &#34;&#34;&#34;The bounds of an annular sector, centered on a point heat source.
+
+    Attributes
+    ----------
+    center
+        The coordinates of the point heat source.
+    min_r_pixels
+        Inner radius.
+    max_r_pixels
+        Outer radius.
+    num_r
+        Number of radial subdivisions to use.
+    min_theta_degrees
+        Starting angle.
+    max_theta_degrees
+        Ending angle.
+    num_theta
+        Number of angular subdivisions to use.
+    &#34;&#34;&#34;
     center: Point
     min_r_pixels: int | float
     max_r_pixels: int | float
@@ -75,15 +115,48 @@ class PolarGeometry(TypedDict):
 Geometry = CartesianGeometry | PolarGeometry
 
 class RegionStructure(TypedDict, total=False):
+    &#34;&#34;&#34;Various options by which to to restructure a region&#39;s temperatures.
+
+    Attributes
+    ----------
+    subtract_temperatures_by
+        If set to one of:
+
+        - &#39;mean&#39;
+        - &#39;avg&#39;
+        - &#39;average&#39;
+
+        Temperatures will be subtracted by the average of all temperature
+        measurements.
+
+        If, instead, set to one of:
+
+        - &#39;min&#39;
+        - &#39;minimum&#39;
+        - &#39;lowest&#39;
+
+        Temperatures will by subtracted by the lowest of all temperature
+        measurements.
+
+        Does not affect total number of dimensions present.
+    average_out_span
+        Whether temperatures with the same displacement from the heat source
+        should be averaged together. Removes a dimension.
+    num_deinterleaving_groups
+        The number of groups the temperatures should be separated into by way of
+        deinterleaving. Adds a dimension.
+    &#34;&#34;&#34;
     subtract_temperatures_by: str
     average_out_span: bool
     num_deinterleaving_groups: int
 
 class RegionConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract a single region from the recording.&#34;&#34;&#34;
     geometry: Geometry
     structure: RegionStructure
 
 class RegionBatchConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract multiple related regions from the recording.&#34;&#34;&#34;
     geometries: list[Geometry]
     structure: RegionStructure
     average_over_regions: bool
@@ -93,6 +166,18 @@ RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list
 
 @dataclass
 class Margins:
+    &#34;&#34;&#34;Spatiotemporal measurements of each temperature data point off
+    standardized references.
+
+    Attributes
+    ----------
+    seconds_elapsed
+        A 1-dimensional array of the time offsets of each recording frame from
+        the first frame&#39;s time.
+    displacements_meters
+        An N-dimensional array of the positional offset of each temperature
+        measurement from the heat source.
+    &#34;&#34;&#34;
     seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
 
@@ -121,23 +206,22 @@ class Margins:
 
 @dataclass
 class Region:
-    &#34;&#34;&#34;A bounded region of IR temperature camera data after undergoing
-    transformations and changes of basis until
+    &#34;&#34;&#34;Temperature data from a bounded region of the recording, transformed into
+    a standardized format.
 
     Attributes
     ----------
     timestamps
-        The timestamps of the original IR camera frames.
+        The timestamps of the original recording frames.
     temperatures_kelvin
         An N-dimensional array of temperatures grouped by time, displacement
-        from heating source, and other factors based on its axes.
+        from the heat source, and other factors based on the order of its axes.
     margins
-        The range of each corresponding axis of temperatures_kelvin. Always
-        in (time_span, displacement_range_meters, ...) order.
+        Spatiotemporal metadata of the temperatures.
     &#34;&#34;&#34;
     timestamps: pd.DatetimeIndex
     temperatures_kelvin: np.ndarray
-    margins: Margins # TODO: Update docstring
+    margins: Margins
 
 
 def convert_temperatures_to_kelvin(
@@ -421,7 +505,8 @@ def fully_extract_region(
         information: RegionInformation,
         setup: ExperimentalSetup,
 ) -&gt; Region | list[Region] | list[list[Region]]:
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Extract all regions as specified by the region information configuration.
+
     Raises
     ------
     ValueError
@@ -478,6 +563,9 @@ def fully_extract_region(
             raise ValueError(f&#34;Invalid information format: {information}&#34;)
 
 def collapse_region(region: Region) -&gt; Region:
+    &#34;&#34;&#34;Reduce the temperatures to a 2-dimensional array, representing time
+    offsets and displacements.
+    &#34;&#34;&#34;
     num_times, num_disp, *_ = region.temperatures_kelvin.shape
     new_temps = (region.temperatures_kelvin
                        .reshape(num_times, num_disp, -1)
@@ -536,12 +624,16 @@ def collapse_region(region: Region) -&gt; Region:
 <span>def <span class="ident">collapse_region</span></span>(<span>region: <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Reduce the temperatures to a 2-dimensional array, representing time
+offsets and displacements.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def collapse_region(region: Region) -&gt; Region:
+    &#34;&#34;&#34;Reduce the temperatures to a 2-dimensional array, representing time
+    offsets and displacements.
+    &#34;&#34;&#34;
     num_times, num_disp, *_ = region.temperatures_kelvin.shape
     new_temps = (region.temperatures_kelvin
                        .reshape(num_times, num_disp, -1)
@@ -772,7 +864,8 @@ def collapse_region(region: Region) -&gt; Region:
 <span>def <span class="ident">fully_extract_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, information: <a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a> | <a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a> | list[<a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a>] | list[<a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a>], setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a> | list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>] | list[list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]]</span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="raises">Raises</h2>
+<div class="desc"><p>Extract all regions as specified by the region information configuration.</p>
+<h2 id="raises">Raises</h2>
 <dl>
 <dt><code>ValueError</code></dt>
 <dd>Malformed information.</dd>
@@ -786,7 +879,8 @@ def collapse_region(region: Region) -&gt; Region:
         information: RegionInformation,
         setup: ExperimentalSetup,
 ) -&gt; Region | list[Region] | list[list[Region]]:
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Extract all regions as specified by the region information configuration.
+
     Raises
     ------
     ValueError
@@ -1008,22 +1102,48 @@ def collapse_region(region: Region) -&gt; Region:
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The bounds of a rectangle and from where it is being heated.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>min_x_pixels</code></strong></dt>
+<dd>Lower x bound.</dd>
+<dt><strong><code>max_x_pixels</code></strong></dt>
+<dd>Upper x bound.</dd>
+<dt><strong><code>min_y_pixels</code></strong></dt>
+<dd>Lower y bound.</dd>
+<dt><strong><code>max_y_pixels</code></strong></dt>
+<dd>Upper y bound.</dd>
+<dt><strong><code>heat_source_x_pixels</code></strong></dt>
+<dd>The x-position of a vertical line heat source. Mutually exclusive from
+heat_source_y_pixels.</dd>
+<dt><strong><code>heat_source_y_pixels</code></strong></dt>
+<dd>The y-position of a horizontal line heat source. Mutually exclusive from
+heat_source_x_pixels.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class CartesianGeometry(TypedDict, total=False):
+    &#34;&#34;&#34;The bounds of a rectangle and from where it is being heated.
+
+    Attributes
+    ----------
+    min_x_pixels
+        Lower x bound.
+    max_x_pixels
+        Upper x bound.
+    min_y_pixels
+        Lower y bound.
+    max_y_pixels
+        Upper y bound.
+    heat_source_x_pixels
+        The x-position of a vertical line heat source. Mutually exclusive from
+        heat_source_y_pixels.
+    heat_source_y_pixels
+        The y-position of a horizontal line heat source. Mutually exclusive from
+        heat_source_x_pixels.
+    &#34;&#34;&#34;
     min_x_pixels: int
     max_x_pixels: int
     min_y_pixels: int
@@ -1065,49 +1185,16 @@ dict(one=1, two=2)</p></div>
 </dd>
 <dt id="pyangstrom.transform.Direction"><code class="flex name class">
 <span>class <span class="ident">Direction</span></span>
-<span>(</span><span>*args, **kwds)</span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a collection of name/value pairs.</p>
-<p>Example enumeration:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; class Color(Enum):
-...     RED = 1
-...     BLUE = 2
-...     GREEN = 3
-</code></pre>
-<p>Access them by:</p>
-<ul>
-<li>attribute access::</li>
-</ul>
-<pre><code class="language-python-repl">&gt;&gt;&gt; Color.RED
-&lt;Color.RED: 1&gt;
-</code></pre>
-<ul>
-<li>value lookup:</li>
-</ul>
-<pre><code class="language-python-repl">&gt;&gt;&gt; Color(1)
-&lt;Color.RED: 1&gt;
-</code></pre>
-<ul>
-<li>name lookup:</li>
-</ul>
-<pre><code class="language-python-repl">&gt;&gt;&gt; Color['RED']
-&lt;Color.RED: 1&gt;
-</code></pre>
-<p>Enumerations can be iterated over, and know how many members they have:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; len(Color)
-3
-</code></pre>
-<pre><code class="language-python-repl">&gt;&gt;&gt; list(Color)
-[&lt;Color.RED: 1&gt;, &lt;Color.BLUE: 2&gt;, &lt;Color.GREEN: 3&gt;]
-</code></pre>
-<p>Methods can be added to enumerations, and members can have their own
-attributes &ndash; see the documentation for details.</p></div>
+<div class="desc"><p>The direction from which the sample is heated.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Direction(Enum):
+    &#34;&#34;&#34;The direction from which the sample is heated.&#34;&#34;&#34;
     LESSER_X = auto()
     GREATER_X = auto()
     LESSER_Y = auto()
@@ -1142,13 +1229,35 @@ attributes &ndash; see the documentation for details.</p></div>
 <span>(</span><span>seconds_elapsed: numpy.ndarray, displacements_meters: numpy.ndarray)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Margins(seconds_elapsed: numpy.ndarray, displacements_meters: numpy.ndarray)</p></div>
+<div class="desc"><p>Spatiotemporal measurements of each temperature data point off
+standardized references.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>seconds_elapsed</code></strong></dt>
+<dd>A 1-dimensional array of the time offsets of each recording frame from
+the first frame's time.</dd>
+<dt><strong><code>displacements_meters</code></strong></dt>
+<dd>An N-dimensional array of the positional offset of each temperature
+measurement from the heat source.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
 class Margins:
+    &#34;&#34;&#34;Spatiotemporal measurements of each temperature data point off
+    standardized references.
+
+    Attributes
+    ----------
+    seconds_elapsed
+        A 1-dimensional array of the time offsets of each recording frame from
+        the first frame&#39;s time.
+    displacements_meters
+        An N-dimensional array of the positional offset of each temperature
+        measurement from the heat source.
+    &#34;&#34;&#34;
     seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
 
@@ -1228,22 +1337,13 @@ def new(
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The coordinates of one pixel in the recording.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Point(TypedDict):
+    &#34;&#34;&#34;The coordinates of one pixel in the recording.&#34;&#34;&#34;
     x_pixels: int | float
     y_pixels: int | float</code></pre>
 </details>
@@ -1268,22 +1368,48 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The bounds of an annular sector, centered on a point heat source.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>center</code></strong></dt>
+<dd>The coordinates of the point heat source.</dd>
+<dt><strong><code>min_r_pixels</code></strong></dt>
+<dd>Inner radius.</dd>
+<dt><strong><code>max_r_pixels</code></strong></dt>
+<dd>Outer radius.</dd>
+<dt><strong><code>num_r</code></strong></dt>
+<dd>Number of radial subdivisions to use.</dd>
+<dt><strong><code>min_theta_degrees</code></strong></dt>
+<dd>Starting angle.</dd>
+<dt><strong><code>max_theta_degrees</code></strong></dt>
+<dd>Ending angle.</dd>
+<dt><strong><code>num_theta</code></strong></dt>
+<dd>Number of angular subdivisions to use.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class PolarGeometry(TypedDict):
+    &#34;&#34;&#34;The bounds of an annular sector, centered on a point heat source.
+
+    Attributes
+    ----------
+    center
+        The coordinates of the point heat source.
+    min_r_pixels
+        Inner radius.
+    max_r_pixels
+        Outer radius.
+    num_r
+        Number of radial subdivisions to use.
+    min_theta_degrees
+        Starting angle.
+    max_theta_degrees
+        Ending angle.
+    num_theta
+        Number of angular subdivisions to use.
+    &#34;&#34;&#34;
     center: Point
     min_r_pixels: int | float
     max_r_pixels: int | float
@@ -1333,18 +1459,17 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>timestamps: pandas.core.indexes.datetimes.DatetimeIndex, temperatures_kelvin: numpy.ndarray, margins: <a title="pyangstrom.transform.Margins" href="#pyangstrom.transform.Margins">Margins</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A bounded region of IR temperature camera data after undergoing
-transformations and changes of basis until</p>
+<div class="desc"><p>Temperature data from a bounded region of the recording, transformed into
+a standardized format.</p>
 <h2 id="attributes">Attributes</h2>
 <dl>
 <dt><strong><code>timestamps</code></strong></dt>
-<dd>The timestamps of the original IR camera frames.</dd>
+<dd>The timestamps of the original recording frames.</dd>
 <dt><strong><code>temperatures_kelvin</code></strong></dt>
 <dd>An N-dimensional array of temperatures grouped by time, displacement
-from heating source, and other factors based on its axes.</dd>
+from the heat source, and other factors based on the order of its axes.</dd>
 <dt><strong><code>margins</code></strong></dt>
-<dd>The range of each corresponding axis of temperatures_kelvin. Always
-in (time_span, displacement_range_meters, &hellip;) order.</dd>
+<dd>Spatiotemporal metadata of the temperatures.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1352,23 +1477,22 @@ in (time_span, displacement_range_meters, &hellip;) order.</dd>
 </summary>
 <pre><code class="python">@dataclass
 class Region:
-    &#34;&#34;&#34;A bounded region of IR temperature camera data after undergoing
-    transformations and changes of basis until
+    &#34;&#34;&#34;Temperature data from a bounded region of the recording, transformed into
+    a standardized format.
 
     Attributes
     ----------
     timestamps
-        The timestamps of the original IR camera frames.
+        The timestamps of the original recording frames.
     temperatures_kelvin
         An N-dimensional array of temperatures grouped by time, displacement
-        from heating source, and other factors based on its axes.
+        from the heat source, and other factors based on the order of its axes.
     margins
-        The range of each corresponding axis of temperatures_kelvin. Always
-        in (time_span, displacement_range_meters, ...) order.
+        Spatiotemporal metadata of the temperatures.
     &#34;&#34;&#34;
     timestamps: pd.DatetimeIndex
     temperatures_kelvin: np.ndarray
-    margins: Margins # TODO: Update docstring</code></pre>
+    margins: Margins</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -1391,22 +1515,13 @@ class Region:
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Specifications to extract multiple related regions from the recording.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class RegionBatchConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract multiple related regions from the recording.&#34;&#34;&#34;
     geometries: list[Geometry]
     structure: RegionStructure
     average_over_regions: bool</code></pre>
@@ -1436,22 +1551,13 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Specifications to extract a single region from the recording.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class RegionConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract a single region from the recording.&#34;&#34;&#34;
     geometry: Geometry
     structure: RegionStructure</code></pre>
 </details>
@@ -1476,22 +1582,72 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Various options by which to to restructure a region's temperatures.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>subtract_temperatures_by</code></strong></dt>
+<dd>
+<p>If set to one of:</p>
+<ul>
+<li>'mean'</li>
+<li>'avg'</li>
+<li>'average'</li>
+</ul>
+<p>Temperatures will be subtracted by the average of all temperature
+measurements.</p>
+<p>If, instead, set to one of:</p>
+<ul>
+<li>'min'</li>
+<li>'minimum'</li>
+<li>'lowest'</li>
+</ul>
+<p>Temperatures will by subtracted by the lowest of all temperature
+measurements.</p>
+<p>Does not affect total number of dimensions present.</p>
+</dd>
+<dt><strong><code>average_out_span</code></strong></dt>
+<dd>Whether temperatures with the same displacement from the heat source
+should be averaged together. Removes a dimension.</dd>
+<dt><strong><code>num_deinterleaving_groups</code></strong></dt>
+<dd>The number of groups the temperatures should be separated into by way of
+deinterleaving. Adds a dimension.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class RegionStructure(TypedDict, total=False):
+    &#34;&#34;&#34;Various options by which to to restructure a region&#39;s temperatures.
+
+    Attributes
+    ----------
+    subtract_temperatures_by
+        If set to one of:
+
+        - &#39;mean&#39;
+        - &#39;avg&#39;
+        - &#39;average&#39;
+
+        Temperatures will be subtracted by the average of all temperature
+        measurements.
+
+        If, instead, set to one of:
+
+        - &#39;min&#39;
+        - &#39;minimum&#39;
+        - &#39;lowest&#39;
+
+        Temperatures will by subtracted by the lowest of all temperature
+        measurements.
+
+        Does not affect total number of dimensions present.
+    average_out_span
+        Whether temperatures with the same displacement from the heat source
+        should be averaged together. Removes a dimension.
+    num_deinterleaving_groups
+        The number of groups the temperatures should be separated into by way of
+        deinterleaving. Adds a dimension.
+    &#34;&#34;&#34;
     subtract_temperatures_by: str
     average_out_span: bool
     num_deinterleaving_groups: int</code></pre>

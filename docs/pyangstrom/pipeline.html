@@ -166,17 +166,16 @@ def analyze_recording(
         real path if there is a cache file with a matching name in
         recording_cache_path.
     config
-        Path to a YAML config file or the deserialized config object itself.
+        Path to a JSON config file or the deserialized config object itself.
 
     Other Parameters
     ----------------
-    verbose
-        If True, print status messages while processing data.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     &#34;&#34;&#34;
+    # TODO: debug, return_visualization
     logger.info(&#34;Loading recording&#34;)
     if recording_cache_path:
         recording_path = PurePath(recording_path)
@@ -341,12 +340,10 @@ def analyze_recording(
 real path if there is a cache file with a matching name in
 recording_cache_path.</dd>
 <dt><strong><code>config</code></strong></dt>
-<dd>Path to a YAML config file or the deserialized config object itself.</dd>
+<dd>Path to a JSON config file or the deserialized config object itself.</dd>
 </dl>
 <h2 id="other-parameters">Other Parameters</h2>
 <dl>
-<dt><strong><code>verbose</code></strong></dt>
-<dd>If True, print status messages while processing data.</dd>
 <dt><strong><code>memory_cache</code></strong></dt>
 <dd>Holds intermediate results in memory, allowing for faster reruns.</dd>
 <dt><strong><code>recording_cache_path</code></strong></dt>
@@ -374,17 +371,16 @@ recording_cache_path.</dd>
         real path if there is a cache file with a matching name in
         recording_cache_path.
     config
-        Path to a YAML config file or the deserialized config object itself.
+        Path to a JSON config file or the deserialized config object itself.
 
     Other Parameters
     ----------------
-    verbose
-        If True, print status messages while processing data.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     &#34;&#34;&#34;
+    # TODO: debug, return_visualization
     logger.info(&#34;Loading recording&#34;)
     if recording_cache_path:
         recording_path = PurePath(recording_path)

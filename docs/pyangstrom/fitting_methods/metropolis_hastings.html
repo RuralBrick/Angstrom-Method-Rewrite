@@ -43,6 +43,8 @@ from pyangstrom.fit import (
 logger = logging.getLogger(&#39;fit&#39;)
 
 class MetropolisHastingsEquations(EquationPackage):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def propose(self, unknowns: Unknowns) -&gt; Unknowns:...
 
@@ -59,6 +61,8 @@ def fit(
         observed_properties: SignalProperties,
         target_num_accepted_samples,
 ) -&gt; FitterOutput:
+    # TODO: Docstring
+
     accepted_samples = []
 
     current_unknowns = unknowns_guesses
@@ -103,6 +107,8 @@ def fit(
         observed_properties: SignalProperties,
         target_num_accepted_samples,
 ) -&gt; FitterOutput:
+    # TODO: Docstring
+
     accepted_samples = []
 
     current_unknowns = unknowns_guesses
@@ -142,6 +148,8 @@ inheritance.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MetropolisHastingsEquations(EquationPackage):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def propose(self, unknowns: Unknowns) -&gt; Unknowns:...
 
