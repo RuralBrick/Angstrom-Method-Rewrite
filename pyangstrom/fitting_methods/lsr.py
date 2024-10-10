@@ -15,6 +15,8 @@ from pyangstrom.fit import (
 logger = logging.getLogger('fit')
 
 class LsrEquations(EquationPackage):
+    # TODO: Docstring
+
     @abc.abstractmethod
     def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray: ...
 
@@ -35,6 +37,8 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -> FitterOutput:
+    # TODO: Docstring
+
     level = logger.getEffectiveLevel()
     if level <= logging.DEBUG:
         verbosity = 2

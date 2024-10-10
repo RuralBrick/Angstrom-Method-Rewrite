@@ -15,8 +15,8 @@ logger = logging.getLogger('io')
 
 def load_config(p_config: Path) -> Config:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         File extension not recognized.
     """
@@ -38,8 +38,8 @@ def save_config(
         file_extension='json',
 ):
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Invalid file extension.
     """

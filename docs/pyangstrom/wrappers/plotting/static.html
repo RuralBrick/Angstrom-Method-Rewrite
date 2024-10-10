@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.wrappers.plotting.static API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.wrappers.plotting.static</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from typing import TypedDict, NamedTuple, get_type_hints
+from pathlib import Path
+from functools import partial
+from operator import itemgetter
+from pprint import pprint
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.patches import Wedge
+
+from pyangstrom.hu.HT import HtAmpPhaseConfig
+from pyangstrom.wrappers.caching import (
+    FigCacheConfig,
+    FigCache,
+    Cache,
+    BatchData,
+)
+from pyangstrom.wrappers.helpers import ht_df_to_rt_df
+
+
+class SectorConfig(TypedDict):
+    x0_pixels: int
+    y0_pixels: int
+    R0_pixels: int
+    R_analysis_pixels: int
+    anguler_range: str
+
+class FigureConfig(FigCacheConfig, SectorConfig):
+    pass
+
+class Config(HtAmpPhaseConfig, FigureConfig):
+    pass
+
+class FigurePlottingResults(NamedTuple):
+    figure: plt.Figure
+    figcache: FigCache
+
+class AllPlottingResults(NamedTuple):
+    lst_figures: list
+    cache: Cache
+
+def plot_alpha_hist(ax, label_font_size, df_mcmc_results):
+    ax.hist(1e4 * 10**df_mcmc_results[&#39;alpha&#39;], bins=20)
+    ax.set_xlabel(r&#39;${\alpha}$ (cm$^2$/s)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    return ax
+
+def plot_h_hist(ax, label_font_size, df_mcmc_results):
+    ax.hist(10**df_mcmc_results[&#39;h&#39;], bins=20)
+    ax.set_xlabel(&#39;$h$ (W/m2K)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    return ax
+
+def plot_amp(ax, label_font_size, df_rt_amp_phase, arr_theor_amp):
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], df_rt_amp_phase[&#39;amp_ratio&#39;], label=&#39;measurement&#39;, alpha = 0.4, marker = &#39;o&#39;, linewidth = 0)
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], arr_theor_amp, label=&#39;fitting&#39;, color=&#39;red&#39;,marker = &#39;o&#39;, linewidth = 0)
+    ax.set_xlabel(&#39;x(mm)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.set_ylabel(&#39;Amplitude decay&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.legend(prop={&#39;weight&#39;: &#39;bold&#39;, &#39;size&#39;: 12})
+    return ax
+
+def plot_phase(ax, label_font_size, df_rt_amp_phase, arr_theor_phase):
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], df_rt_amp_phase[&#39;phase_diff&#39;], label=&#39;measurement&#39;, alpha = 0.4, marker = &#39;o&#39;, linewidth = 0)
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], arr_theor_phase, label=&#39;fitting&#39;, color=&#39;red&#39;,marker = &#39;o&#39;, linewidth = 0)
+    ax.set_xlabel(&#39;x(mm)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.set_ylabel(&#39;Phase difference&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.legend(prop={&#39;weight&#39;: &#39;bold&#39;, &#39;size&#39;: 12})
+    return ax
+
+def plot_temp_wave(ax, label_font_size, df_temp):
+    idx_line = [c for c in df_temp.columns if isinstance(c, int)]
+    ax.plot(df_temp[&#39;reltime&#39;], df_temp[min(idx_line)], label=&#39;line 0&#39;)
+    ax.plot(df_temp[&#39;reltime&#39;], df_temp[max(idx_line)], label=&#39;line N&#39;)
+    ax.set_xlabel(&#39;Time (s)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.set_ylabel(&#39;Temperature (C)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.legend(prop={&#39;weight&#39;: &#39;bold&#39;, &#39;size&#39;: 12})
+    return ax
+
+def plot_sectors(ax, label_font_size, dict_config: SectorConfig, arr_first_frame):
+    ax.imshow(arr_first_frame)
+    x0, y0, R0, R_analysis, anguler_range = itemgetter(&#39;x0_pixels&#39;, &#39;y0_pixels&#39;, &#39;R0_pixels&#39;, &#39;R_analysis_pixels&#39;, &#39;anguler_range&#39;)(dict_config)
+    for theta1, theta2 in eval(anguler_range):
+        ax.add_patch(Wedge((x0, y0), R0 + R_analysis, theta1, theta2, hatch=&#39;..&#39;, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;))
+    ax.add_patch(plt.Circle((x0, y0), R0, linewidth=2, edgecolor=&#39;r&#39;, linestyle=&#39;solid&#39;, facecolor=&#39;none&#39;))
+    ax.add_patch(plt.Circle((x0, y0), R0 + R_analysis, linewidth=2, edgecolor=&#39;r&#39;, linestyle=&#39;solid&#39;, facecolor=&#39;none&#39;))
+    return ax
+
+def plot_one_case_figure(
+        working_directory: Path | str,
+        dict_config: FigureConfig,
+        batchdata: BatchData.Record,
+        px=25e-6, # Length of pixel in meters
+        label_font_size=18,
+        *,
+        _figcache: FigCache=None,
+) -&gt; FigurePlottingResults:
+    p_wd = Path(working_directory)
+    if not _figcache:
+        _figcache = FigCache(
+            p_wd,
+            dict_config,
+            ht_df_to_rt_df(batchdata.df_ht_amp_phase, px),
+        )
+    plots = [
+        [
+            # TODO: mcmc[chain_num] --&gt; line plot
+            # mcmc[alpha/h] --&gt; hist
+            partial(
+                plot_alpha_hist,
+                df_mcmc_results=_figcache.get_df_mcmc_results()
+            ),
+            partial(
+                plot_h_hist,
+                df_mcmc_results=_figcache.get_df_mcmc_results()
+            ),
+            # TODO: mcmc[alpha/h] -|&gt; auto_correlation --&gt; line plot
+            # temp --&gt; line plot
+            partial(plot_temp_wave, df_temp=batchdata.df_temp),
+            # TODO: temp -|&gt; fit -|&gt; abs --&gt; line plot
+            # TODO: temp -|&gt; fit -|&gt; angle --&gt; line plot
+        ],
+        [
+            # ap --&gt; scatter plot
+            partial(
+                plot_amp,
+                df_rt_amp_phase=ht_df_to_rt_df(batchdata.df_ht_amp_phase, px),
+                arr_theor_amp=_figcache.get_arr_theor_amp(),
+            ),
+            partial(
+                plot_phase,
+                df_rt_amp_phase=ht_df_to_rt_df(batchdata.df_ht_amp_phase, px),
+                arr_theor_phase=_figcache.get_arr_theor_phase(),
+            ),
+            # TODO: properties --&gt; &#34;ap&#34; --&gt; scatter plot
+            # IR --&gt; image
+            partial(
+                plot_sectors,
+                dict_config=dict_config,
+                arr_first_frame=_figcache.get_arr_first_frame(),
+            ),
+        ],
+    ]
+    assert len(set(map(len, plots))) == 1
+    fig, axes = plt.subplots(
+        len(plots),
+        len(plots[0]),
+        figsize=(8*len(plots[0]), 8*len(plots))
+    )
+    for lst_plot, lst_ax in zip(plots, axes):
+        for plot, ax in zip(lst_plot, lst_ax):
+            plot(ax, label_font_size)
+            for t in [*ax.xaxis.get_major_ticks(), *ax.yaxis.get_major_ticks()]:
+                t.label.set_fontsize(fontsize=12)
+                t.label.set_fontweight(&#39;bold&#39;)
+    return fig, _figcache
+
+def plot_figures_from_parameters(
+        working_directory: Path | str,
+        parameters_file: str,
+        px=25e-6, # Length of pixel in meters
+        *,
+        _cache: Cache=None,
+) -&gt; AllPlottingResults:
+    p_wd = Path(working_directory)
+    if not _cache:
+        _cache = Cache(p_wd, parameters_file, px)
+    df_config = pd.read_csv(
+        p_wd / &#39;batch process information&#39; / parameters_file,
+        usecols=get_type_hints(FigureConfig).keys(),
+        dtype=get_type_hints(FigureConfig),
+    )
+    gen_fig_results = (
+        plot_one_case_figure(p_wd, config._asdict(), batchdata, px, _figcache=figcache)
+        for config, (batchdata, figcache)
+        in zip(df_config.itertuples(), _cache.iterdata())
+    )
+    lst_fig, _ = list(zip(*gen_fig_results))
+    return lst_fig, _cache
+
+def main():
+    print(&#34;Final Config:&#34;)
+    pprint(get_type_hints(Config))
+
+if __name__ == &#39;__main__&#39;:
+    main()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    print(&#34;Final Config:&#34;)
+    pprint(get_type_hints(Config))</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_alpha_hist"><code class="name flex">
+<span>def <span class="ident">plot_alpha_hist</span></span>(<span>ax, label_font_size, df_mcmc_results)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_alpha_hist(ax, label_font_size, df_mcmc_results):
+    ax.hist(1e4 * 10**df_mcmc_results[&#39;alpha&#39;], bins=20)
+    ax.set_xlabel(r&#39;${\alpha}$ (cm$^2$/s)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_amp"><code class="name flex">
+<span>def <span class="ident">plot_amp</span></span>(<span>ax, label_font_size, df_rt_amp_phase, arr_theor_amp)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_amp(ax, label_font_size, df_rt_amp_phase, arr_theor_amp):
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], df_rt_amp_phase[&#39;amp_ratio&#39;], label=&#39;measurement&#39;, alpha = 0.4, marker = &#39;o&#39;, linewidth = 0)
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], arr_theor_amp, label=&#39;fitting&#39;, color=&#39;red&#39;,marker = &#39;o&#39;, linewidth = 0)
+    ax.set_xlabel(&#39;x(mm)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.set_ylabel(&#39;Amplitude decay&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.legend(prop={&#39;weight&#39;: &#39;bold&#39;, &#39;size&#39;: 12})
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_figures_from_parameters"><code class="name flex">
+<span>def <span class="ident">plot_figures_from_parameters</span></span>(<span>working_directory: pathlib.Path | str, parameters_file: str, px=2.5e-05) ‑> <a title="pyangstrom.wrappers.plotting.static.AllPlottingResults" href="#pyangstrom.wrappers.plotting.static.AllPlottingResults">AllPlottingResults</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_figures_from_parameters(
+        working_directory: Path | str,
+        parameters_file: str,
+        px=25e-6, # Length of pixel in meters
+        *,
+        _cache: Cache=None,
+) -&gt; AllPlottingResults:
+    p_wd = Path(working_directory)
+    if not _cache:
+        _cache = Cache(p_wd, parameters_file, px)
+    df_config = pd.read_csv(
+        p_wd / &#39;batch process information&#39; / parameters_file,
+        usecols=get_type_hints(FigureConfig).keys(),
+        dtype=get_type_hints(FigureConfig),
+    )
+    gen_fig_results = (
+        plot_one_case_figure(p_wd, config._asdict(), batchdata, px, _figcache=figcache)
+        for config, (batchdata, figcache)
+        in zip(df_config.itertuples(), _cache.iterdata())
+    )
+    lst_fig, _ = list(zip(*gen_fig_results))
+    return lst_fig, _cache</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_h_hist"><code class="name flex">
+<span>def <span class="ident">plot_h_hist</span></span>(<span>ax, label_font_size, df_mcmc_results)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_h_hist(ax, label_font_size, df_mcmc_results):
+    ax.hist(10**df_mcmc_results[&#39;h&#39;], bins=20)
+    ax.set_xlabel(&#39;$h$ (W/m2K)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_one_case_figure"><code class="name flex">
+<span>def <span class="ident">plot_one_case_figure</span></span>(<span>working_directory: pathlib.Path | str, dict_config: <a title="pyangstrom.wrappers.plotting.static.FigureConfig" href="#pyangstrom.wrappers.plotting.static.FigureConfig">FigureConfig</a>, batchdata: <a title="pyangstrom.wrappers.caching.BatchData.Record" href="../caching.html#pyangstrom.wrappers.caching.BatchData.Record">BatchData.Record</a>, px=2.5e-05, label_font_size=18) ‑> <a title="pyangstrom.wrappers.plotting.static.FigurePlottingResults" href="#pyangstrom.wrappers.plotting.static.FigurePlottingResults">FigurePlottingResults</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_one_case_figure(
+        working_directory: Path | str,
+        dict_config: FigureConfig,
+        batchdata: BatchData.Record,
+        px=25e-6, # Length of pixel in meters
+        label_font_size=18,
+        *,
+        _figcache: FigCache=None,
+) -&gt; FigurePlottingResults:
+    p_wd = Path(working_directory)
+    if not _figcache:
+        _figcache = FigCache(
+            p_wd,
+            dict_config,
+            ht_df_to_rt_df(batchdata.df_ht_amp_phase, px),
+        )
+    plots = [
+        [
+            # TODO: mcmc[chain_num] --&gt; line plot
+            # mcmc[alpha/h] --&gt; hist
+            partial(
+                plot_alpha_hist,
+                df_mcmc_results=_figcache.get_df_mcmc_results()
+            ),
+            partial(
+                plot_h_hist,
+                df_mcmc_results=_figcache.get_df_mcmc_results()
+            ),
+            # TODO: mcmc[alpha/h] -|&gt; auto_correlation --&gt; line plot
+            # temp --&gt; line plot
+            partial(plot_temp_wave, df_temp=batchdata.df_temp),
+            # TODO: temp -|&gt; fit -|&gt; abs --&gt; line plot
+            # TODO: temp -|&gt; fit -|&gt; angle --&gt; line plot
+        ],
+        [
+            # ap --&gt; scatter plot
+            partial(
+                plot_amp,
+                df_rt_amp_phase=ht_df_to_rt_df(batchdata.df_ht_amp_phase, px),
+                arr_theor_amp=_figcache.get_arr_theor_amp(),
+            ),
+            partial(
+                plot_phase,
+                df_rt_amp_phase=ht_df_to_rt_df(batchdata.df_ht_amp_phase, px),
+                arr_theor_phase=_figcache.get_arr_theor_phase(),
+            ),
+            # TODO: properties --&gt; &#34;ap&#34; --&gt; scatter plot
+            # IR --&gt; image
+            partial(
+                plot_sectors,
+                dict_config=dict_config,
+                arr_first_frame=_figcache.get_arr_first_frame(),
+            ),
+        ],
+    ]
+    assert len(set(map(len, plots))) == 1
+    fig, axes = plt.subplots(
+        len(plots),
+        len(plots[0]),
+        figsize=(8*len(plots[0]), 8*len(plots))
+    )
+    for lst_plot, lst_ax in zip(plots, axes):
+        for plot, ax in zip(lst_plot, lst_ax):
+            plot(ax, label_font_size)
+            for t in [*ax.xaxis.get_major_ticks(), *ax.yaxis.get_major_ticks()]:
+                t.label.set_fontsize(fontsize=12)
+                t.label.set_fontweight(&#39;bold&#39;)
+    return fig, _figcache</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_phase"><code class="name flex">
+<span>def <span class="ident">plot_phase</span></span>(<span>ax, label_font_size, df_rt_amp_phase, arr_theor_phase)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_phase(ax, label_font_size, df_rt_amp_phase, arr_theor_phase):
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], df_rt_amp_phase[&#39;phase_diff&#39;], label=&#39;measurement&#39;, alpha = 0.4, marker = &#39;o&#39;, linewidth = 0)
+    ax.plot(1e3 * df_rt_amp_phase[&#39;x&#39;], arr_theor_phase, label=&#39;fitting&#39;, color=&#39;red&#39;,marker = &#39;o&#39;, linewidth = 0)
+    ax.set_xlabel(&#39;x(mm)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.set_ylabel(&#39;Phase difference&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.legend(prop={&#39;weight&#39;: &#39;bold&#39;, &#39;size&#39;: 12})
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_sectors"><code class="name flex">
+<span>def <span class="ident">plot_sectors</span></span>(<span>ax, label_font_size, dict_config: <a title="pyangstrom.wrappers.plotting.static.SectorConfig" href="#pyangstrom.wrappers.plotting.static.SectorConfig">SectorConfig</a>, arr_first_frame)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_sectors(ax, label_font_size, dict_config: SectorConfig, arr_first_frame):
+    ax.imshow(arr_first_frame)
+    x0, y0, R0, R_analysis, anguler_range = itemgetter(&#39;x0_pixels&#39;, &#39;y0_pixels&#39;, &#39;R0_pixels&#39;, &#39;R_analysis_pixels&#39;, &#39;anguler_range&#39;)(dict_config)
+    for theta1, theta2 in eval(anguler_range):
+        ax.add_patch(Wedge((x0, y0), R0 + R_analysis, theta1, theta2, hatch=&#39;..&#39;, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;))
+    ax.add_patch(plt.Circle((x0, y0), R0, linewidth=2, edgecolor=&#39;r&#39;, linestyle=&#39;solid&#39;, facecolor=&#39;none&#39;))
+    ax.add_patch(plt.Circle((x0, y0), R0 + R_analysis, linewidth=2, edgecolor=&#39;r&#39;, linestyle=&#39;solid&#39;, facecolor=&#39;none&#39;))
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.plot_temp_wave"><code class="name flex">
+<span>def <span class="ident">plot_temp_wave</span></span>(<span>ax, label_font_size, df_temp)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_temp_wave(ax, label_font_size, df_temp):
+    idx_line = [c for c in df_temp.columns if isinstance(c, int)]
+    ax.plot(df_temp[&#39;reltime&#39;], df_temp[min(idx_line)], label=&#39;line 0&#39;)
+    ax.plot(df_temp[&#39;reltime&#39;], df_temp[max(idx_line)], label=&#39;line N&#39;)
+    ax.set_xlabel(&#39;Time (s)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.set_ylabel(&#39;Temperature (C)&#39;, fontsize=label_font_size, fontweight=&#39;bold&#39;)
+    ax.legend(prop={&#39;weight&#39;: &#39;bold&#39;, &#39;size&#39;: 12})
+    return ax</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.AllPlottingResults"><code class="flex name class">
+<span>class <span class="ident">AllPlottingResults</span></span>
+<span>(</span><span>lst_figures: list, cache: <a title="pyangstrom.wrappers.caching.Cache" href="../caching.html#pyangstrom.wrappers.caching.Cache">Cache</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>AllPlottingResults(lst_figures, cache)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AllPlottingResults(NamedTuple):
+    lst_figures: list
+    cache: Cache</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.AllPlottingResults.cache"><code class="name">var <span class="ident">cache</span> : <a title="pyangstrom.wrappers.caching.Cache" href="../caching.html#pyangstrom.wrappers.caching.Cache">Cache</a></code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.AllPlottingResults.lst_figures"><code class="name">var <span class="ident">lst_figures</span> : list</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config"><code class="flex name class">
+<span>class <span class="ident">Config</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Config(HtAmpPhaseConfig, FigureConfig):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.Config.L"><code class="name">var <span class="ident">L</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.N_chains"><code class="name">var <span class="ident">N_chains</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.N_sample"><code class="name">var <span class="ident">N_sample</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.Nr_pixels"><code class="name">var <span class="ident">Nr_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.R0_pixels"><code class="name">var <span class="ident">R0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.R_analysis_pixels"><code class="name">var <span class="ident">R_analysis_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.V_DC"><code class="name">var <span class="ident">V_DC</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.anguler_range"><code class="name">var <span class="ident">anguler_range</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.cp"><code class="name">var <span class="ident">cp</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.exp_amp_phase_extraction_method"><code class="name">var <span class="ident">exp_amp_phase_extraction_method</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.f_heating"><code class="name">var <span class="ident">f_heating</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.focal_shift"><code class="name">var <span class="ident">focal_shift</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.gap_pixels"><code class="name">var <span class="ident">gap_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.r"><code class="name">var <span class="ident">r</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.rec_name"><code class="name">var <span class="ident">rec_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.rho"><code class="name">var <span class="ident">rho</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.x0_pixels"><code class="name">var <span class="ident">x0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.Config.y0_pixels"><code class="name">var <span class="ident">y0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig"><code class="flex name class">
+<span>class <span class="ident">FigureConfig</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FigureConfig(FigCacheConfig, SectorConfig):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.L"><code class="name">var <span class="ident">L</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.N_chains"><code class="name">var <span class="ident">N_chains</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.N_sample"><code class="name">var <span class="ident">N_sample</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.R0_pixels"><code class="name">var <span class="ident">R0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.R_analysis_pixels"><code class="name">var <span class="ident">R_analysis_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.anguler_range"><code class="name">var <span class="ident">anguler_range</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.cp"><code class="name">var <span class="ident">cp</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.exp_amp_phase_extraction_method"><code class="name">var <span class="ident">exp_amp_phase_extraction_method</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.f_heating"><code class="name">var <span class="ident">f_heating</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.gap_pixels"><code class="name">var <span class="ident">gap_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.r"><code class="name">var <span class="ident">r</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.rec_name"><code class="name">var <span class="ident">rec_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.rho"><code class="name">var <span class="ident">rho</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.x0_pixels"><code class="name">var <span class="ident">x0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigureConfig.y0_pixels"><code class="name">var <span class="ident">y0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigurePlottingResults"><code class="flex name class">
+<span>class <span class="ident">FigurePlottingResults</span></span>
+<span>(</span><span>figure: matplotlib.figure.Figure, figcache: <a title="pyangstrom.wrappers.caching.FigCache" href="../caching.html#pyangstrom.wrappers.caching.FigCache">FigCache</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>FigurePlottingResults(figure, figcache)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FigurePlottingResults(NamedTuple):
+    figure: plt.Figure
+    figcache: FigCache</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.FigurePlottingResults.figcache"><code class="name">var <span class="ident">figcache</span> : <a title="pyangstrom.wrappers.caching.FigCache" href="../caching.html#pyangstrom.wrappers.caching.FigCache">FigCache</a></code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.FigurePlottingResults.figure"><code class="name">var <span class="ident">figure</span> : matplotlib.figure.Figure</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.SectorConfig"><code class="flex name class">
+<span>class <span class="ident">SectorConfig</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SectorConfig(TypedDict):
+    x0_pixels: int
+    y0_pixels: int
+    R0_pixels: int
+    R_analysis_pixels: int
+    anguler_range: str</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.plotting.static.SectorConfig.R0_pixels"><code class="name">var <span class="ident">R0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.SectorConfig.R_analysis_pixels"><code class="name">var <span class="ident">R_analysis_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.SectorConfig.anguler_range"><code class="name">var <span class="ident">anguler_range</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.SectorConfig.x0_pixels"><code class="name">var <span class="ident">x0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.plotting.static.SectorConfig.y0_pixels"><code class="name">var <span class="ident">y0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom.wrappers.plotting" href="index.html">pyangstrom.wrappers.plotting</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.plotting.static.main" href="#pyangstrom.wrappers.plotting.static.main">main</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_alpha_hist" href="#pyangstrom.wrappers.plotting.static.plot_alpha_hist">plot_alpha_hist</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_amp" href="#pyangstrom.wrappers.plotting.static.plot_amp">plot_amp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_figures_from_parameters" href="#pyangstrom.wrappers.plotting.static.plot_figures_from_parameters">plot_figures_from_parameters</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_h_hist" href="#pyangstrom.wrappers.plotting.static.plot_h_hist">plot_h_hist</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_one_case_figure" href="#pyangstrom.wrappers.plotting.static.plot_one_case_figure">plot_one_case_figure</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_phase" href="#pyangstrom.wrappers.plotting.static.plot_phase">plot_phase</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_sectors" href="#pyangstrom.wrappers.plotting.static.plot_sectors">plot_sectors</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.plot_temp_wave" href="#pyangstrom.wrappers.plotting.static.plot_temp_wave">plot_temp_wave</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyangstrom.wrappers.plotting.static.AllPlottingResults" href="#pyangstrom.wrappers.plotting.static.AllPlottingResults">AllPlottingResults</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.plotting.static.AllPlottingResults.cache" href="#pyangstrom.wrappers.plotting.static.AllPlottingResults.cache">cache</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.AllPlottingResults.lst_figures" href="#pyangstrom.wrappers.plotting.static.AllPlottingResults.lst_figures">lst_figures</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.plotting.static.Config" href="#pyangstrom.wrappers.plotting.static.Config">Config</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.L" href="#pyangstrom.wrappers.plotting.static.Config.L">L</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.N_chains" href="#pyangstrom.wrappers.plotting.static.Config.N_chains">N_chains</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.N_sample" href="#pyangstrom.wrappers.plotting.static.Config.N_sample">N_sample</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.Nr_pixels" href="#pyangstrom.wrappers.plotting.static.Config.Nr_pixels">Nr_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.R0_pixels" href="#pyangstrom.wrappers.plotting.static.Config.R0_pixels">R0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.R_analysis_pixels" href="#pyangstrom.wrappers.plotting.static.Config.R_analysis_pixels">R_analysis_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.V_DC" href="#pyangstrom.wrappers.plotting.static.Config.V_DC">V_DC</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.anguler_range" href="#pyangstrom.wrappers.plotting.static.Config.anguler_range">anguler_range</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.cp" href="#pyangstrom.wrappers.plotting.static.Config.cp">cp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.exp_amp_phase_extraction_method" href="#pyangstrom.wrappers.plotting.static.Config.exp_amp_phase_extraction_method">exp_amp_phase_extraction_method</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.f_heating" href="#pyangstrom.wrappers.plotting.static.Config.f_heating">f_heating</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.focal_shift" href="#pyangstrom.wrappers.plotting.static.Config.focal_shift">focal_shift</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.gap_pixels" href="#pyangstrom.wrappers.plotting.static.Config.gap_pixels">gap_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.r" href="#pyangstrom.wrappers.plotting.static.Config.r">r</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.rec_name" href="#pyangstrom.wrappers.plotting.static.Config.rec_name">rec_name</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.rho" href="#pyangstrom.wrappers.plotting.static.Config.rho">rho</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.x0_pixels" href="#pyangstrom.wrappers.plotting.static.Config.x0_pixels">x0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.Config.y0_pixels" href="#pyangstrom.wrappers.plotting.static.Config.y0_pixels">y0_pixels</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig" href="#pyangstrom.wrappers.plotting.static.FigureConfig">FigureConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.L" href="#pyangstrom.wrappers.plotting.static.FigureConfig.L">L</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.N_chains" href="#pyangstrom.wrappers.plotting.static.FigureConfig.N_chains">N_chains</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.N_sample" href="#pyangstrom.wrappers.plotting.static.FigureConfig.N_sample">N_sample</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.R0_pixels" href="#pyangstrom.wrappers.plotting.static.FigureConfig.R0_pixels">R0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.R_analysis_pixels" href="#pyangstrom.wrappers.plotting.static.FigureConfig.R_analysis_pixels">R_analysis_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.anguler_range" href="#pyangstrom.wrappers.plotting.static.FigureConfig.anguler_range">anguler_range</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.cp" href="#pyangstrom.wrappers.plotting.static.FigureConfig.cp">cp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.exp_amp_phase_extraction_method" href="#pyangstrom.wrappers.plotting.static.FigureConfig.exp_amp_phase_extraction_method">exp_amp_phase_extraction_method</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.f_heating" href="#pyangstrom.wrappers.plotting.static.FigureConfig.f_heating">f_heating</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.gap_pixels" href="#pyangstrom.wrappers.plotting.static.FigureConfig.gap_pixels">gap_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.r" href="#pyangstrom.wrappers.plotting.static.FigureConfig.r">r</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.rec_name" href="#pyangstrom.wrappers.plotting.static.FigureConfig.rec_name">rec_name</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.rho" href="#pyangstrom.wrappers.plotting.static.FigureConfig.rho">rho</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.x0_pixels" href="#pyangstrom.wrappers.plotting.static.FigureConfig.x0_pixels">x0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigureConfig.y0_pixels" href="#pyangstrom.wrappers.plotting.static.FigureConfig.y0_pixels">y0_pixels</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.plotting.static.FigurePlottingResults" href="#pyangstrom.wrappers.plotting.static.FigurePlottingResults">FigurePlottingResults</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigurePlottingResults.figcache" href="#pyangstrom.wrappers.plotting.static.FigurePlottingResults.figcache">figcache</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.FigurePlottingResults.figure" href="#pyangstrom.wrappers.plotting.static.FigurePlottingResults.figure">figure</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.plotting.static.SectorConfig" href="#pyangstrom.wrappers.plotting.static.SectorConfig">SectorConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.plotting.static.SectorConfig.R0_pixels" href="#pyangstrom.wrappers.plotting.static.SectorConfig.R0_pixels">R0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.SectorConfig.R_analysis_pixels" href="#pyangstrom.wrappers.plotting.static.SectorConfig.R_analysis_pixels">R_analysis_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.SectorConfig.anguler_range" href="#pyangstrom.wrappers.plotting.static.SectorConfig.anguler_range">anguler_range</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.SectorConfig.x0_pixels" href="#pyangstrom.wrappers.plotting.static.SectorConfig.x0_pixels">x0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.plotting.static.SectorConfig.y0_pixels" href="#pyangstrom.wrappers.plotting.static.SectorConfig.y0_pixels">y0_pixels</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

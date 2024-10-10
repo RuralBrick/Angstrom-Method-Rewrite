@@ -1,0 +1,1798 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.transform API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.transform</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import logging
+import warnings
+from typing import TypedDict, Iterable
+from enum import Enum, auto
+from dataclasses import dataclass
+
+import pandas as pd
+import numpy as np
+
+from pyangstrom.exp_setup import ExperimentalSetup
+
+
+logger = logging.getLogger(&#39;transform&#39;)
+
+TEMPERATURE_OFFSET = {
+    &#39;Temperature (C)&#39;: 273.15,
+}
+
+class Direction(Enum):
+    &#34;&#34;&#34;The direction from which the sample is heated.&#34;&#34;&#34;
+    LESSER_X = auto()
+    GREATER_X = auto()
+    LESSER_Y = auto()
+    GREATER_Y = auto()
+
+
+class Point(TypedDict):
+    &#34;&#34;&#34;The coordinates of one pixel in the recording.&#34;&#34;&#34;
+    x_pixels: int | float
+    y_pixels: int | float
+
+class CartesianGeometry(TypedDict, total=False):
+    &#34;&#34;&#34;The bounds of a rectangle and from where it is being heated.
+
+    Attributes
+    ----------
+    min_x_pixels
+        Lower x bound.
+    max_x_pixels
+        Upper x bound.
+    min_y_pixels
+        Lower y bound.
+    max_y_pixels
+        Upper y bound.
+    heat_source_x_pixels
+        The x-position of a vertical line heat source. Mutually exclusive from
+        heat_source_y_pixels.
+    heat_source_y_pixels
+        The y-position of a horizontal line heat source. Mutually exclusive from
+        heat_source_x_pixels.
+    &#34;&#34;&#34;
+    min_x_pixels: int
+    max_x_pixels: int
+    min_y_pixels: int
+    max_y_pixels: int
+    heat_source_x_pixels: int
+    heat_source_y_pixels: int
+
+class PolarGeometry(TypedDict):
+    &#34;&#34;&#34;The bounds of an annular sector, centered on a point heat source.
+
+    Attributes
+    ----------
+    center
+        The coordinates of the point heat source.
+    min_r_pixels
+        Inner radius.
+    max_r_pixels
+        Outer radius.
+    num_r
+        Number of radial subdivisions to use.
+    min_theta_degrees
+        Starting angle.
+    max_theta_degrees
+        Ending angle.
+    num_theta
+        Number of angular subdivisions to use.
+    &#34;&#34;&#34;
+    center: Point
+    min_r_pixels: int | float
+    max_r_pixels: int | float
+    num_r: int
+    min_theta_degrees: int | float
+    max_theta_degrees: int | float
+    num_theta: int
+
+Geometry = CartesianGeometry | PolarGeometry
+
+class RegionStructure(TypedDict, total=False):
+    &#34;&#34;&#34;Various options by which to to restructure a region&#39;s temperatures.
+
+    Attributes
+    ----------
+    subtract_temperatures_by
+        If set to one of:
+
+        - &#39;mean&#39;
+        - &#39;avg&#39;
+        - &#39;average&#39;
+
+        Temperatures will be subtracted by the average of all temperature
+        measurements.
+
+        If, instead, set to one of:
+
+        - &#39;min&#39;
+        - &#39;minimum&#39;
+        - &#39;lowest&#39;
+
+        Temperatures will by subtracted by the lowest of all temperature
+        measurements.
+
+        Does not affect total number of dimensions present.
+    average_out_span
+        Whether temperatures with the same displacement from the heat source
+        should be averaged together. Removes a dimension.
+    num_deinterleaving_groups
+        The number of groups the temperatures should be separated into by way of
+        deinterleaving. Adds a dimension.
+    &#34;&#34;&#34;
+    subtract_temperatures_by: str
+    average_out_span: bool
+    num_deinterleaving_groups: int
+
+class RegionConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract a single region from the recording.&#34;&#34;&#34;
+    geometry: Geometry
+    structure: RegionStructure
+
+class RegionBatchConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract multiple related regions from the recording.&#34;&#34;&#34;
+    geometries: list[Geometry]
+    structure: RegionStructure
+    average_over_regions: bool
+
+RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list[RegionBatchConfig]
+
+
+@dataclass
+class Margins:
+    &#34;&#34;&#34;Spatiotemporal measurements of each temperature data point off
+    standardized references.
+
+    Attributes
+    ----------
+    seconds_elapsed
+        A 1-dimensional array of the time offsets of each recording frame from
+        the first frame&#39;s time.
+    displacements_meters
+        An N-dimensional array of the positional offset of each temperature
+        measurement from the heat source.
+    &#34;&#34;&#34;
+    seconds_elapsed: np.ndarray
+    displacements_meters: np.ndarray
+
+    @classmethod
+    def new(
+            cls,
+            df_recording: pd.DataFrame,
+            temperatures: np.ndarray,
+            min_displacement_pixels: int | float,
+            max_displacement_pixels: int | float,
+            setup: ExperimentalSetup,
+    ) -&gt; &#34;Margins&#34;:
+        normalized_timestamps = df_recording.index - df_recording.index.min()
+        seconds_elapsed = normalized_timestamps.total_seconds().to_numpy()
+
+        disp = np.linspace(
+            min_displacement_pixels,
+            max_displacement_pixels,
+            temperatures.shape[1],
+            dtype=float,
+        )
+        disp = disp * setup[&#39;meters_per_pixel&#39;]
+        disp = np.stack(temperatures.shape[2] * [disp], axis=1)
+
+        return cls(seconds_elapsed, disp)
+
+@dataclass
+class Region:
+    &#34;&#34;&#34;Temperature data from a bounded region of the recording, transformed into
+    a standardized format.
+
+    Attributes
+    ----------
+    timestamps
+        The timestamps of the original recording frames.
+    temperatures_kelvin
+        An N-dimensional array of temperatures grouped by time, displacement
+        from the heat source, and other factors based on the order of its axes.
+    margins
+        Spatiotemporal metadata of the temperatures.
+    &#34;&#34;&#34;
+    timestamps: pd.DatetimeIndex
+    temperatures_kelvin: np.ndarray
+    margins: Margins
+
+
+def convert_temperatures_to_kelvin(
+        df_recording: pd.DataFrame,
+        arr_temps: np.ndarray,
+) -&gt; np.ndarray:
+    try:
+        offset = TEMPERATURE_OFFSET[df_recording[&#39;Units&#39;].unique().item()]
+        return arr_temps + offset
+    except ValueError:
+        raise ValueError(&#34;More than one temperature unit found&#34;)
+    except KeyError:
+        msg = (f&#34;Temperature unit \&#34;{df_recording[&#39;Units&#39;].unique().item()}\&#34; &#34;
+               &#34;not accounted for&#34;)
+        raise NotImplementedError(msg)
+
+def find_heat_source_direction(geometry: CartesianGeometry) -&gt; Direction:
+    &#34;&#34;&#34;
+    Raises
+    ------
+    KeyError
+        Field not found in geometry.
+    ValueError
+        Invalid geometry.
+    &#34;&#34;&#34;
+    if (&#39;heat_source_x_pixels&#39; in geometry
+            and &#39;heat_source_y_pixels&#39; in geometry):
+        raise ValueError(
+            &#34;Cannot have both heat_source_x_pixels and heat_source_y_pixels in &#34;
+            &#34;geometry.&#34;
+        )
+    elif &#39;heat_source_x_pixels&#39; in geometry:
+        if geometry[&#39;heat_source_x_pixels&#39;] &lt;= geometry[&#39;min_x_pixels&#39;]:
+            return Direction.LESSER_X
+        elif geometry[&#39;heat_source_x_pixels&#39;] &gt;= geometry[&#39;max_x_pixels&#39;]:
+            return Direction.GREATER_X
+        else:
+            raise ValueError(
+                &#34;heat_source_x_pixels cannot be between min_x_pixels and &#34;
+                &#34;max_x_pixels.&#34;
+            )
+    elif &#39;heat_source_y_pixels&#39; in geometry:
+        if geometry[&#39;heat_source_y_pixels&#39;] &lt;= geometry[&#39;min_y_pixels&#39;]:
+            return Direction.LESSER_Y
+        elif geometry[&#39;heat_source_y_pixels&#39;] &gt;= geometry[&#39;max_y_pixels&#39;]:
+            return Direction.GREATER_Y
+        else:
+            raise ValueError(
+                &#34;heat_source_y_pixels cannot be between min_y_pixels and &#34;
+                &#34;max_y_pixels.&#34;
+            )
+    else:
+        raise KeyError(
+            &#34;Must have at either heat_source_x_pixels or heat_source_y_pixels &#34;
+            &#34;in geometry.&#34;
+        )
+
+def extract_cartesian_region(
+        df_recording: pd.DataFrame,
+        geometry: CartesianGeometry,
+        setup: ExperimentalSetup,
+) -&gt; Region:
+    &#34;&#34;&#34;
+    Raises
+    ------
+    KeyError
+        Field not found in geometry.
+    ValueError
+        Invalid geometry.
+    &#34;&#34;&#34;
+    temps = np.stack(df_recording[&#39;Samples&#39;]) # (time, height, width)
+    temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
+    temps = temps[
+        geometry[&#39;min_x_pixels&#39;] : geometry[&#39;max_x_pixels&#39;] + 1,
+        geometry[&#39;min_y_pixels&#39;] : geometry[&#39;max_y_pixels&#39;] + 1,
+    ]
+    temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, width, height)
+
+    # (time, displacement, span)
+    match find_heat_source_direction(geometry):
+        case Direction.LESSER_X:
+            min_disp_px = geometry[&#39;min_x_pixels&#39;] - geometry[&#39;heat_source_x_pixels&#39;]
+            max_disp_px = geometry[&#39;max_x_pixels&#39;] - geometry[&#39;heat_source_x_pixels&#39;]
+        case Direction.GREATER_X:
+            temps = np.flip(temps, axis=1)
+            min_disp_px = geometry[&#39;heat_source_x_pixels&#39;] - geometry[&#39;max_x_pixels&#39;]
+            max_disp_px = geometry[&#39;heat_source_x_pixels&#39;] - geometry[&#39;min_x_pixels&#39;]
+        case Direction.LESSER_Y:
+            temps = np.swapaxes(temps, 1, 2)
+            min_disp_px = geometry[&#39;min_y_pixels&#39;] - geometry[&#39;heat_source_y_pixels&#39;]
+            max_disp_px = geometry[&#39;max_y_pixels&#39;] - geometry[&#39;heat_source_y_pixels&#39;]
+        case Direction.GREATER_Y:
+            temps = np.swapaxes(temps, 1, 2)
+            temps = np.flip(temps, axis=1)
+            min_disp_px = geometry[&#39;heat_source_y_pixels&#39;] - geometry[&#39;max_y_pixels&#39;]
+            max_disp_px = geometry[&#39;heat_source_y_pixels&#39;] - geometry[&#39;min_y_pixels&#39;]
+
+    temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps)
+
+    region = Region(
+        df_recording.index,
+        temps_kelvin,
+        Margins.new(df_recording, temps, min_disp_px, max_disp_px, setup),
+    )
+    return region
+
+def extract_polar_region(
+        df_recording: pd.DataFrame,
+        geometry: PolarGeometry,
+        setup: ExperimentalSetup,
+) -&gt; Region:
+    temps = np.stack(df_recording[&#39;Samples&#39;]) # (time, height, width)
+    temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
+
+    r_pixels = np.linspace(
+        geometry[&#39;min_r_pixels&#39;],
+        geometry[&#39;max_r_pixels&#39;],
+        geometry[&#39;num_r&#39;],
+    )
+    theta_degrees = np.deg2rad(np.linspace(
+        geometry[&#39;min_theta_degrees&#39;],
+        geometry[&#39;max_theta_degrees&#39;],
+        geometry[&#39;num_theta&#39;],
+    ))
+    r_coord, theta_coord = np.meshgrid(r_pixels, theta_degrees, indexing=&#39;ij&#39;)
+
+    x_coord = r_coord * np.cos(theta_coord) + geometry[&#39;center&#39;][&#39;x_pixels&#39;]
+    y_coord = r_coord * np.sin(theta_coord) + geometry[&#39;center&#39;][&#39;y_pixels&#39;]
+
+    x_coord_floor = np.floor(x_coord).astype(&#39;int&#39;)
+    x_coord_floorp1 = x_coord_floor + 1
+    y_coord_floor = np.floor(y_coord).astype(&#39;int&#39;)
+    y_coord_floorp1 = y_coord_floor + 1
+
+    lower_x_weight = (x_coord_floorp1 - x_coord) / (x_coord_floorp1 - x_coord_floor)
+    upper_x_weight = (x_coord - x_coord_floor) / (x_coord_floorp1 - x_coord_floor)
+    lower_y_weight = (y_coord_floorp1 - y_coord) / (y_coord_floorp1 - y_coord_floor)
+    upper_y_weight = (y_coord - y_coord_floor) / (y_coord_floorp1 - y_coord_floor)
+
+    # (time, radius, angle)
+    lxly_temps = np.moveaxis(temps[x_coord_floor, y_coord_floor], [0, 1], [1, 2]) * lower_x_weight * lower_y_weight
+    lxuy_temps = np.moveaxis(temps[x_coord_floor, y_coord_floorp1], [0, 1], [1, 2]) * lower_x_weight * upper_y_weight
+    uxly_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floor], [0, 1], [1, 2]) * upper_x_weight * lower_y_weight
+    uxuy_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floorp1], [0, 1], [1, 2]) * upper_x_weight * upper_y_weight
+
+    temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
+    temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps_trans)
+
+    region = Region(
+        df_recording.index,
+        temps_kelvin,
+        Margins.new(
+            df_recording,
+            temps_kelvin,
+            geometry[&#39;min_r_pixels&#39;],
+            geometry[&#39;max_r_pixels&#39;],
+            setup,
+        ),
+    )
+    return region
+
+def geometry_to_region(
+        df_recording: pd.DataFrame,
+        geometry: Geometry,
+        setup: ExperimentalSetup,
+) -&gt; Region:
+    match geometry:
+        case {&#39;min_x_pixels&#39;: _}:
+            return extract_cartesian_region(df_recording, geometry, setup)
+        case {&#39;center&#39;: _}:
+            return extract_polar_region(df_recording, geometry, setup)
+
+def truncate_region(region: Region, num_truncate: int, axis: int) -&gt; Region:
+    new_time = region.timestamps
+
+    new_temps = np.moveaxis(region.temperatures_kelvin, axis, 0)
+    new_temps = new_temps[:-num_truncate]
+    new_temps = np.moveaxis(new_temps, 0, axis)
+
+    if axis == 0:
+        new_time = region.timestamps[:-num_truncate]
+        new_elapsed = region.margins.seconds_elapsed[:-num_truncate]
+        new_margins = Margins(new_elapsed, region.margins.displacements_meters)
+    else:
+        new_disp = region.margins.displacements_meters
+        new_disp = np.moveaxis(new_disp, axis - 1, 0)
+        new_disp = new_disp[:-num_truncate]
+        new_disp = np.moveaxis(new_disp, 0, axis - 1)
+        new_margins = Margins(region.margins.seconds_elapsed, new_disp)
+
+    new_region = Region(
+        new_time,
+        new_temps,
+        new_margins,
+    )
+    return new_region
+
+def restructure_region(region: Region, structure: RegionStructure) -&gt; Region:
+    if &#39;subtract_temperatures_by&#39; in structure:
+        match structure[&#39;subtract_temperatures_by&#39;]:
+            case &#39;mean&#39; | &#39;avg&#39; | &#39;average&#39;:
+                subtrahend = region.temperatures_kelvin.mean()
+            case &#39;min&#39; | &#39;minimum&#39; | &#39;lowest&#39;:
+                subtrahend = region.temperatures_kelvin.min()
+            case _:
+                subtrahend = 0
+                warnings.warn(
+                    f&#34;Subtract temperatures by &#34;
+                    f&#34;\&#39;{structure[&#39;subtract_temperatures_by&#39;]}\&#39; &#34;
+                    f&#34;not understood&#34;
+                )
+        region = Region(
+            region.timestamps,
+            region.temperatures_kelvin - subtrahend,
+            region.margins,
+        )
+    if &#39;average_out_span&#39; in structure and structure[&#39;average_out_span&#39;]:
+        region = Region(
+            region.timestamps,
+            region.temperatures_kelvin.mean(axis=2),
+            Margins(
+                region.margins.seconds_elapsed,
+                region.margins.displacements_meters.mean(axis=1),
+            ),
+        )
+    if &#39;num_deinterleaving_groups&#39; in structure:
+        num_disp = region.temperatures_kelvin.shape[1]
+        new_num_disp, remainder = divmod(
+            num_disp,
+            structure[&#39;num_deinterleaving_groups&#39;],
+        )
+        if remainder != 0:
+            region = truncate_region(region, remainder, axis=1)
+        lst_groups = np.split(region.temperatures_kelvin, new_num_disp, axis=1)
+        new_temps = np.stack(lst_groups, axis=1)
+        lst_disp = np.split(
+            region.margins.displacements_meters,
+            new_num_disp,
+            axis=0,
+        )
+        new_disp = np.stack(lst_disp, axis=0)
+        region = Region(
+            region.timestamps,
+            new_temps,
+            Margins(region.margins.seconds_elapsed, new_disp),
+        )
+    return region
+
+def all_timestamps_same(regions: Iterable[Region]) -&gt; bool:
+    idx0 = next(iter(regions)).timestamps
+    for region in regions:
+        if not idx0.symmetric_difference(region.timestamps).empty:
+            return False
+    return True
+
+def all_temps_same_shape(regions: Iterable[Region]) -&gt; bool:
+    dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
+    size_counts = [set(s) for s in dim_sizes]
+    return all(len(c) == 1 for c in size_counts)
+
+def min_temps_shape(regions: Iterable[Region]) -&gt; tuple:
+    dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
+    min_shape = tuple(min(s) for s in dim_sizes)
+    return min_shape
+
+def trim_regions(regions: Iterable[Region]) -&gt; list[Region]:
+    min_shape = min_temps_shape(regions)
+    new_regions = []
+    for region in regions:
+        for axis, size in enumerate(min_shape):
+            region = truncate_region(
+                region,
+                region.temperatures_kelvin.shape[axis] - size,
+                axis,
+            )
+            new_regions.append(region)
+    return new_regions
+
+def fully_extract_region(
+        df_recording: pd.DataFrame,
+        information: RegionInformation,
+        setup: ExperimentalSetup,
+) -&gt; Region | list[Region] | list[list[Region]]:
+    &#34;&#34;&#34;Extract all regions of temperature from the recording as specified by the
+    region information configuration.
+
+    Raises
+    ------
+    ValueError
+        Malformed information.
+    &#34;&#34;&#34;
+    match information:
+        case {&#39;geometry&#39;: geometry}:
+            region = geometry_to_region(df_recording, geometry, setup)
+            if &#39;structure&#39; in information:
+                region = restructure_region(region, information[&#39;structure&#39;])
+            return region
+        case {&#39;geometries&#39;: geometries}:
+            regions = [
+                geometry_to_region(df_recording, g, setup) for g in geometries
+            ]
+            if &#39;structure&#39; in information:
+                regions = [
+                    restructure_region(r, information[&#39;structure&#39;])
+                    for r in regions
+                ]
+            if (&#39;average_over_regions&#39; not in information
+                or not information[&#39;average_over_regions&#39;]):
+                return regions
+            assert all_timestamps_same(regions)
+            if not all_temps_same_shape(regions):
+                warnings.warn(
+                    &#34;Not all regions have the same number of samples. Trimming &#34;
+                    &#34;regions to match minimum shape.&#34;
+                )
+                regions = trim_regions(regions)
+            new_temps = np.stack(
+                [r.temperatures_kelvin for r in regions],
+                axis=2,
+            )
+            new_temps = new_temps.mean(axis=2)
+            new_disp = np.stack(
+                [r.margins.displacements_meters for r in regions],
+                axis=1
+            )
+            new_disp = new_disp.mean(axis=1)
+            new_region = Region(
+                regions[0].timestamps,
+                new_temps,
+                Margins(regions[0].margins.seconds_elapsed, new_disp),
+            )
+            return new_region
+        case [*region_configs]:
+            regions = [
+                fully_extract_region(df_recording, c, setup)
+                for c in region_configs
+            ]
+            return regions
+        case _:
+            raise ValueError(f&#34;Invalid information format: {information}&#34;)
+
+def collapse_region(region: Region) -&gt; Region:
+    &#34;&#34;&#34;Reduce the temperatures to a 2-dimensional array, representing time
+    offsets and displacements.
+    &#34;&#34;&#34;
+    num_times, num_disp, *_ = region.temperatures_kelvin.shape
+    new_temps = (region.temperatures_kelvin
+                       .reshape(num_times, num_disp, -1)
+                       .mean(axis=2))
+    new_disp = (region.margins.displacements_meters
+                      .reshape(num_disp, -1)
+                      .mean(axis=1))
+    new_region = Region(
+        region.timestamps,
+        new_temps,
+        Margins(region.margins.seconds_elapsed, new_disp),
+    )
+    return new_region</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.transform.all_temps_same_shape"><code class="name flex">
+<span>def <span class="ident">all_temps_same_shape</span></span>(<span>regions: Iterable[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all_temps_same_shape(regions: Iterable[Region]) -&gt; bool:
+    dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
+    size_counts = [set(s) for s in dim_sizes]
+    return all(len(c) == 1 for c in size_counts)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.all_timestamps_same"><code class="name flex">
+<span>def <span class="ident">all_timestamps_same</span></span>(<span>regions: Iterable[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def all_timestamps_same(regions: Iterable[Region]) -&gt; bool:
+    idx0 = next(iter(regions)).timestamps
+    for region in regions:
+        if not idx0.symmetric_difference(region.timestamps).empty:
+            return False
+    return True</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.collapse_region"><code class="name flex">
+<span>def <span class="ident">collapse_region</span></span>(<span>region: <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reduce the temperatures to a 2-dimensional array, representing time
+offsets and displacements.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def collapse_region(region: Region) -&gt; Region:
+    &#34;&#34;&#34;Reduce the temperatures to a 2-dimensional array, representing time
+    offsets and displacements.
+    &#34;&#34;&#34;
+    num_times, num_disp, *_ = region.temperatures_kelvin.shape
+    new_temps = (region.temperatures_kelvin
+                       .reshape(num_times, num_disp, -1)
+                       .mean(axis=2))
+    new_disp = (region.margins.displacements_meters
+                      .reshape(num_disp, -1)
+                      .mean(axis=1))
+    new_region = Region(
+        region.timestamps,
+        new_temps,
+        Margins(region.margins.seconds_elapsed, new_disp),
+    )
+    return new_region</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.convert_temperatures_to_kelvin"><code class="name flex">
+<span>def <span class="ident">convert_temperatures_to_kelvin</span></span>(<span>df_recording: pandas.core.frame.DataFrame, arr_temps: numpy.ndarray) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_temperatures_to_kelvin(
+        df_recording: pd.DataFrame,
+        arr_temps: np.ndarray,
+) -&gt; np.ndarray:
+    try:
+        offset = TEMPERATURE_OFFSET[df_recording[&#39;Units&#39;].unique().item()]
+        return arr_temps + offset
+    except ValueError:
+        raise ValueError(&#34;More than one temperature unit found&#34;)
+    except KeyError:
+        msg = (f&#34;Temperature unit \&#34;{df_recording[&#39;Units&#39;].unique().item()}\&#34; &#34;
+               &#34;not accounted for&#34;)
+        raise NotImplementedError(msg)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.extract_cartesian_region"><code class="name flex">
+<span>def <span class="ident">extract_cartesian_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, geometry: <a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in geometry.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Invalid geometry.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_cartesian_region(
+        df_recording: pd.DataFrame,
+        geometry: CartesianGeometry,
+        setup: ExperimentalSetup,
+) -&gt; Region:
+    &#34;&#34;&#34;
+    Raises
+    ------
+    KeyError
+        Field not found in geometry.
+    ValueError
+        Invalid geometry.
+    &#34;&#34;&#34;
+    temps = np.stack(df_recording[&#39;Samples&#39;]) # (time, height, width)
+    temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
+    temps = temps[
+        geometry[&#39;min_x_pixels&#39;] : geometry[&#39;max_x_pixels&#39;] + 1,
+        geometry[&#39;min_y_pixels&#39;] : geometry[&#39;max_y_pixels&#39;] + 1,
+    ]
+    temps = np.moveaxis(temps, [0, 1], [1, 2]) # (time, width, height)
+
+    # (time, displacement, span)
+    match find_heat_source_direction(geometry):
+        case Direction.LESSER_X:
+            min_disp_px = geometry[&#39;min_x_pixels&#39;] - geometry[&#39;heat_source_x_pixels&#39;]
+            max_disp_px = geometry[&#39;max_x_pixels&#39;] - geometry[&#39;heat_source_x_pixels&#39;]
+        case Direction.GREATER_X:
+            temps = np.flip(temps, axis=1)
+            min_disp_px = geometry[&#39;heat_source_x_pixels&#39;] - geometry[&#39;max_x_pixels&#39;]
+            max_disp_px = geometry[&#39;heat_source_x_pixels&#39;] - geometry[&#39;min_x_pixels&#39;]
+        case Direction.LESSER_Y:
+            temps = np.swapaxes(temps, 1, 2)
+            min_disp_px = geometry[&#39;min_y_pixels&#39;] - geometry[&#39;heat_source_y_pixels&#39;]
+            max_disp_px = geometry[&#39;max_y_pixels&#39;] - geometry[&#39;heat_source_y_pixels&#39;]
+        case Direction.GREATER_Y:
+            temps = np.swapaxes(temps, 1, 2)
+            temps = np.flip(temps, axis=1)
+            min_disp_px = geometry[&#39;heat_source_y_pixels&#39;] - geometry[&#39;max_y_pixels&#39;]
+            max_disp_px = geometry[&#39;heat_source_y_pixels&#39;] - geometry[&#39;min_y_pixels&#39;]
+
+    temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps)
+
+    region = Region(
+        df_recording.index,
+        temps_kelvin,
+        Margins.new(df_recording, temps, min_disp_px, max_disp_px, setup),
+    )
+    return region</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.extract_polar_region"><code class="name flex">
+<span>def <span class="ident">extract_polar_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, geometry: <a title="pyangstrom.transform.PolarGeometry" href="#pyangstrom.transform.PolarGeometry">PolarGeometry</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_polar_region(
+        df_recording: pd.DataFrame,
+        geometry: PolarGeometry,
+        setup: ExperimentalSetup,
+) -&gt; Region:
+    temps = np.stack(df_recording[&#39;Samples&#39;]) # (time, height, width)
+    temps = np.moveaxis(temps, [-1, -2], [0, 1]) # (width, height, time)
+
+    r_pixels = np.linspace(
+        geometry[&#39;min_r_pixels&#39;],
+        geometry[&#39;max_r_pixels&#39;],
+        geometry[&#39;num_r&#39;],
+    )
+    theta_degrees = np.deg2rad(np.linspace(
+        geometry[&#39;min_theta_degrees&#39;],
+        geometry[&#39;max_theta_degrees&#39;],
+        geometry[&#39;num_theta&#39;],
+    ))
+    r_coord, theta_coord = np.meshgrid(r_pixels, theta_degrees, indexing=&#39;ij&#39;)
+
+    x_coord = r_coord * np.cos(theta_coord) + geometry[&#39;center&#39;][&#39;x_pixels&#39;]
+    y_coord = r_coord * np.sin(theta_coord) + geometry[&#39;center&#39;][&#39;y_pixels&#39;]
+
+    x_coord_floor = np.floor(x_coord).astype(&#39;int&#39;)
+    x_coord_floorp1 = x_coord_floor + 1
+    y_coord_floor = np.floor(y_coord).astype(&#39;int&#39;)
+    y_coord_floorp1 = y_coord_floor + 1
+
+    lower_x_weight = (x_coord_floorp1 - x_coord) / (x_coord_floorp1 - x_coord_floor)
+    upper_x_weight = (x_coord - x_coord_floor) / (x_coord_floorp1 - x_coord_floor)
+    lower_y_weight = (y_coord_floorp1 - y_coord) / (y_coord_floorp1 - y_coord_floor)
+    upper_y_weight = (y_coord - y_coord_floor) / (y_coord_floorp1 - y_coord_floor)
+
+    # (time, radius, angle)
+    lxly_temps = np.moveaxis(temps[x_coord_floor, y_coord_floor], [0, 1], [1, 2]) * lower_x_weight * lower_y_weight
+    lxuy_temps = np.moveaxis(temps[x_coord_floor, y_coord_floorp1], [0, 1], [1, 2]) * lower_x_weight * upper_y_weight
+    uxly_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floor], [0, 1], [1, 2]) * upper_x_weight * lower_y_weight
+    uxuy_temps = np.moveaxis(temps[x_coord_floorp1, y_coord_floorp1], [0, 1], [1, 2]) * upper_x_weight * upper_y_weight
+
+    temps_trans = lxly_temps + lxuy_temps + uxly_temps + uxuy_temps
+    temps_kelvin = convert_temperatures_to_kelvin(df_recording, temps_trans)
+
+    region = Region(
+        df_recording.index,
+        temps_kelvin,
+        Margins.new(
+            df_recording,
+            temps_kelvin,
+            geometry[&#39;min_r_pixels&#39;],
+            geometry[&#39;max_r_pixels&#39;],
+            setup,
+        ),
+    )
+    return region</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.find_heat_source_direction"><code class="name flex">
+<span>def <span class="ident">find_heat_source_direction</span></span>(<span>geometry: <a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a>) ‑> <a title="pyangstrom.transform.Direction" href="#pyangstrom.transform.Direction">Direction</a></span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>Field not found in geometry.</dd>
+<dt><code>ValueError</code></dt>
+<dd>Invalid geometry.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_heat_source_direction(geometry: CartesianGeometry) -&gt; Direction:
+    &#34;&#34;&#34;
+    Raises
+    ------
+    KeyError
+        Field not found in geometry.
+    ValueError
+        Invalid geometry.
+    &#34;&#34;&#34;
+    if (&#39;heat_source_x_pixels&#39; in geometry
+            and &#39;heat_source_y_pixels&#39; in geometry):
+        raise ValueError(
+            &#34;Cannot have both heat_source_x_pixels and heat_source_y_pixels in &#34;
+            &#34;geometry.&#34;
+        )
+    elif &#39;heat_source_x_pixels&#39; in geometry:
+        if geometry[&#39;heat_source_x_pixels&#39;] &lt;= geometry[&#39;min_x_pixels&#39;]:
+            return Direction.LESSER_X
+        elif geometry[&#39;heat_source_x_pixels&#39;] &gt;= geometry[&#39;max_x_pixels&#39;]:
+            return Direction.GREATER_X
+        else:
+            raise ValueError(
+                &#34;heat_source_x_pixels cannot be between min_x_pixels and &#34;
+                &#34;max_x_pixels.&#34;
+            )
+    elif &#39;heat_source_y_pixels&#39; in geometry:
+        if geometry[&#39;heat_source_y_pixels&#39;] &lt;= geometry[&#39;min_y_pixels&#39;]:
+            return Direction.LESSER_Y
+        elif geometry[&#39;heat_source_y_pixels&#39;] &gt;= geometry[&#39;max_y_pixels&#39;]:
+            return Direction.GREATER_Y
+        else:
+            raise ValueError(
+                &#34;heat_source_y_pixels cannot be between min_y_pixels and &#34;
+                &#34;max_y_pixels.&#34;
+            )
+    else:
+        raise KeyError(
+            &#34;Must have at either heat_source_x_pixels or heat_source_y_pixels &#34;
+            &#34;in geometry.&#34;
+        )</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.fully_extract_region"><code class="name flex">
+<span>def <span class="ident">fully_extract_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, information: <a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a> | <a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a> | list[<a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a>] | list[<a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a>], setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a> | list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>] | list[list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extract all regions of temperature from the recording as specified by the
+region information configuration.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Malformed information.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fully_extract_region(
+        df_recording: pd.DataFrame,
+        information: RegionInformation,
+        setup: ExperimentalSetup,
+) -&gt; Region | list[Region] | list[list[Region]]:
+    &#34;&#34;&#34;Extract all regions of temperature from the recording as specified by the
+    region information configuration.
+
+    Raises
+    ------
+    ValueError
+        Malformed information.
+    &#34;&#34;&#34;
+    match information:
+        case {&#39;geometry&#39;: geometry}:
+            region = geometry_to_region(df_recording, geometry, setup)
+            if &#39;structure&#39; in information:
+                region = restructure_region(region, information[&#39;structure&#39;])
+            return region
+        case {&#39;geometries&#39;: geometries}:
+            regions = [
+                geometry_to_region(df_recording, g, setup) for g in geometries
+            ]
+            if &#39;structure&#39; in information:
+                regions = [
+                    restructure_region(r, information[&#39;structure&#39;])
+                    for r in regions
+                ]
+            if (&#39;average_over_regions&#39; not in information
+                or not information[&#39;average_over_regions&#39;]):
+                return regions
+            assert all_timestamps_same(regions)
+            if not all_temps_same_shape(regions):
+                warnings.warn(
+                    &#34;Not all regions have the same number of samples. Trimming &#34;
+                    &#34;regions to match minimum shape.&#34;
+                )
+                regions = trim_regions(regions)
+            new_temps = np.stack(
+                [r.temperatures_kelvin for r in regions],
+                axis=2,
+            )
+            new_temps = new_temps.mean(axis=2)
+            new_disp = np.stack(
+                [r.margins.displacements_meters for r in regions],
+                axis=1
+            )
+            new_disp = new_disp.mean(axis=1)
+            new_region = Region(
+                regions[0].timestamps,
+                new_temps,
+                Margins(regions[0].margins.seconds_elapsed, new_disp),
+            )
+            return new_region
+        case [*region_configs]:
+            regions = [
+                fully_extract_region(df_recording, c, setup)
+                for c in region_configs
+            ]
+            return regions
+        case _:
+            raise ValueError(f&#34;Invalid information format: {information}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.geometry_to_region"><code class="name flex">
+<span>def <span class="ident">geometry_to_region</span></span>(<span>df_recording: pandas.core.frame.DataFrame, geometry: <a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a> | <a title="pyangstrom.transform.PolarGeometry" href="#pyangstrom.transform.PolarGeometry">PolarGeometry</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def geometry_to_region(
+        df_recording: pd.DataFrame,
+        geometry: Geometry,
+        setup: ExperimentalSetup,
+) -&gt; Region:
+    match geometry:
+        case {&#39;min_x_pixels&#39;: _}:
+            return extract_cartesian_region(df_recording, geometry, setup)
+        case {&#39;center&#39;: _}:
+            return extract_polar_region(df_recording, geometry, setup)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.min_temps_shape"><code class="name flex">
+<span>def <span class="ident">min_temps_shape</span></span>(<span>regions: Iterable[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]) ‑> tuple</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def min_temps_shape(regions: Iterable[Region]) -&gt; tuple:
+    dim_sizes = zip(*(r.temperatures_kelvin.shape for r in regions))
+    min_shape = tuple(min(s) for s in dim_sizes)
+    return min_shape</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.restructure_region"><code class="name flex">
+<span>def <span class="ident">restructure_region</span></span>(<span>region: <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>, structure: <a title="pyangstrom.transform.RegionStructure" href="#pyangstrom.transform.RegionStructure">RegionStructure</a>) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def restructure_region(region: Region, structure: RegionStructure) -&gt; Region:
+    if &#39;subtract_temperatures_by&#39; in structure:
+        match structure[&#39;subtract_temperatures_by&#39;]:
+            case &#39;mean&#39; | &#39;avg&#39; | &#39;average&#39;:
+                subtrahend = region.temperatures_kelvin.mean()
+            case &#39;min&#39; | &#39;minimum&#39; | &#39;lowest&#39;:
+                subtrahend = region.temperatures_kelvin.min()
+            case _:
+                subtrahend = 0
+                warnings.warn(
+                    f&#34;Subtract temperatures by &#34;
+                    f&#34;\&#39;{structure[&#39;subtract_temperatures_by&#39;]}\&#39; &#34;
+                    f&#34;not understood&#34;
+                )
+        region = Region(
+            region.timestamps,
+            region.temperatures_kelvin - subtrahend,
+            region.margins,
+        )
+    if &#39;average_out_span&#39; in structure and structure[&#39;average_out_span&#39;]:
+        region = Region(
+            region.timestamps,
+            region.temperatures_kelvin.mean(axis=2),
+            Margins(
+                region.margins.seconds_elapsed,
+                region.margins.displacements_meters.mean(axis=1),
+            ),
+        )
+    if &#39;num_deinterleaving_groups&#39; in structure:
+        num_disp = region.temperatures_kelvin.shape[1]
+        new_num_disp, remainder = divmod(
+            num_disp,
+            structure[&#39;num_deinterleaving_groups&#39;],
+        )
+        if remainder != 0:
+            region = truncate_region(region, remainder, axis=1)
+        lst_groups = np.split(region.temperatures_kelvin, new_num_disp, axis=1)
+        new_temps = np.stack(lst_groups, axis=1)
+        lst_disp = np.split(
+            region.margins.displacements_meters,
+            new_num_disp,
+            axis=0,
+        )
+        new_disp = np.stack(lst_disp, axis=0)
+        region = Region(
+            region.timestamps,
+            new_temps,
+            Margins(region.margins.seconds_elapsed, new_disp),
+        )
+    return region</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.trim_regions"><code class="name flex">
+<span>def <span class="ident">trim_regions</span></span>(<span>regions: Iterable[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]) ‑> list[<a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def trim_regions(regions: Iterable[Region]) -&gt; list[Region]:
+    min_shape = min_temps_shape(regions)
+    new_regions = []
+    for region in regions:
+        for axis, size in enumerate(min_shape):
+            region = truncate_region(
+                region,
+                region.temperatures_kelvin.shape[axis] - size,
+                axis,
+            )
+            new_regions.append(region)
+    return new_regions</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.transform.truncate_region"><code class="name flex">
+<span>def <span class="ident">truncate_region</span></span>(<span>region: <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a>, num_truncate: int, axis: int) ‑> <a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def truncate_region(region: Region, num_truncate: int, axis: int) -&gt; Region:
+    new_time = region.timestamps
+
+    new_temps = np.moveaxis(region.temperatures_kelvin, axis, 0)
+    new_temps = new_temps[:-num_truncate]
+    new_temps = np.moveaxis(new_temps, 0, axis)
+
+    if axis == 0:
+        new_time = region.timestamps[:-num_truncate]
+        new_elapsed = region.margins.seconds_elapsed[:-num_truncate]
+        new_margins = Margins(new_elapsed, region.margins.displacements_meters)
+    else:
+        new_disp = region.margins.displacements_meters
+        new_disp = np.moveaxis(new_disp, axis - 1, 0)
+        new_disp = new_disp[:-num_truncate]
+        new_disp = np.moveaxis(new_disp, 0, axis - 1)
+        new_margins = Margins(region.margins.seconds_elapsed, new_disp)
+
+    new_region = Region(
+        new_time,
+        new_temps,
+        new_margins,
+    )
+    return new_region</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyangstrom.transform.CartesianGeometry"><code class="flex name class">
+<span>class <span class="ident">CartesianGeometry</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The bounds of a rectangle and from where it is being heated.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>min_x_pixels</code></strong></dt>
+<dd>Lower x bound.</dd>
+<dt><strong><code>max_x_pixels</code></strong></dt>
+<dd>Upper x bound.</dd>
+<dt><strong><code>min_y_pixels</code></strong></dt>
+<dd>Lower y bound.</dd>
+<dt><strong><code>max_y_pixels</code></strong></dt>
+<dd>Upper y bound.</dd>
+<dt><strong><code>heat_source_x_pixels</code></strong></dt>
+<dd>The x-position of a vertical line heat source. Mutually exclusive from
+heat_source_y_pixels.</dd>
+<dt><strong><code>heat_source_y_pixels</code></strong></dt>
+<dd>The y-position of a horizontal line heat source. Mutually exclusive from
+heat_source_x_pixels.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CartesianGeometry(TypedDict, total=False):
+    &#34;&#34;&#34;The bounds of a rectangle and from where it is being heated.
+
+    Attributes
+    ----------
+    min_x_pixels
+        Lower x bound.
+    max_x_pixels
+        Upper x bound.
+    min_y_pixels
+        Lower y bound.
+    max_y_pixels
+        Upper y bound.
+    heat_source_x_pixels
+        The x-position of a vertical line heat source. Mutually exclusive from
+        heat_source_y_pixels.
+    heat_source_y_pixels
+        The y-position of a horizontal line heat source. Mutually exclusive from
+        heat_source_x_pixels.
+    &#34;&#34;&#34;
+    min_x_pixels: int
+    max_x_pixels: int
+    min_y_pixels: int
+    max_y_pixels: int
+    heat_source_x_pixels: int
+    heat_source_y_pixels: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.CartesianGeometry.heat_source_x_pixels"><code class="name">var <span class="ident">heat_source_x_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.CartesianGeometry.heat_source_y_pixels"><code class="name">var <span class="ident">heat_source_y_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.CartesianGeometry.max_x_pixels"><code class="name">var <span class="ident">max_x_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.CartesianGeometry.max_y_pixels"><code class="name">var <span class="ident">max_y_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.CartesianGeometry.min_x_pixels"><code class="name">var <span class="ident">min_x_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.CartesianGeometry.min_y_pixels"><code class="name">var <span class="ident">min_y_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.Direction"><code class="flex name class">
+<span>class <span class="ident">Direction</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The direction from which the sample is heated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Direction(Enum):
+    &#34;&#34;&#34;The direction from which the sample is heated.&#34;&#34;&#34;
+    LESSER_X = auto()
+    GREATER_X = auto()
+    LESSER_Y = auto()
+    GREATER_Y = auto()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.Direction.GREATER_X"><code class="name">var <span class="ident">GREATER_X</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Direction.GREATER_Y"><code class="name">var <span class="ident">GREATER_Y</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Direction.LESSER_X"><code class="name">var <span class="ident">LESSER_X</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Direction.LESSER_Y"><code class="name">var <span class="ident">LESSER_Y</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.Margins"><code class="flex name class">
+<span>class <span class="ident">Margins</span></span>
+<span>(</span><span>seconds_elapsed: numpy.ndarray, displacements_meters: numpy.ndarray)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Spatiotemporal measurements of each temperature data point off
+standardized references.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>seconds_elapsed</code></strong></dt>
+<dd>A 1-dimensional array of the time offsets of each recording frame from
+the first frame's time.</dd>
+<dt><strong><code>displacements_meters</code></strong></dt>
+<dd>An N-dimensional array of the positional offset of each temperature
+measurement from the heat source.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Margins:
+    &#34;&#34;&#34;Spatiotemporal measurements of each temperature data point off
+    standardized references.
+
+    Attributes
+    ----------
+    seconds_elapsed
+        A 1-dimensional array of the time offsets of each recording frame from
+        the first frame&#39;s time.
+    displacements_meters
+        An N-dimensional array of the positional offset of each temperature
+        measurement from the heat source.
+    &#34;&#34;&#34;
+    seconds_elapsed: np.ndarray
+    displacements_meters: np.ndarray
+
+    @classmethod
+    def new(
+            cls,
+            df_recording: pd.DataFrame,
+            temperatures: np.ndarray,
+            min_displacement_pixels: int | float,
+            max_displacement_pixels: int | float,
+            setup: ExperimentalSetup,
+    ) -&gt; &#34;Margins&#34;:
+        normalized_timestamps = df_recording.index - df_recording.index.min()
+        seconds_elapsed = normalized_timestamps.total_seconds().to_numpy()
+
+        disp = np.linspace(
+            min_displacement_pixels,
+            max_displacement_pixels,
+            temperatures.shape[1],
+            dtype=float,
+        )
+        disp = disp * setup[&#39;meters_per_pixel&#39;]
+        disp = np.stack(temperatures.shape[2] * [disp], axis=1)
+
+        return cls(seconds_elapsed, disp)</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.Margins.displacements_meters"><code class="name">var <span class="ident">displacements_meters</span> : numpy.ndarray</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Margins.seconds_elapsed"><code class="name">var <span class="ident">seconds_elapsed</span> : numpy.ndarray</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="pyangstrom.transform.Margins.new"><code class="name flex">
+<span>def <span class="ident">new</span></span>(<span>df_recording: pandas.core.frame.DataFrame, temperatures: numpy.ndarray, min_displacement_pixels: int | float, max_displacement_pixels: int | float, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.transform.Margins" href="#pyangstrom.transform.Margins">Margins</a></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def new(
+        cls,
+        df_recording: pd.DataFrame,
+        temperatures: np.ndarray,
+        min_displacement_pixels: int | float,
+        max_displacement_pixels: int | float,
+        setup: ExperimentalSetup,
+) -&gt; &#34;Margins&#34;:
+    normalized_timestamps = df_recording.index - df_recording.index.min()
+    seconds_elapsed = normalized_timestamps.total_seconds().to_numpy()
+
+    disp = np.linspace(
+        min_displacement_pixels,
+        max_displacement_pixels,
+        temperatures.shape[1],
+        dtype=float,
+    )
+    disp = disp * setup[&#39;meters_per_pixel&#39;]
+    disp = np.stack(temperatures.shape[2] * [disp], axis=1)
+
+    return cls(seconds_elapsed, disp)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.Point"><code class="flex name class">
+<span>class <span class="ident">Point</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The coordinates of one pixel in the recording.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Point(TypedDict):
+    &#34;&#34;&#34;The coordinates of one pixel in the recording.&#34;&#34;&#34;
+    x_pixels: int | float
+    y_pixels: int | float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.Point.x_pixels"><code class="name">var <span class="ident">x_pixels</span> : int | float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Point.y_pixels"><code class="name">var <span class="ident">y_pixels</span> : int | float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry"><code class="flex name class">
+<span>class <span class="ident">PolarGeometry</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The bounds of an annular sector, centered on a point heat source.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>center</code></strong></dt>
+<dd>The coordinates of the point heat source.</dd>
+<dt><strong><code>min_r_pixels</code></strong></dt>
+<dd>Inner radius.</dd>
+<dt><strong><code>max_r_pixels</code></strong></dt>
+<dd>Outer radius.</dd>
+<dt><strong><code>num_r</code></strong></dt>
+<dd>Number of radial subdivisions to use.</dd>
+<dt><strong><code>min_theta_degrees</code></strong></dt>
+<dd>Starting angle.</dd>
+<dt><strong><code>max_theta_degrees</code></strong></dt>
+<dd>Ending angle.</dd>
+<dt><strong><code>num_theta</code></strong></dt>
+<dd>Number of angular subdivisions to use.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PolarGeometry(TypedDict):
+    &#34;&#34;&#34;The bounds of an annular sector, centered on a point heat source.
+
+    Attributes
+    ----------
+    center
+        The coordinates of the point heat source.
+    min_r_pixels
+        Inner radius.
+    max_r_pixels
+        Outer radius.
+    num_r
+        Number of radial subdivisions to use.
+    min_theta_degrees
+        Starting angle.
+    max_theta_degrees
+        Ending angle.
+    num_theta
+        Number of angular subdivisions to use.
+    &#34;&#34;&#34;
+    center: Point
+    min_r_pixels: int | float
+    max_r_pixels: int | float
+    num_r: int
+    min_theta_degrees: int | float
+    max_theta_degrees: int | float
+    num_theta: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.PolarGeometry.center"><code class="name">var <span class="ident">center</span> : <a title="pyangstrom.transform.Point" href="#pyangstrom.transform.Point">Point</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry.max_r_pixels"><code class="name">var <span class="ident">max_r_pixels</span> : int | float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry.max_theta_degrees"><code class="name">var <span class="ident">max_theta_degrees</span> : int | float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry.min_r_pixels"><code class="name">var <span class="ident">min_r_pixels</span> : int | float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry.min_theta_degrees"><code class="name">var <span class="ident">min_theta_degrees</span> : int | float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry.num_r"><code class="name">var <span class="ident">num_r</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.PolarGeometry.num_theta"><code class="name">var <span class="ident">num_theta</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.Region"><code class="flex name class">
+<span>class <span class="ident">Region</span></span>
+<span>(</span><span>timestamps: pandas.core.indexes.datetimes.DatetimeIndex, temperatures_kelvin: numpy.ndarray, margins: <a title="pyangstrom.transform.Margins" href="#pyangstrom.transform.Margins">Margins</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Temperature data from a bounded region of the recording, transformed into
+a standardized format.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>timestamps</code></strong></dt>
+<dd>The timestamps of the original recording frames.</dd>
+<dt><strong><code>temperatures_kelvin</code></strong></dt>
+<dd>An N-dimensional array of temperatures grouped by time, displacement
+from the heat source, and other factors based on the order of its axes.</dd>
+<dt><strong><code>margins</code></strong></dt>
+<dd>Spatiotemporal metadata of the temperatures.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@dataclass
+class Region:
+    &#34;&#34;&#34;Temperature data from a bounded region of the recording, transformed into
+    a standardized format.
+
+    Attributes
+    ----------
+    timestamps
+        The timestamps of the original recording frames.
+    temperatures_kelvin
+        An N-dimensional array of temperatures grouped by time, displacement
+        from the heat source, and other factors based on the order of its axes.
+    margins
+        Spatiotemporal metadata of the temperatures.
+    &#34;&#34;&#34;
+    timestamps: pd.DatetimeIndex
+    temperatures_kelvin: np.ndarray
+    margins: Margins</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.Region.margins"><code class="name">var <span class="ident">margins</span> : <a title="pyangstrom.transform.Margins" href="#pyangstrom.transform.Margins">Margins</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Region.temperatures_kelvin"><code class="name">var <span class="ident">temperatures_kelvin</span> : numpy.ndarray</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.Region.timestamps"><code class="name">var <span class="ident">timestamps</span> : pandas.core.indexes.datetimes.DatetimeIndex</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.RegionBatchConfig"><code class="flex name class">
+<span>class <span class="ident">RegionBatchConfig</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Specifications to extract multiple related regions from the recording.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegionBatchConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract multiple related regions from the recording.&#34;&#34;&#34;
+    geometries: list[Geometry]
+    structure: RegionStructure
+    average_over_regions: bool</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.RegionBatchConfig.average_over_regions"><code class="name">var <span class="ident">average_over_regions</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.RegionBatchConfig.geometries"><code class="name">var <span class="ident">geometries</span> : list[<a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a> | <a title="pyangstrom.transform.PolarGeometry" href="#pyangstrom.transform.PolarGeometry">PolarGeometry</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.RegionBatchConfig.structure"><code class="name">var <span class="ident">structure</span> : <a title="pyangstrom.transform.RegionStructure" href="#pyangstrom.transform.RegionStructure">RegionStructure</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.RegionConfig"><code class="flex name class">
+<span>class <span class="ident">RegionConfig</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Specifications to extract a single region from the recording.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegionConfig(TypedDict, total=False):
+    &#34;&#34;&#34;Specifications to extract a single region from the recording.&#34;&#34;&#34;
+    geometry: Geometry
+    structure: RegionStructure</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.RegionConfig.geometry"><code class="name">var <span class="ident">geometry</span> : <a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a> | <a title="pyangstrom.transform.PolarGeometry" href="#pyangstrom.transform.PolarGeometry">PolarGeometry</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.RegionConfig.structure"><code class="name">var <span class="ident">structure</span> : <a title="pyangstrom.transform.RegionStructure" href="#pyangstrom.transform.RegionStructure">RegionStructure</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.transform.RegionStructure"><code class="flex name class">
+<span>class <span class="ident">RegionStructure</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Various options by which to to restructure a region's temperatures.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>subtract_temperatures_by</code></strong></dt>
+<dd>
+<p>If set to one of:</p>
+<ul>
+<li>'mean'</li>
+<li>'avg'</li>
+<li>'average'</li>
+</ul>
+<p>Temperatures will be subtracted by the average of all temperature
+measurements.</p>
+<p>If, instead, set to one of:</p>
+<ul>
+<li>'min'</li>
+<li>'minimum'</li>
+<li>'lowest'</li>
+</ul>
+<p>Temperatures will by subtracted by the lowest of all temperature
+measurements.</p>
+<p>Does not affect total number of dimensions present.</p>
+</dd>
+<dt><strong><code>average_out_span</code></strong></dt>
+<dd>Whether temperatures with the same displacement from the heat source
+should be averaged together. Removes a dimension.</dd>
+<dt><strong><code>num_deinterleaving_groups</code></strong></dt>
+<dd>The number of groups the temperatures should be separated into by way of
+deinterleaving. Adds a dimension.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RegionStructure(TypedDict, total=False):
+    &#34;&#34;&#34;Various options by which to to restructure a region&#39;s temperatures.
+
+    Attributes
+    ----------
+    subtract_temperatures_by
+        If set to one of:
+
+        - &#39;mean&#39;
+        - &#39;avg&#39;
+        - &#39;average&#39;
+
+        Temperatures will be subtracted by the average of all temperature
+        measurements.
+
+        If, instead, set to one of:
+
+        - &#39;min&#39;
+        - &#39;minimum&#39;
+        - &#39;lowest&#39;
+
+        Temperatures will by subtracted by the lowest of all temperature
+        measurements.
+
+        Does not affect total number of dimensions present.
+    average_out_span
+        Whether temperatures with the same displacement from the heat source
+        should be averaged together. Removes a dimension.
+    num_deinterleaving_groups
+        The number of groups the temperatures should be separated into by way of
+        deinterleaving. Adds a dimension.
+    &#34;&#34;&#34;
+    subtract_temperatures_by: str
+    average_out_span: bool
+    num_deinterleaving_groups: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.transform.RegionStructure.average_out_span"><code class="name">var <span class="ident">average_out_span</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.RegionStructure.num_deinterleaving_groups"><code class="name">var <span class="ident">num_deinterleaving_groups</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.transform.RegionStructure.subtract_temperatures_by"><code class="name">var <span class="ident">subtract_temperatures_by</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom" href="index.html">pyangstrom</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.transform.all_temps_same_shape" href="#pyangstrom.transform.all_temps_same_shape">all_temps_same_shape</a></code></li>
+<li><code><a title="pyangstrom.transform.all_timestamps_same" href="#pyangstrom.transform.all_timestamps_same">all_timestamps_same</a></code></li>
+<li><code><a title="pyangstrom.transform.collapse_region" href="#pyangstrom.transform.collapse_region">collapse_region</a></code></li>
+<li><code><a title="pyangstrom.transform.convert_temperatures_to_kelvin" href="#pyangstrom.transform.convert_temperatures_to_kelvin">convert_temperatures_to_kelvin</a></code></li>
+<li><code><a title="pyangstrom.transform.extract_cartesian_region" href="#pyangstrom.transform.extract_cartesian_region">extract_cartesian_region</a></code></li>
+<li><code><a title="pyangstrom.transform.extract_polar_region" href="#pyangstrom.transform.extract_polar_region">extract_polar_region</a></code></li>
+<li><code><a title="pyangstrom.transform.find_heat_source_direction" href="#pyangstrom.transform.find_heat_source_direction">find_heat_source_direction</a></code></li>
+<li><code><a title="pyangstrom.transform.fully_extract_region" href="#pyangstrom.transform.fully_extract_region">fully_extract_region</a></code></li>
+<li><code><a title="pyangstrom.transform.geometry_to_region" href="#pyangstrom.transform.geometry_to_region">geometry_to_region</a></code></li>
+<li><code><a title="pyangstrom.transform.min_temps_shape" href="#pyangstrom.transform.min_temps_shape">min_temps_shape</a></code></li>
+<li><code><a title="pyangstrom.transform.restructure_region" href="#pyangstrom.transform.restructure_region">restructure_region</a></code></li>
+<li><code><a title="pyangstrom.transform.trim_regions" href="#pyangstrom.transform.trim_regions">trim_regions</a></code></li>
+<li><code><a title="pyangstrom.transform.truncate_region" href="#pyangstrom.transform.truncate_region">truncate_region</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyangstrom.transform.CartesianGeometry" href="#pyangstrom.transform.CartesianGeometry">CartesianGeometry</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.CartesianGeometry.heat_source_x_pixels" href="#pyangstrom.transform.CartesianGeometry.heat_source_x_pixels">heat_source_x_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.CartesianGeometry.heat_source_y_pixels" href="#pyangstrom.transform.CartesianGeometry.heat_source_y_pixels">heat_source_y_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.CartesianGeometry.max_x_pixels" href="#pyangstrom.transform.CartesianGeometry.max_x_pixels">max_x_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.CartesianGeometry.max_y_pixels" href="#pyangstrom.transform.CartesianGeometry.max_y_pixels">max_y_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.CartesianGeometry.min_x_pixels" href="#pyangstrom.transform.CartesianGeometry.min_x_pixels">min_x_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.CartesianGeometry.min_y_pixels" href="#pyangstrom.transform.CartesianGeometry.min_y_pixels">min_y_pixels</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.Direction" href="#pyangstrom.transform.Direction">Direction</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.Direction.GREATER_X" href="#pyangstrom.transform.Direction.GREATER_X">GREATER_X</a></code></li>
+<li><code><a title="pyangstrom.transform.Direction.GREATER_Y" href="#pyangstrom.transform.Direction.GREATER_Y">GREATER_Y</a></code></li>
+<li><code><a title="pyangstrom.transform.Direction.LESSER_X" href="#pyangstrom.transform.Direction.LESSER_X">LESSER_X</a></code></li>
+<li><code><a title="pyangstrom.transform.Direction.LESSER_Y" href="#pyangstrom.transform.Direction.LESSER_Y">LESSER_Y</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.Margins" href="#pyangstrom.transform.Margins">Margins</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.Margins.displacements_meters" href="#pyangstrom.transform.Margins.displacements_meters">displacements_meters</a></code></li>
+<li><code><a title="pyangstrom.transform.Margins.new" href="#pyangstrom.transform.Margins.new">new</a></code></li>
+<li><code><a title="pyangstrom.transform.Margins.seconds_elapsed" href="#pyangstrom.transform.Margins.seconds_elapsed">seconds_elapsed</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.Point" href="#pyangstrom.transform.Point">Point</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.Point.x_pixels" href="#pyangstrom.transform.Point.x_pixels">x_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.Point.y_pixels" href="#pyangstrom.transform.Point.y_pixels">y_pixels</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.PolarGeometry" href="#pyangstrom.transform.PolarGeometry">PolarGeometry</a></code></h4>
+<ul class="two-column">
+<li><code><a title="pyangstrom.transform.PolarGeometry.center" href="#pyangstrom.transform.PolarGeometry.center">center</a></code></li>
+<li><code><a title="pyangstrom.transform.PolarGeometry.max_r_pixels" href="#pyangstrom.transform.PolarGeometry.max_r_pixels">max_r_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.PolarGeometry.max_theta_degrees" href="#pyangstrom.transform.PolarGeometry.max_theta_degrees">max_theta_degrees</a></code></li>
+<li><code><a title="pyangstrom.transform.PolarGeometry.min_r_pixels" href="#pyangstrom.transform.PolarGeometry.min_r_pixels">min_r_pixels</a></code></li>
+<li><code><a title="pyangstrom.transform.PolarGeometry.min_theta_degrees" href="#pyangstrom.transform.PolarGeometry.min_theta_degrees">min_theta_degrees</a></code></li>
+<li><code><a title="pyangstrom.transform.PolarGeometry.num_r" href="#pyangstrom.transform.PolarGeometry.num_r">num_r</a></code></li>
+<li><code><a title="pyangstrom.transform.PolarGeometry.num_theta" href="#pyangstrom.transform.PolarGeometry.num_theta">num_theta</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.Region" href="#pyangstrom.transform.Region">Region</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.Region.margins" href="#pyangstrom.transform.Region.margins">margins</a></code></li>
+<li><code><a title="pyangstrom.transform.Region.temperatures_kelvin" href="#pyangstrom.transform.Region.temperatures_kelvin">temperatures_kelvin</a></code></li>
+<li><code><a title="pyangstrom.transform.Region.timestamps" href="#pyangstrom.transform.Region.timestamps">timestamps</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.RegionBatchConfig" href="#pyangstrom.transform.RegionBatchConfig">RegionBatchConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.RegionBatchConfig.average_over_regions" href="#pyangstrom.transform.RegionBatchConfig.average_over_regions">average_over_regions</a></code></li>
+<li><code><a title="pyangstrom.transform.RegionBatchConfig.geometries" href="#pyangstrom.transform.RegionBatchConfig.geometries">geometries</a></code></li>
+<li><code><a title="pyangstrom.transform.RegionBatchConfig.structure" href="#pyangstrom.transform.RegionBatchConfig.structure">structure</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.RegionConfig" href="#pyangstrom.transform.RegionConfig">RegionConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.RegionConfig.geometry" href="#pyangstrom.transform.RegionConfig.geometry">geometry</a></code></li>
+<li><code><a title="pyangstrom.transform.RegionConfig.structure" href="#pyangstrom.transform.RegionConfig.structure">structure</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.transform.RegionStructure" href="#pyangstrom.transform.RegionStructure">RegionStructure</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.transform.RegionStructure.average_out_span" href="#pyangstrom.transform.RegionStructure.average_out_span">average_out_span</a></code></li>
+<li><code><a title="pyangstrom.transform.RegionStructure.num_deinterleaving_groups" href="#pyangstrom.transform.RegionStructure.num_deinterleaving_groups">num_deinterleaving_groups</a></code></li>
+<li><code><a title="pyangstrom.transform.RegionStructure.subtract_temperatures_by" href="#pyangstrom.transform.RegionStructure.subtract_temperatures_by">subtract_temperatures_by</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

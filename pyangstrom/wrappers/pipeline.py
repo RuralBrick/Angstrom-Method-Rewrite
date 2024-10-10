@@ -16,6 +16,7 @@ def convert_old_csv_to_new_config(
         exp_condition_path: str | Path,
         config_directory_path: Optional[str | Path] = None,
 ) -> dict[str, Config]:
+    # TODO: Docstring (maybe)
     p_exp_cond = Path(exp_condition_path)
     exp_cond = load_exp_condition(p_exp_cond)
     logger.debug(f'{exp_cond=}')
@@ -39,8 +40,8 @@ def hu_batch_process(
 ):
     """Compute thermal conductivity using old configuration.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     df_exp_condition_filename
         Name of the CSV file containing batch processing information; equivalent
         to HT's df_exp_condition_spreadsheet_filename and RT's
@@ -54,10 +55,8 @@ def hu_batch_process(
         Path to the directory holding data files; equivalent to HT's
         data_directory, but also supports Path objects.
 
-    Keyword Arguments
-    -----------------
-    verbose
-        If True, print status messages while processing data.
+    Other Parameters
+    ----------------
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
@@ -66,6 +65,7 @@ def hu_batch_process(
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     """
+    # TODO: debug, return_visualization
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)

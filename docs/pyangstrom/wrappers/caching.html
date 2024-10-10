@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.wrappers.caching API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.wrappers.caching</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from pathlib import Path
+from dataclasses import dataclass
+from typing import get_type_hints
+import multiprocessing
+
+import pandas as pd
+import numpy as np
+from pyangstromHT.high_T_angstrom_method import (
+    parallel_temperature_average_batch_experimental_results,
+)
+from pyangstromRT.blmcmc import calculate_theoretical_results
+
+from pyangstrom.hu.RT import TheorConfig
+from pyangstrom.wrappers.data_extraction import McmcConfig, FrameConfig
+from pyangstrom.wrappers.data_extraction import mcmc_analysis, get_first_frame
+from pyangstrom.wrappers.helpers import ht_df_to_rt_df
+
+
+class FigCacheConfig(McmcConfig, TheorConfig, FrameConfig):
+    pass
+
+class CacheConfig(FigCacheConfig):
+    pass
+
+class BatchData:
+    @dataclass
+    class Record:
+        df_temp: pd.DataFrame
+        df_ht_amp_phase: pd.DataFrame
+
+    def __init__(
+            self,
+            working_directory: Path | str,
+            parameters_file: str,
+            *,
+            __df_temp=None,
+            __df_ht_amp_phase=None
+    ) -&gt; None:
+        self._p_wd = Path(working_directory)
+        self._fn_config = parameters_file
+        self.__lst_df_temp = __df_temp
+        self.__lst_df_ht_amp_phase = __df_ht_amp_phase
+
+    def iterdata(self):
+        if self.__lst_df_temp is None or self.__lst_df_ht_amp_phase is None:
+            self.__lst_df_temp, self.__lst_df_ht_amp_phase = parallel_temperature_average_batch_experimental_results(
+                self._fn_config,
+                code_directory=f&#39;{self._p_wd}/&#39;,
+                data_directory=f&#39;{self._p_wd / &#34;temperature data&#34;}/&#39;,
+                num_cores=multiprocessing.cpu_count(),
+            )
+        return (
+            BatchData.Record(*v) for v
+            in zip(self.__lst_df_temp, self.__lst_df_ht_amp_phase)
+        )
+
+class FigCache:
+    def __init__(
+            self,
+            working_directory: Path | str,
+            dict_config: FigCacheConfig,
+            df_rt_amp_phase: pd.DataFrame,
+            *,
+            __df_mcmc_results=None,
+            __arr_theor_amp=None,
+            __arr_theor_phase=None,
+            __arr_first_frame=None,
+            __alpha_fitting=None,
+            __h_fitting=None,
+    ):
+        self._p_wd = Path(working_directory)
+        self._dict_config = dict_config
+        self._df_rt_amp_phase = df_rt_amp_phase
+        self.__df_mcmc_results = __df_mcmc_results
+        self.__arr_theor_amp = __arr_theor_amp
+        self.__arr_theor_phase = __arr_theor_phase
+        self.__arr_first_frame = __arr_first_frame
+        self.__alpha_fitting = __alpha_fitting
+        self.__h_fitting = __h_fitting
+
+    def get_df_mcmc_results(self):
+        if self.__df_mcmc_results is None:
+            self.__df_mcmc_results = mcmc_analysis(
+                self._p_wd,
+                self._dict_config,
+                self._df_rt_amp_phase,
+            )
+        return self.__df_mcmc_results
+
+    def get_arr_theor_amp(self):
+        if self.__arr_theor_amp is None:
+            self.__set_arr_theor()
+        return self.__arr_theor_amp
+
+    def get_arr_theor_phase(self):
+        if self.__arr_theor_phase is None:
+            self.__set_arr_theor()
+        return self.__arr_theor_phase
+
+    def get_arr_first_frame(self):
+        if self.__arr_first_frame is None:
+            self.__arr_first_frame = get_first_frame(
+                self._p_wd,
+                self._dict_config,
+            )
+        return self.__arr_first_frame
+
+    def __set_arr_theor(self):
+        self.__arr_theor_amp, self.__arr_theor_phase = calculate_theoretical_results(
+            self._dict_config,
+            self._dict_config,
+            self._df_rt_amp_phase,
+            [
+                self.__get_alpha_fitting(),
+                self.__get_h_fitting(),
+            ]
+        )
+
+    def __get_alpha_fitting(self):
+        if not self.__alpha_fitting:
+            df_mcmc_results = self.get_df_mcmc_results()
+            self.__alpha_fitting = np.mean(df_mcmc_results[&#39;alpha&#39;])
+        return self.__alpha_fitting
+
+    def __get_h_fitting(self):
+        if not self.__h_fitting:
+            df_mcmc_results = self.get_df_mcmc_results()
+            self.__h_fitting = np.mean(df_mcmc_results[&#39;h&#39;])
+        return self.__h_fitting
+
+class Cache:
+    def __init__(
+            self,
+            working_directory: Path | str,
+            parameters_file: str,
+            px=25e-6, # Length of pixel in meters
+            *,
+            __datatable: BatchData=None,
+            __lst_figcache: list=None
+    ) -&gt; None:
+        self._p_wd = Path(working_directory)
+        self._fn_config = parameters_file
+        self._px = px
+        self.__datatable = __datatable
+        self.__lst_figcache = __lst_figcache
+
+    def iterdata(self):
+        return zip(self.__get_datatable().iterdata(), self.__get_lst_fig_cache())
+
+    def __get_datatable(self):
+        if not self.__datatable:
+            self.__datatable = BatchData(self._p_wd, self._fn_config)
+        return self.__datatable
+
+    def __get_lst_fig_cache(self):
+        if not self.__lst_figcache:
+            df_config = pd.read_csv(
+                self._p_wd / &#39;batch process information&#39; / self._fn_config,
+                usecols=get_type_hints(CacheConfig).keys(),
+                dtype=get_type_hints(CacheConfig),
+            )
+            datatable = self.__get_datatable()
+            self.__lst_figcache = [
+                FigCache(
+                    self._p_wd,
+                    config._asdict(),
+                    ht_df_to_rt_df(batchdata.df_ht_amp_phase, self._px),
+                )
+                for config, batchdata
+                in zip(df_config.itertuples(), datatable.iterdata())
+            ]
+        return self.__lst_figcache</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyangstrom.wrappers.caching.BatchData"><code class="flex name class">
+<span>class <span class="ident">BatchData</span></span>
+<span>(</span><span>working_directory: pathlib.Path | str, parameters_file: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BatchData:
+    @dataclass
+    class Record:
+        df_temp: pd.DataFrame
+        df_ht_amp_phase: pd.DataFrame
+
+    def __init__(
+            self,
+            working_directory: Path | str,
+            parameters_file: str,
+            *,
+            __df_temp=None,
+            __df_ht_amp_phase=None
+    ) -&gt; None:
+        self._p_wd = Path(working_directory)
+        self._fn_config = parameters_file
+        self.__lst_df_temp = __df_temp
+        self.__lst_df_ht_amp_phase = __df_ht_amp_phase
+
+    def iterdata(self):
+        if self.__lst_df_temp is None or self.__lst_df_ht_amp_phase is None:
+            self.__lst_df_temp, self.__lst_df_ht_amp_phase = parallel_temperature_average_batch_experimental_results(
+                self._fn_config,
+                code_directory=f&#39;{self._p_wd}/&#39;,
+                data_directory=f&#39;{self._p_wd / &#34;temperature data&#34;}/&#39;,
+                num_cores=multiprocessing.cpu_count(),
+            )
+        return (
+            BatchData.Record(*v) for v
+            in zip(self.__lst_df_temp, self.__lst_df_ht_amp_phase)
+        )</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.caching.BatchData.Record"><code class="name">var <span class="ident">Record</span></code></dt>
+<dd>
+<div class="desc"><p>Record(df_temp: pandas.core.frame.DataFrame, df_ht_amp_phase: pandas.core.frame.DataFrame)</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.wrappers.caching.BatchData.iterdata"><code class="name flex">
+<span>def <span class="ident">iterdata</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iterdata(self):
+    if self.__lst_df_temp is None or self.__lst_df_ht_amp_phase is None:
+        self.__lst_df_temp, self.__lst_df_ht_amp_phase = parallel_temperature_average_batch_experimental_results(
+            self._fn_config,
+            code_directory=f&#39;{self._p_wd}/&#39;,
+            data_directory=f&#39;{self._p_wd / &#34;temperature data&#34;}/&#39;,
+            num_cores=multiprocessing.cpu_count(),
+        )
+    return (
+        BatchData.Record(*v) for v
+        in zip(self.__lst_df_temp, self.__lst_df_ht_amp_phase)
+    )</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.caching.Cache"><code class="flex name class">
+<span>class <span class="ident">Cache</span></span>
+<span>(</span><span>working_directory: pathlib.Path | str, parameters_file: str, px=2.5e-05)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Cache:
+    def __init__(
+            self,
+            working_directory: Path | str,
+            parameters_file: str,
+            px=25e-6, # Length of pixel in meters
+            *,
+            __datatable: BatchData=None,
+            __lst_figcache: list=None
+    ) -&gt; None:
+        self._p_wd = Path(working_directory)
+        self._fn_config = parameters_file
+        self._px = px
+        self.__datatable = __datatable
+        self.__lst_figcache = __lst_figcache
+
+    def iterdata(self):
+        return zip(self.__get_datatable().iterdata(), self.__get_lst_fig_cache())
+
+    def __get_datatable(self):
+        if not self.__datatable:
+            self.__datatable = BatchData(self._p_wd, self._fn_config)
+        return self.__datatable
+
+    def __get_lst_fig_cache(self):
+        if not self.__lst_figcache:
+            df_config = pd.read_csv(
+                self._p_wd / &#39;batch process information&#39; / self._fn_config,
+                usecols=get_type_hints(CacheConfig).keys(),
+                dtype=get_type_hints(CacheConfig),
+            )
+            datatable = self.__get_datatable()
+            self.__lst_figcache = [
+                FigCache(
+                    self._p_wd,
+                    config._asdict(),
+                    ht_df_to_rt_df(batchdata.df_ht_amp_phase, self._px),
+                )
+                for config, batchdata
+                in zip(df_config.itertuples(), datatable.iterdata())
+            ]
+        return self.__lst_figcache</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.wrappers.caching.Cache.iterdata"><code class="name flex">
+<span>def <span class="ident">iterdata</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iterdata(self):
+    return zip(self.__get_datatable().iterdata(), self.__get_lst_fig_cache())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig"><code class="flex name class">
+<span>class <span class="ident">CacheConfig</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CacheConfig(FigCacheConfig):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.L"><code class="name">var <span class="ident">L</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.N_chains"><code class="name">var <span class="ident">N_chains</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.N_sample"><code class="name">var <span class="ident">N_sample</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.R0_pixels"><code class="name">var <span class="ident">R0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.R_analysis_pixels"><code class="name">var <span class="ident">R_analysis_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.anguler_range"><code class="name">var <span class="ident">anguler_range</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.cp"><code class="name">var <span class="ident">cp</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.exp_amp_phase_extraction_method"><code class="name">var <span class="ident">exp_amp_phase_extraction_method</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.f_heating"><code class="name">var <span class="ident">f_heating</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.gap_pixels"><code class="name">var <span class="ident">gap_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.r"><code class="name">var <span class="ident">r</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.rec_name"><code class="name">var <span class="ident">rec_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.rho"><code class="name">var <span class="ident">rho</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.x0_pixels"><code class="name">var <span class="ident">x0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.CacheConfig.y0_pixels"><code class="name">var <span class="ident">y0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCache"><code class="flex name class">
+<span>class <span class="ident">FigCache</span></span>
+<span>(</span><span>working_directory: pathlib.Path | str, dict_config: <a title="pyangstrom.wrappers.caching.FigCacheConfig" href="#pyangstrom.wrappers.caching.FigCacheConfig">FigCacheConfig</a>, df_rt_amp_phase: pandas.core.frame.DataFrame)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FigCache:
+    def __init__(
+            self,
+            working_directory: Path | str,
+            dict_config: FigCacheConfig,
+            df_rt_amp_phase: pd.DataFrame,
+            *,
+            __df_mcmc_results=None,
+            __arr_theor_amp=None,
+            __arr_theor_phase=None,
+            __arr_first_frame=None,
+            __alpha_fitting=None,
+            __h_fitting=None,
+    ):
+        self._p_wd = Path(working_directory)
+        self._dict_config = dict_config
+        self._df_rt_amp_phase = df_rt_amp_phase
+        self.__df_mcmc_results = __df_mcmc_results
+        self.__arr_theor_amp = __arr_theor_amp
+        self.__arr_theor_phase = __arr_theor_phase
+        self.__arr_first_frame = __arr_first_frame
+        self.__alpha_fitting = __alpha_fitting
+        self.__h_fitting = __h_fitting
+
+    def get_df_mcmc_results(self):
+        if self.__df_mcmc_results is None:
+            self.__df_mcmc_results = mcmc_analysis(
+                self._p_wd,
+                self._dict_config,
+                self._df_rt_amp_phase,
+            )
+        return self.__df_mcmc_results
+
+    def get_arr_theor_amp(self):
+        if self.__arr_theor_amp is None:
+            self.__set_arr_theor()
+        return self.__arr_theor_amp
+
+    def get_arr_theor_phase(self):
+        if self.__arr_theor_phase is None:
+            self.__set_arr_theor()
+        return self.__arr_theor_phase
+
+    def get_arr_first_frame(self):
+        if self.__arr_first_frame is None:
+            self.__arr_first_frame = get_first_frame(
+                self._p_wd,
+                self._dict_config,
+            )
+        return self.__arr_first_frame
+
+    def __set_arr_theor(self):
+        self.__arr_theor_amp, self.__arr_theor_phase = calculate_theoretical_results(
+            self._dict_config,
+            self._dict_config,
+            self._df_rt_amp_phase,
+            [
+                self.__get_alpha_fitting(),
+                self.__get_h_fitting(),
+            ]
+        )
+
+    def __get_alpha_fitting(self):
+        if not self.__alpha_fitting:
+            df_mcmc_results = self.get_df_mcmc_results()
+            self.__alpha_fitting = np.mean(df_mcmc_results[&#39;alpha&#39;])
+        return self.__alpha_fitting
+
+    def __get_h_fitting(self):
+        if not self.__h_fitting:
+            df_mcmc_results = self.get_df_mcmc_results()
+            self.__h_fitting = np.mean(df_mcmc_results[&#39;h&#39;])
+        return self.__h_fitting</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.wrappers.caching.FigCache.get_arr_first_frame"><code class="name flex">
+<span>def <span class="ident">get_arr_first_frame</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_arr_first_frame(self):
+    if self.__arr_first_frame is None:
+        self.__arr_first_frame = get_first_frame(
+            self._p_wd,
+            self._dict_config,
+        )
+    return self.__arr_first_frame</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCache.get_arr_theor_amp"><code class="name flex">
+<span>def <span class="ident">get_arr_theor_amp</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_arr_theor_amp(self):
+    if self.__arr_theor_amp is None:
+        self.__set_arr_theor()
+    return self.__arr_theor_amp</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCache.get_arr_theor_phase"><code class="name flex">
+<span>def <span class="ident">get_arr_theor_phase</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_arr_theor_phase(self):
+    if self.__arr_theor_phase is None:
+        self.__set_arr_theor()
+    return self.__arr_theor_phase</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCache.get_df_mcmc_results"><code class="name flex">
+<span>def <span class="ident">get_df_mcmc_results</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_df_mcmc_results(self):
+    if self.__df_mcmc_results is None:
+        self.__df_mcmc_results = mcmc_analysis(
+            self._p_wd,
+            self._dict_config,
+            self._df_rt_amp_phase,
+        )
+    return self.__df_mcmc_results</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig"><code class="flex name class">
+<span>class <span class="ident">FigCacheConfig</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object's
+(key, value) pairs
+dict(iterable) -&gt; new dictionary initialized as if via:
+d = {}
+for k, v in iterable:
+d[k] = v
+dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
+in the keyword argument list.
+For example:
+dict(one=1, two=2)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FigCacheConfig(McmcConfig, TheorConfig, FrameConfig):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.L"><code class="name">var <span class="ident">L</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.N_chains"><code class="name">var <span class="ident">N_chains</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.N_sample"><code class="name">var <span class="ident">N_sample</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.R0_pixels"><code class="name">var <span class="ident">R0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.R_analysis_pixels"><code class="name">var <span class="ident">R_analysis_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.anguler_range"><code class="name">var <span class="ident">anguler_range</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.cp"><code class="name">var <span class="ident">cp</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.exp_amp_phase_extraction_method"><code class="name">var <span class="ident">exp_amp_phase_extraction_method</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.f_heating"><code class="name">var <span class="ident">f_heating</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.gap_pixels"><code class="name">var <span class="ident">gap_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.r"><code class="name">var <span class="ident">r</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.rec_name"><code class="name">var <span class="ident">rec_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.rho"><code class="name">var <span class="ident">rho</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.x0_pixels"><code class="name">var <span class="ident">x0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.wrappers.caching.FigCacheConfig.y0_pixels"><code class="name">var <span class="ident">y0_pixels</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom.wrappers" href="index.html">pyangstrom.wrappers</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyangstrom.wrappers.caching.BatchData" href="#pyangstrom.wrappers.caching.BatchData">BatchData</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.caching.BatchData.Record" href="#pyangstrom.wrappers.caching.BatchData.Record">Record</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.BatchData.iterdata" href="#pyangstrom.wrappers.caching.BatchData.iterdata">iterdata</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.caching.Cache" href="#pyangstrom.wrappers.caching.Cache">Cache</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.caching.Cache.iterdata" href="#pyangstrom.wrappers.caching.Cache.iterdata">iterdata</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.caching.CacheConfig" href="#pyangstrom.wrappers.caching.CacheConfig">CacheConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.L" href="#pyangstrom.wrappers.caching.CacheConfig.L">L</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.N_chains" href="#pyangstrom.wrappers.caching.CacheConfig.N_chains">N_chains</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.N_sample" href="#pyangstrom.wrappers.caching.CacheConfig.N_sample">N_sample</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.R0_pixels" href="#pyangstrom.wrappers.caching.CacheConfig.R0_pixels">R0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.R_analysis_pixels" href="#pyangstrom.wrappers.caching.CacheConfig.R_analysis_pixels">R_analysis_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.anguler_range" href="#pyangstrom.wrappers.caching.CacheConfig.anguler_range">anguler_range</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.cp" href="#pyangstrom.wrappers.caching.CacheConfig.cp">cp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.exp_amp_phase_extraction_method" href="#pyangstrom.wrappers.caching.CacheConfig.exp_amp_phase_extraction_method">exp_amp_phase_extraction_method</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.f_heating" href="#pyangstrom.wrappers.caching.CacheConfig.f_heating">f_heating</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.gap_pixels" href="#pyangstrom.wrappers.caching.CacheConfig.gap_pixels">gap_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.r" href="#pyangstrom.wrappers.caching.CacheConfig.r">r</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.rec_name" href="#pyangstrom.wrappers.caching.CacheConfig.rec_name">rec_name</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.rho" href="#pyangstrom.wrappers.caching.CacheConfig.rho">rho</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.x0_pixels" href="#pyangstrom.wrappers.caching.CacheConfig.x0_pixels">x0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.CacheConfig.y0_pixels" href="#pyangstrom.wrappers.caching.CacheConfig.y0_pixels">y0_pixels</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.caching.FigCache" href="#pyangstrom.wrappers.caching.FigCache">FigCache</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.caching.FigCache.get_arr_first_frame" href="#pyangstrom.wrappers.caching.FigCache.get_arr_first_frame">get_arr_first_frame</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCache.get_arr_theor_amp" href="#pyangstrom.wrappers.caching.FigCache.get_arr_theor_amp">get_arr_theor_amp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCache.get_arr_theor_phase" href="#pyangstrom.wrappers.caching.FigCache.get_arr_theor_phase">get_arr_theor_phase</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCache.get_df_mcmc_results" href="#pyangstrom.wrappers.caching.FigCache.get_df_mcmc_results">get_df_mcmc_results</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.wrappers.caching.FigCacheConfig" href="#pyangstrom.wrappers.caching.FigCacheConfig">FigCacheConfig</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.L" href="#pyangstrom.wrappers.caching.FigCacheConfig.L">L</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.N_chains" href="#pyangstrom.wrappers.caching.FigCacheConfig.N_chains">N_chains</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.N_sample" href="#pyangstrom.wrappers.caching.FigCacheConfig.N_sample">N_sample</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.R0_pixels" href="#pyangstrom.wrappers.caching.FigCacheConfig.R0_pixels">R0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.R_analysis_pixels" href="#pyangstrom.wrappers.caching.FigCacheConfig.R_analysis_pixels">R_analysis_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.anguler_range" href="#pyangstrom.wrappers.caching.FigCacheConfig.anguler_range">anguler_range</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.cp" href="#pyangstrom.wrappers.caching.FigCacheConfig.cp">cp</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.exp_amp_phase_extraction_method" href="#pyangstrom.wrappers.caching.FigCacheConfig.exp_amp_phase_extraction_method">exp_amp_phase_extraction_method</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.f_heating" href="#pyangstrom.wrappers.caching.FigCacheConfig.f_heating">f_heating</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.gap_pixels" href="#pyangstrom.wrappers.caching.FigCacheConfig.gap_pixels">gap_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.r" href="#pyangstrom.wrappers.caching.FigCacheConfig.r">r</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.rec_name" href="#pyangstrom.wrappers.caching.FigCacheConfig.rec_name">rec_name</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.rho" href="#pyangstrom.wrappers.caching.FigCacheConfig.rho">rho</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.x0_pixels" href="#pyangstrom.wrappers.caching.FigCacheConfig.x0_pixels">x0_pixels</a></code></li>
+<li><code><a title="pyangstrom.wrappers.caching.FigCacheConfig.y0_pixels" href="#pyangstrom.wrappers.caching.FigCacheConfig.y0_pixels">y0_pixels</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
