@@ -43,20 +43,19 @@ from pyangstrom.exp_setup import ExperimentalSetup
 logger = logging.getLogger(&#39;signal&#39;)
 
 class SignalProperties(NamedTuple):
-    # TODO: Docstring
+    &#34;&#34;&#34;Signal properties to be used in the rest of the Angstrom analysis.&#34;&#34;&#34;
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
 
 @dataclass
 class SignalResult:
-    # TODO: Docstring
+    &#34;&#34;&#34;Contains signal properties and helpful metadata.&#34;&#34;&#34;
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins
 
 class SignalProcessor(Protocol):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Function signature for a valid signal processor.&#34;&#34;&#34;
     def __call__(
             self,
             region: Region,
@@ -65,18 +64,35 @@ class SignalProcessor(Protocol):
     ) -&gt; SignalProperties: ...
 
 class SignalProcessorInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * explain apply_filter
-    #       * explain what&#39;s optional/mutually exclusive
-    #       * list valid names
-    #       * link to wiki page
+    &#34;&#34;&#34;Specifies the method to compute signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in signal processor. Names can be found on the
+        Signal Processors wiki page. Ignored if &#39;processor&#39; is present.
+    processor
+        A reference to a signal processor function. Takes precedence over
+        &#39;name&#39;.
+    parameters
+        Arguments passed onto the chosen signal processor. Check the Signal
+        Processors wiki page for exact details.
+    apply_filter
+        If set to True, applies a high-pass filter over the temperatures before
+        computing signal properties.
+
+    References
+    ----------
+    Built-in Signal Processors:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Signal-Processors
+    &#34;&#34;&#34;
     name: str
     processor: SignalProcessor
     parameters: dict
     apply_filter: bool
 
 class SineParameters(TypedDict):
-    # TODO: Docstring (internal)
+    &#34;&#34;&#34;Expected format of lmfit Parameters used by Sine Wave Fitting.&#34;&#34;&#34;
     amplitude: float
     phase: float
     bias: float
@@ -88,8 +104,6 @@ def filter_signal(
         cutoff: float = 0.5,
         order: int = 5,
 ) -&gt; Region:
-    # TODO: Docstring
-
     cutoff_frequency = cutoff * setup[&#39;heating_frequency_hertz&#39;]
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
@@ -150,8 +164,6 @@ def sine_signal_processing(
         initial_phase=0.1,
         initial_bias=298.0,
 ) -&gt; SignalProperties:
-    # TODO: Docstring (maybe)
-
     params = Parameters()
     params.add_many(
         (&#39;amplitude&#39;, initial_amplitude, True, 0.0, None, None, None),
@@ -179,8 +191,6 @@ def fft_signal_processing(
         setup: ExperimentalSetup,
         tol=2,
 ) -&gt; SignalProperties:
-    # TODO: Docstring (maybe)
-
     fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup[&#39;heating_frequency_hertz&#39;] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
@@ -227,8 +237,6 @@ def max_min_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
 ) -&gt; SignalProperties:
-    # TODO: Docstring (maybe)
-
     amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
     amp_ratio = amps / amps[0]
 
@@ -274,7 +282,9 @@ def signal_process_region(
         information: SignalProcessorInformation,
         setup: ExperimentalSetup,
 ) -&gt; SignalResult:
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Process the temperature region into signal properties as specified by the
+    signal processor information configuration.
+
     Raises
     ------
     KeyError
@@ -282,7 +292,6 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     &#34;&#34;&#34;
-    # TODO: Improve docstring
     if &#39;apply_filter&#39; in information and information[&#39;apply_filter&#39;]:
         region = filter_signal(region, setup)
     processor = extract_processor(information)
@@ -379,8 +388,6 @@ def signal_process_region(
         setup: ExperimentalSetup,
         tol=2,
 ) -&gt; SignalProperties:
-    # TODO: Docstring (maybe)
-
     fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup[&#39;heating_frequency_hertz&#39;] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
@@ -419,8 +426,6 @@ def signal_process_region(
         cutoff: float = 0.5,
         order: int = 5,
 ) -&gt; Region:
-    # TODO: Docstring
-
     cutoff_frequency = cutoff * setup[&#39;heating_frequency_hertz&#39;]
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
@@ -494,8 +499,6 @@ def signal_process_region(
         region: Region,
         setup: ExperimentalSetup,
 ) -&gt; SignalProperties:
-    # TODO: Docstring (maybe)
-
     amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
     amp_ratio = amps / amps[0]
 
@@ -537,7 +540,9 @@ def signal_process_region(
 <span>def <span class="ident">signal_process_region</span></span>(<span>region: <a title="pyangstrom.transform.Region" href="transform.html#pyangstrom.transform.Region">Region</a>, information: <a title="pyangstrom.signal.SignalProcessorInformation" href="#pyangstrom.signal.SignalProcessorInformation">SignalProcessorInformation</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.signal.SignalResult" href="#pyangstrom.signal.SignalResult">SignalResult</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="raises">Raises</h2>
+<div class="desc"><p>Process the temperature region into signal properties as specified by the
+signal processor information configuration.</p>
+<h2 id="raises">Raises</h2>
 <dl>
 <dt><code>KeyError</code></dt>
 <dd>Field not found in information.</dd>
@@ -553,7 +558,9 @@ def signal_process_region(
         information: SignalProcessorInformation,
         setup: ExperimentalSetup,
 ) -&gt; SignalResult:
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Process the temperature region into signal properties as specified by the
+    signal processor information configuration.
+
     Raises
     ------
     KeyError
@@ -561,7 +568,6 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     &#34;&#34;&#34;
-    # TODO: Improve docstring
     if &#39;apply_filter&#39; in information and information[&#39;apply_filter&#39;]:
         region = filter_signal(region, setup)
     processor = extract_processor(information)
@@ -587,8 +593,6 @@ def signal_process_region(
         initial_phase=0.1,
         initial_bias=298.0,
 ) -&gt; SignalProperties:
-    # TODO: Docstring (maybe)
-
     params = Parameters()
     params.add_many(
         (&#39;amplitude&#39;, initial_amplitude, True, 0.0, None, None, None),
@@ -622,38 +626,13 @@ def signal_process_region(
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for protocol classes.</p>
-<p>Protocol classes are defined as::</p>
-<pre><code>class Proto(Protocol):
-    def meth(self) -&gt; int:
-        ...
-</code></pre>
-<p>Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing), for example::</p>
-<pre><code>class C:
-    def meth(self) -&gt; int:
-        return 0
-
-def func(x: Proto) -&gt; int:
-    return x.meth()
-
-func(C())  # Passes static type check
-</code></pre>
-<p>See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::</p>
-<pre><code>class GenProto(Protocol[T]):
-    def meth(self) -&gt; T:
-        ...
-</code></pre></div>
+<div class="desc"><p>Function signature for a valid signal processor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignalProcessor(Protocol):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Function signature for a valid signal processor.&#34;&#34;&#34;
     def __call__(
             self,
             region: Region,
@@ -672,27 +651,52 @@ Protocol classes can be generic, they are defined as::</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Specifies the method to compute signal properties.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of a built-in signal processor. Names can be found on the
+Signal Processors wiki page. Ignored if 'processor' is present.</dd>
+<dt><strong><code>processor</code></strong></dt>
+<dd>A reference to a signal processor function. Takes precedence over
+'name'.</dd>
+<dt><strong><code>parameters</code></strong></dt>
+<dd>Arguments passed onto the chosen signal processor. Check the Signal
+Processors wiki page for exact details.</dd>
+<dt><strong><code>apply_filter</code></strong></dt>
+<dd>If set to True, applies a high-pass filter over the temperatures before
+computing signal properties.</dd>
+</dl>
+<h2 id="references">References</h2>
+<p>Built-in Signal Processors:
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Signal-Processors">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Signal-Processors</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignalProcessorInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * explain apply_filter
-    #       * explain what&#39;s optional/mutually exclusive
-    #       * list valid names
-    #       * link to wiki page
+    &#34;&#34;&#34;Specifies the method to compute signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in signal processor. Names can be found on the
+        Signal Processors wiki page. Ignored if &#39;processor&#39; is present.
+    processor
+        A reference to a signal processor function. Takes precedence over
+        &#39;name&#39;.
+    parameters
+        Arguments passed onto the chosen signal processor. Check the Signal
+        Processors wiki page for exact details.
+    apply_filter
+        If set to True, applies a high-pass filter over the temperatures before
+        computing signal properties.
+
+    References
+    ----------
+    Built-in Signal Processors:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Signal-Processors
+    &#34;&#34;&#34;
     name: str
     processor: SignalProcessor
     parameters: dict
@@ -727,13 +731,13 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>amplitude_ratios: numpy.ndarray, phase_differences: numpy.ndarray)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>SignalProperties(amplitude_ratios, phase_differences)</p></div>
+<div class="desc"><p>Signal properties to be used in the rest of the Angstrom analysis.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SignalProperties(NamedTuple):
-    # TODO: Docstring
+    &#34;&#34;&#34;Signal properties to be used in the rest of the Angstrom analysis.&#34;&#34;&#34;
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray</code></pre>
 </details>
@@ -758,14 +762,14 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>signal_properties: <a title="pyangstrom.signal.SignalProperties" href="#pyangstrom.signal.SignalProperties">SignalProperties</a>, processed_region: <a title="pyangstrom.transform.Region" href="transform.html#pyangstrom.transform.Region">Region</a>, margins: <a title="pyangstrom.transform.Margins" href="transform.html#pyangstrom.transform.Margins">Margins</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>SignalResult(signal_properties: pyangstrom.signal.SignalProperties, processed_region: pyangstrom.transform.Region, margins: pyangstrom.transform.Margins)</p></div>
+<div class="desc"><p>Contains signal properties and helpful metadata.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
 class SignalResult:
-    # TODO: Docstring
+    &#34;&#34;&#34;Contains signal properties and helpful metadata.&#34;&#34;&#34;
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins</code></pre>
@@ -791,23 +795,13 @@ class SignalResult:
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Expected format of lmfit Parameters used by Sine Wave Fitting.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SineParameters(TypedDict):
-    # TODO: Docstring (internal)
+    &#34;&#34;&#34;Expected format of lmfit Parameters used by Sine Wave Fitting.&#34;&#34;&#34;
     amplitude: float
     phase: float
     bias: float

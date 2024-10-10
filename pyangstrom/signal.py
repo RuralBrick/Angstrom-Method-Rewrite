@@ -15,20 +15,19 @@ from pyangstrom.exp_setup import ExperimentalSetup
 logger = logging.getLogger('signal')
 
 class SignalProperties(NamedTuple):
-    # TODO: Docstring
+    """Signal properties to be used in the rest of the Angstrom analysis."""
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
 
 @dataclass
 class SignalResult:
-    # TODO: Docstring
+    """Contains signal properties and helpful metadata."""
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins
 
 class SignalProcessor(Protocol):
-    # TODO: Docstring
-
+    """Function signature for a valid signal processor."""
     def __call__(
             self,
             region: Region,
@@ -37,18 +36,35 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 class SignalProcessorInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * explain apply_filter
-    #       * explain what's optional/mutually exclusive
-    #       * list valid names
-    #       * link to wiki page
+    """Specifies the method to compute signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in signal processor. Names can be found on the
+        Signal Processors wiki page. Ignored if 'processor' is present.
+    processor
+        A reference to a signal processor function. Takes precedence over
+        'name'.
+    parameters
+        Arguments passed onto the chosen signal processor. Check the Signal
+        Processors wiki page for exact details.
+    apply_filter
+        If set to True, applies a high-pass filter over the temperatures before
+        computing signal properties.
+
+    References
+    ----------
+    Built-in Signal Processors:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Signal-Processors
+    """
     name: str
     processor: SignalProcessor
     parameters: dict
     apply_filter: bool
 
 class SineParameters(TypedDict):
-    # TODO: Docstring (internal)
+    """Expected format of lmfit Parameters used by Sine Wave Fitting."""
     amplitude: float
     phase: float
     bias: float
@@ -60,8 +76,6 @@ def filter_signal(
         cutoff: float = 0.5,
         order: int = 5,
 ) -> Region:
-    # TODO: Docstring
-
     cutoff_frequency = cutoff * setup['heating_frequency_hertz']
     sampling_frequency = (region.temperatures_kelvin.shape[0]
                           / region.margins.seconds_elapsed.max())
@@ -122,8 +136,6 @@ def sine_signal_processing(
         initial_phase=0.1,
         initial_bias=298.0,
 ) -> SignalProperties:
-    # TODO: Docstring (maybe)
-
     params = Parameters()
     params.add_many(
         ('amplitude', initial_amplitude, True, 0.0, None, None, None),
@@ -151,8 +163,6 @@ def fft_signal_processing(
         setup: ExperimentalSetup,
         tol=2,
 ) -> SignalProperties:
-    # TODO: Docstring (maybe)
-
     fundamental_freq = 1.0 / region.margins.seconds_elapsed.max()
     target_harmonic = int(setup['heating_frequency_hertz'] / fundamental_freq)
     window_start = max(target_harmonic - tol, 0)
@@ -199,8 +209,6 @@ def max_min_signal_processing(
         region: Region,
         setup: ExperimentalSetup,
 ) -> SignalProperties:
-    # TODO: Docstring (maybe)
-
     amps = np.apply_along_axis(max_min_amp, 0, region.temperatures_kelvin)
     amp_ratio = amps / amps[0]
 
@@ -246,7 +254,9 @@ def signal_process_region(
         information: SignalProcessorInformation,
         setup: ExperimentalSetup,
 ) -> SignalResult:
-    """
+    """Process the temperature region into signal properties as specified by the
+    signal processor information configuration.
+
     Raises
     ------
     KeyError
@@ -254,7 +264,6 @@ def signal_process_region(
     ValueError
         Named signal processor not found.
     """
-    # TODO: Improve docstring
     if 'apply_filter' in information and information['apply_filter']:
         region = filter_signal(region, setup)
     processor = extract_processor(information)
