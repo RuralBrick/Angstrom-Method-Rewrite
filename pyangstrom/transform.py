@@ -477,7 +477,8 @@ def fully_extract_region(
         information: RegionInformation,
         setup: ExperimentalSetup,
 ) -> Region | list[Region] | list[list[Region]]:
-    """Extract all regions as specified by the region information configuration.
+    """Extract all regions of temperature from the recording as specified by the
+    region information configuration.
 
     Raises
     ------
