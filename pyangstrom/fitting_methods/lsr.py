@@ -37,7 +37,7 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -> FitterOutput:
-    # TODO: Docstring
+    # TODO: Docstring (maybe)
 
     level = logger.getEffectiveLevel()
     if level <= logging.DEBUG:

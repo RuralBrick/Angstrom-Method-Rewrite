@@ -33,7 +33,7 @@ def fit(
         observed_properties: SignalProperties,
         target_num_accepted_samples,
 ) -> FitterOutput:
-    # TODO: Docstring
+    # TODO: Docstring (maybe)
 
     accepted_samples = []
 
