@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.io API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.io</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import logging
+from pathlib import Path
+import json
+
+import yaml
+from tqdm.auto import tqdm
+import numpy as np
+import pandas as pd
+from matplotlib.animation import Animation
+
+from pyangstrom.config import Config
+
+
+logger = logging.getLogger(&#39;io&#39;)
+
+def load_config(p_config: Path) -&gt; Config:
+    &#34;&#34;&#34;
+    Raises
+    ------
+    ValueError
+        File extension not recognized.
+    &#34;&#34;&#34;
+    match p_config.suffix:
+        case &#39;.json&#39;:
+            with open(p_config) as f:
+                return json.load(f)
+        case &#39;.yaml&#39; | &#39;.yml&#39;:
+            with open(p_config) as f:
+                return yaml.safe_load(f)
+        case _:
+            msg = f&#34;File extension not recognized: {p_config.suffix}&#34;
+            raise ValueError(msg)
+
+def save_config(
+        config: Config,
+        p_directory: Path,
+        name: str,
+        file_extension=&#39;json&#39;,
+):
+    &#34;&#34;&#34;
+    Raises
+    ------
+    ValueError
+        Invalid file extension.
+    &#34;&#34;&#34;
+    p_file = p_directory / f&#39;{name}.{file_extension}&#39;
+    match file_extension:
+        case &#39;json&#39;:
+            with open(p_file, &#39;w&#39;) as f:
+                json.dump(config, f, indent=4)
+        case &#39;yaml&#39; | &#39;yml&#39;:
+            with open(p_file, &#39;w&#39;) as f:
+                yaml.safe_dump(config, f)
+        case _:
+            raise ValueError(f&#34;Invalid file extension: {file_extension}&#34;)
+    logger.info(f&#34;Saved config to {p_file}&#34;)
+
+def iter_recording_path(p_rec: Path):
+    return sorted(p_rec.iterdir(), key=lambda p: int(p.stem.split(&#39;_&#39;)[-1]))
+
+def load_recording_frames(p_rec: Path):
+    path_iterable = iter_recording_path(p_rec)
+    if logger.getEffectiveLevel() &lt;= logging.INFO:
+        path_iterable = tqdm(path_iterable, total=len(list(p_rec.iterdir())))
+    for p_frame in path_iterable:
+        dict_frame = {}
+        with open(p_frame) as f:
+            for i, line in enumerate(f):
+                line = line.rstrip()
+                if line == &#39;&#39;:
+                    header_end = i + 1
+                    break
+                key, value = line.split(&#39; = &#39;)
+                dict_frame[key] = value
+        arr = np.genfromtxt(
+            p_frame,
+            dtype=np.float32,
+            delimiter=&#39;,&#39;,
+            skip_header=header_end,
+        )
+        logger.debug(f&#34;{dict_frame=}, {arr.shape=}&#34;)
+        dict_frame[&#39;Samples&#39;] = arr
+        yield dict_frame
+
+def load_recording_csv(p_rec: Path) -&gt; pd.DataFrame:
+    logger.debug(f&#34;Loading {p_rec}&#34;)
+    df = pd.DataFrame.from_records(load_recording_frames(p_rec))
+    df[&#39;Time&#39;] = pd.to_datetime(df[&#39;Time&#39;], format=&#39;%j:%H:%M:%S.%f&#39;)
+    df = df.set_index(&#39;Time&#39;)
+    return df
+
+def recording_cache_exists(p_cache: Path, name: str) -&gt; bool:
+    p_file = p_cache / f&#39;{name}.pkl.gz&#39;
+    return p_file.is_file()
+
+def save_recording_cache(df_rec: pd.DataFrame, p_cache: Path, name: str):
+    p_file = p_cache / f&#39;{name}.pkl.gz&#39;
+    df_rec.to_pickle(p_file)
+    logger.info(f&#34;Saved recording cache to {p_file}&#34;)
+
+def load_recording_cache(p_cache: Path, name: str) -&gt; pd.DataFrame:
+    p_file = p_cache / f&#39;{name}.pkl.gz&#39;
+    logger.debug(f&#34;Loading {p_file}&#34;)
+    df = pd.read_pickle(p_file)
+    return df
+
+def save_animation(anim: Animation, p_directory: Path, name: str):
+    p_file = p_directory / f&#39;{name}.mp4&#39;
+    anim.save(p_file, dpi=300)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.io.iter_recording_path"><code class="name flex">
+<span>def <span class="ident">iter_recording_path</span></span>(<span>p_rec: pathlib.Path)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def iter_recording_path(p_rec: Path):
+    return sorted(p_rec.iterdir(), key=lambda p: int(p.stem.split(&#39;_&#39;)[-1]))</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.load_config"><code class="name flex">
+<span>def <span class="ident">load_config</span></span>(<span>p_config: pathlib.Path) ‑> <a title="pyangstrom.config.Config" href="config.html#pyangstrom.config.Config">Config</a></span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>File extension not recognized.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_config(p_config: Path) -&gt; Config:
+    &#34;&#34;&#34;
+    Raises
+    ------
+    ValueError
+        File extension not recognized.
+    &#34;&#34;&#34;
+    match p_config.suffix:
+        case &#39;.json&#39;:
+            with open(p_config) as f:
+                return json.load(f)
+        case &#39;.yaml&#39; | &#39;.yml&#39;:
+            with open(p_config) as f:
+                return yaml.safe_load(f)
+        case _:
+            msg = f&#34;File extension not recognized: {p_config.suffix}&#34;
+            raise ValueError(msg)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.load_recording_cache"><code class="name flex">
+<span>def <span class="ident">load_recording_cache</span></span>(<span>p_cache: pathlib.Path, name: str) ‑> pandas.core.frame.DataFrame</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_recording_cache(p_cache: Path, name: str) -&gt; pd.DataFrame:
+    p_file = p_cache / f&#39;{name}.pkl.gz&#39;
+    logger.debug(f&#34;Loading {p_file}&#34;)
+    df = pd.read_pickle(p_file)
+    return df</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.load_recording_csv"><code class="name flex">
+<span>def <span class="ident">load_recording_csv</span></span>(<span>p_rec: pathlib.Path) ‑> pandas.core.frame.DataFrame</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_recording_csv(p_rec: Path) -&gt; pd.DataFrame:
+    logger.debug(f&#34;Loading {p_rec}&#34;)
+    df = pd.DataFrame.from_records(load_recording_frames(p_rec))
+    df[&#39;Time&#39;] = pd.to_datetime(df[&#39;Time&#39;], format=&#39;%j:%H:%M:%S.%f&#39;)
+    df = df.set_index(&#39;Time&#39;)
+    return df</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.load_recording_frames"><code class="name flex">
+<span>def <span class="ident">load_recording_frames</span></span>(<span>p_rec: pathlib.Path)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_recording_frames(p_rec: Path):
+    path_iterable = iter_recording_path(p_rec)
+    if logger.getEffectiveLevel() &lt;= logging.INFO:
+        path_iterable = tqdm(path_iterable, total=len(list(p_rec.iterdir())))
+    for p_frame in path_iterable:
+        dict_frame = {}
+        with open(p_frame) as f:
+            for i, line in enumerate(f):
+                line = line.rstrip()
+                if line == &#39;&#39;:
+                    header_end = i + 1
+                    break
+                key, value = line.split(&#39; = &#39;)
+                dict_frame[key] = value
+        arr = np.genfromtxt(
+            p_frame,
+            dtype=np.float32,
+            delimiter=&#39;,&#39;,
+            skip_header=header_end,
+        )
+        logger.debug(f&#34;{dict_frame=}, {arr.shape=}&#34;)
+        dict_frame[&#39;Samples&#39;] = arr
+        yield dict_frame</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.recording_cache_exists"><code class="name flex">
+<span>def <span class="ident">recording_cache_exists</span></span>(<span>p_cache: pathlib.Path, name: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def recording_cache_exists(p_cache: Path, name: str) -&gt; bool:
+    p_file = p_cache / f&#39;{name}.pkl.gz&#39;
+    return p_file.is_file()</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.save_animation"><code class="name flex">
+<span>def <span class="ident">save_animation</span></span>(<span>anim: matplotlib.animation.Animation, p_directory: pathlib.Path, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_animation(anim: Animation, p_directory: Path, name: str):
+    p_file = p_directory / f&#39;{name}.mp4&#39;
+    anim.save(p_file, dpi=300)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.save_config"><code class="name flex">
+<span>def <span class="ident">save_config</span></span>(<span>config: <a title="pyangstrom.config.Config" href="config.html#pyangstrom.config.Config">Config</a>, p_directory: pathlib.Path, name: str, file_extension='json')</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>Invalid file extension.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_config(
+        config: Config,
+        p_directory: Path,
+        name: str,
+        file_extension=&#39;json&#39;,
+):
+    &#34;&#34;&#34;
+    Raises
+    ------
+    ValueError
+        Invalid file extension.
+    &#34;&#34;&#34;
+    p_file = p_directory / f&#39;{name}.{file_extension}&#39;
+    match file_extension:
+        case &#39;json&#39;:
+            with open(p_file, &#39;w&#39;) as f:
+                json.dump(config, f, indent=4)
+        case &#39;yaml&#39; | &#39;yml&#39;:
+            with open(p_file, &#39;w&#39;) as f:
+                yaml.safe_dump(config, f)
+        case _:
+            raise ValueError(f&#34;Invalid file extension: {file_extension}&#34;)
+    logger.info(f&#34;Saved config to {p_file}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.io.save_recording_cache"><code class="name flex">
+<span>def <span class="ident">save_recording_cache</span></span>(<span>df_rec: pandas.core.frame.DataFrame, p_cache: pathlib.Path, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_recording_cache(df_rec: pd.DataFrame, p_cache: Path, name: str):
+    p_file = p_cache / f&#39;{name}.pkl.gz&#39;
+    df_rec.to_pickle(p_file)
+    logger.info(f&#34;Saved recording cache to {p_file}&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom" href="index.html">pyangstrom</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.io.iter_recording_path" href="#pyangstrom.io.iter_recording_path">iter_recording_path</a></code></li>
+<li><code><a title="pyangstrom.io.load_config" href="#pyangstrom.io.load_config">load_config</a></code></li>
+<li><code><a title="pyangstrom.io.load_recording_cache" href="#pyangstrom.io.load_recording_cache">load_recording_cache</a></code></li>
+<li><code><a title="pyangstrom.io.load_recording_csv" href="#pyangstrom.io.load_recording_csv">load_recording_csv</a></code></li>
+<li><code><a title="pyangstrom.io.load_recording_frames" href="#pyangstrom.io.load_recording_frames">load_recording_frames</a></code></li>
+<li><code><a title="pyangstrom.io.recording_cache_exists" href="#pyangstrom.io.recording_cache_exists">recording_cache_exists</a></code></li>
+<li><code><a title="pyangstrom.io.save_animation" href="#pyangstrom.io.save_animation">save_animation</a></code></li>
+<li><code><a title="pyangstrom.io.save_config" href="#pyangstrom.io.save_config">save_config</a></code></li>
+<li><code><a title="pyangstrom.io.save_recording_cache" href="#pyangstrom.io.save_recording_cache">save_recording_cache</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

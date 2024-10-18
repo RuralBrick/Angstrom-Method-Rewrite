@@ -14,14 +14,27 @@ Unknowns = dict
 
 @dataclass
 class FitterOutput:
+    # TODO: Docstring
+    """"""
     unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
+    # TODO: Docstring
+    """"""
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
+    # TODO: Docstring
+    #       - maybe see what docs generated from method docstring
+    """
+
+    Methods
+    -------
+    solve(unknowns)
+        lorem ipsum
+    """
     @abc.abstractmethod
     def __init__(
             self,
@@ -34,6 +47,8 @@ class EquationPackage(abc.ABC):
     def solve(self, unknowns: Unknowns) -> SignalResult: ...
 
 class Fitter(Protocol):
+    # TODO: Docstring
+    """"""
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -43,12 +58,52 @@ class Fitter(Protocol):
     ) -> FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
+    """
+
+    Attributes
+    ----------
+    name
+        lorem ipsum
+    solution
+        lorem ipsum
+    guesses
+        lorem ipsum
+    parameters
+        lorem ipsum
+
+    References
+    ----------
+    Sample Solutions:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions
+    """
     name: str
     solution: EquationPackage
     guesses: Unknowns
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
+    # TODO: Docstring
+    #       * list valid names
+    #       * link to wiki page
+    """
+
+    Attributes
+    ----------
+    name
+        lorem ipsum
+    fitter
+        lorem ipsum
+    parameters
+        lorem ipsum
+
+    References
+    ----------
+    Built-in Fitting Methods:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Fitting-Methods
+    """
     name: str
     fitter: Fitter
     parameters: dict
@@ -58,8 +113,8 @@ def extract_solution_class(
 ) -> Optional[Type[EquationPackage]]:
     """Returns None if 'name' not in solver_information.
 
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Named solver not found.
     """
@@ -84,8 +139,8 @@ def extract_solution(
         setup: ExperimentalSetup,
 ) -> EquationPackage:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -105,8 +160,8 @@ def extract_solution(
 
 def extract_fit(fitter_information: FitterInformation) -> Fitter:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -135,13 +190,15 @@ def autofit(
         setup: ExperimentalSetup,
 ) -> FittingResult:
     """
-    Exceptions
-    ----------
+
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
         Named solver or fitter not found.
     """
+    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information['parameters']

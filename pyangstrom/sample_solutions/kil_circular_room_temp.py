@@ -13,10 +13,12 @@ from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 class LogKilCircularRoomTempUnknowns(TypedDict):
+    # TODO: Docstring
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
@@ -27,6 +29,8 @@ def Y0(x):
     return yv(0, x)
 
 class Solution(NelderMeadEquations, LsrEquations):
+    # TODO: Docstring
+
     def __init__(
             self,
             margins: Margins,
@@ -185,6 +189,8 @@ class Solution(NelderMeadEquations, LsrEquations):
         return fft_signal_processing(region, self.setup)
 
 class LogSolution(Solution):
+    # TODO: Docstring
+
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,
