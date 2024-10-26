@@ -27,8 +27,11 @@ class LsrEquations(EquationPackage):
     def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties: ...
 
 def fitting_function(signal_properties: SignalProperties) -> np.ndarray:
-    linear_data = (np.log(1/signal_properties.amplitude_ratios)
-                   * signal_properties.phase_differences)
+    linear_data = np.sqrt(
+        np.log(
+            1 / signal_properties.amplitude_ratios
+        ) * signal_properties.phase_differences
+    )
     return linear_data
 
 def fit(
