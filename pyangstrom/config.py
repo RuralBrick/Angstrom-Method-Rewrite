@@ -7,6 +7,7 @@ from pyangstrom.fit import SolverInformation, FitterInformation
 
 
 class Config(TypedDict, total=False):
+    """The full specification of how a recording should be processed."""
     experimental_setup: ExperimentalSetup
     region_information: RegionInformation
     signal_processor: SignalProcessorInformation

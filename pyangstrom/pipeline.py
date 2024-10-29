@@ -131,19 +131,25 @@ def analyze_recording(
 ):
     """Compute the thermal conductivity of the recorded sample.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     recording_path
         Path to the directory holding CSV IR camera data. Does not have to be a
         real path if there is a cache file with a matching name in
         recording_cache_path.
     config
-        Path to a YAML config file or the deserialized config object itself.
+        Path to a JSON config file or the deserialized config object itself.
 
-    Keyword Arguments
-    -----------------
-    verbose
-        If True, print status messages while processing data.
+    Other Parameters
+    ----------------
+    debug
+        If set to True, stops analyze_recording from catching general
+        Exceptions, allowing errors to fall through and exposing the full stack
+        trace.
+    return_visualization
+        If set to True, analyze_recording returns a tuple in which the normal
+        results are the first element and their corresponding Matplotlib Figures
+        are in the second element.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     recording_cache_path

@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>pyangstrom.sample_solutions.kil_circular_room_temp API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pyangstrom.sample_solutions.kil_circular_room_temp</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from typing import TypedDict
+
+import numpy as np
+import pandas as pd
+from scipy.special import jv, yv
+
+from pyangstrom.exp_setup import ExperimentalSetup
+from pyangstrom.transform import Margins, Region
+from pyangstrom.signal import fft_signal_processing, SignalProperties
+from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
+from pyangstrom.fitting_methods.lsr import LsrEquations
+from pyangstrom.helpers import calc_thermal_conductivity
+
+
+class KilCircularRoomTempUnknowns(TypedDict):
+    &#34;&#34;&#34;The unknowns in Kil&#39;s 1D Solution for Cylindrical Coordinates.&#34;&#34;&#34;
+    thermal_diffusivity_m2__s: float
+    convective_heat_transfer_coefficient_W__m2_K: float
+
+class LogKilCircularRoomTempUnknowns(TypedDict):
+    &#34;&#34;&#34;The log variants of the unknowns in Kil&#39;s 1D Solution for Cylindrical
+    Coordinates.
+    &#34;&#34;&#34;
+    thermal_diffusivity_log10_m2__s: float
+    convective_heat_transfer_coefficient_log10_W__m2_K: float
+
+def J0(x):
+    return jv(0, x)
+
+def Y0(x):
+    return yv(0, x)
+
+class Solution(NelderMeadEquations, LsrEquations):
+    &#34;&#34;&#34;Implements equations for Kil&#39;s 1D Solution for Cylindrical Coordinates.
+    &#34;&#34;&#34;
+    def __init__(
+            self,
+            margins: Margins,
+            setup: ExperimentalSetup,
+            sample_thickness_meters: float,
+            heating_source_radius_meters: float,
+            outer_boundary_radius_meters: float,
+    ) -&gt; None:
+        &#34;&#34;&#34;For more details, see
+        https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates
+        &#34;&#34;&#34;
+        self.margins = margins
+        self.time_seconds = self.append_dims(
+            margins.seconds_elapsed,
+            len(margins.displacements_meters.shape),
+        )
+        self.radii_meters = margins.displacements_meters
+        self.sample_thickness_meters = sample_thickness_meters
+        self.heating_source_radius_meters = heating_source_radius_meters
+        self.outer_boundary_radius_meters = outer_boundary_radius_meters
+        self.setup = setup
+        self.angular_frequency_hertz = 2*np.pi*setup[&#39;heating_frequency_hertz&#39;]
+
+    def append_dims(self, arr: np.ndarray, num_dims: int) -&gt; np.ndarray:
+        num_current_dims = len(arr.shape)
+        expanded_arr = np.expand_dims(
+            arr,
+            axis=tuple(range(num_current_dims, num_current_dims + num_dims)),
+        )
+        return expanded_arr
+
+    def calc_convective_heat_transfer_term(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        h = convective_heat_transfer_coefficient_W__m2_K
+        k = calc_thermal_conductivity(
+            thermal_diffusivity_m2__s,
+            self.setup[&#39;material_properties&#39;][&#39;specific_heat_capacity_J__kg_K&#39;],
+            self.setup[&#39;material_properties&#39;][&#39;density_kg__m3&#39;],
+        )
+        d = self.sample_thickness_meters
+
+        m2 = h / (k*d)
+
+        return m2
+
+    def calc_normalized_T1(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        i = 1j
+        r = self.radii_meters
+        a = self.heating_source_radius_meters
+        b = self.outer_boundary_radius_meters
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2__s
+        m2 = self.calc_convective_heat_transfer_term(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+
+        X = i * np.sqrt(m2 + i*w/D)
+        numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
+        denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
+        T1 = 0.5 * numerator / denominator
+
+        return T1
+
+    def calc_normalized_T2(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        i = 1j
+        r = self.radii_meters
+        a = self.heating_source_radius_meters
+        b = self.outer_boundary_radius_meters
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2__s
+        m2 = self.calc_convective_heat_transfer_term(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+
+        X = i * np.sqrt(m2 - i*w/D)
+        numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
+        denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
+        T2 = 0.5 * numerator / denominator
+
+        return T2
+
+    def calc_normalized_temps(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        i = 1j
+        t = self.time_seconds
+        w = self.angular_frequency_hertz
+        T1 = self.calc_normalized_T1(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+        T2 = self.calc_normalized_T2(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+
+        T = T1 * np.exp(i*w*t) + T2 * np.exp(-i*w*t)
+
+        return T
+
+    def unknowns_to_vector(
+            self,
+            unknowns: KilCircularRoomTempUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;convective_heat_transfer_coefficient_W__m2_K&#39;],
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray
+    ) -&gt; KilCircularRoomTempUnknowns:
+        unknowns: KilCircularRoomTempUnknowns = {
+            &#39;thermal_diffusivity_m2__s&#39;: vector[0],
+            &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: KilCircularRoomTempUnknowns) -&gt; SignalProperties:
+        timestamps = pd.DatetimeIndex(
+            1e9 * self.margins.seconds_elapsed,
+            dtype=&#39;datetime64[ns]&#39;,
+        )
+        temps = self.calc_normalized_temps(
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;convective_heat_transfer_coefficient_W__m2_K&#39;],
+        )
+        region = Region(timestamps, temps, self.margins)
+        return fft_signal_processing(region, self.setup)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K = unknowns_vector
+        timestamps = pd.DatetimeIndex(
+            1e9 * self.margins.seconds_elapsed,
+            dtype=&#39;datetime64[ns]&#39;,
+        )
+        temps = self.calc_normalized_temps(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+        region = Region(timestamps, temps, self.margins)
+        return fft_signal_processing(region, self.setup)
+
+class LogSolution(Solution):
+    &#34;&#34;&#34;Implements equations for the log variant of Kil&#39;s 1D Solution for
+    Cylindrical Coordinates.
+    &#34;&#34;&#34;
+    def unknowns_to_vector(
+            self,
+            unknowns: LogKilCircularRoomTempUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_log10_m2__s&#39;],
+            unknowns[&#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;]
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -&gt; LogKilCircularRoomTempUnknowns:
+        unknowns: LogKilCircularRoomTempUnknowns = {
+            &#39;thermal_diffusivity_log10_m2__s&#39;: vector[0],
+            &#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogKilCircularRoomTempUnknowns) -&gt; SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.J0"><code class="name flex">
+<span>def <span class="ident">J0</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def J0(x):
+    return jv(0, x)</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Y0"><code class="name flex">
+<span>def <span class="ident">Y0</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Y0(x):
+    return yv(0, x)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns"><code class="flex name class">
+<span>class <span class="ident">KilCircularRoomTempUnknowns</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The unknowns in Kil's 1D Solution for Cylindrical Coordinates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class KilCircularRoomTempUnknowns(TypedDict):
+    &#34;&#34;&#34;The unknowns in Kil&#39;s 1D Solution for Cylindrical Coordinates.&#34;&#34;&#34;
+    thermal_diffusivity_m2__s: float
+    convective_heat_transfer_coefficient_W__m2_K: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns.convective_heat_transfer_coefficient_W__m2_K"><code class="name">var <span class="ident">convective_heat_transfer_coefficient_W__m2_K</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns.thermal_diffusivity_m2__s"><code class="name">var <span class="ident">thermal_diffusivity_m2__s</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns"><code class="flex name class">
+<span>class <span class="ident">LogKilCircularRoomTempUnknowns</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The log variants of the unknowns in Kil's 1D Solution for Cylindrical
+Coordinates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LogKilCircularRoomTempUnknowns(TypedDict):
+    &#34;&#34;&#34;The log variants of the unknowns in Kil&#39;s 1D Solution for Cylindrical
+    Coordinates.
+    &#34;&#34;&#34;
+    thermal_diffusivity_log10_m2__s: float
+    convective_heat_transfer_coefficient_log10_W__m2_K: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns.convective_heat_transfer_coefficient_log10_W__m2_K"><code class="name">var <span class="ident">convective_heat_transfer_coefficient_log10_W__m2_K</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns.thermal_diffusivity_log10_m2__s"><code class="name">var <span class="ident">thermal_diffusivity_log10_m2__s</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution"><code class="flex name class">
+<span>class <span class="ident">LogSolution</span></span>
+<span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, sample_thickness_meters: float, heating_source_radius_meters: float, outer_boundary_radius_meters: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implements equations for the log variant of Kil's 1D Solution for
+Cylindrical Coordinates.</p>
+<p>For more details, see
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LogSolution(Solution):
+    &#34;&#34;&#34;Implements equations for the log variant of Kil&#39;s 1D Solution for
+    Cylindrical Coordinates.
+    &#34;&#34;&#34;
+    def unknowns_to_vector(
+            self,
+            unknowns: LogKilCircularRoomTempUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_log10_m2__s&#39;],
+            unknowns[&#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;]
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -&gt; LogKilCircularRoomTempUnknowns:
+        unknowns: LogKilCircularRoomTempUnknowns = {
+            &#39;thermal_diffusivity_log10_m2__s&#39;: vector[0],
+            &#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogKilCircularRoomTempUnknowns) -&gt; SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution">Solution</a></li>
+<li><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.lsr.LsrEquations" href="../fitting_methods/lsr.html#pyangstrom.fitting_methods.lsr.LsrEquations">LsrEquations</a></li>
+<li><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution">Solution</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.solve" href="../fit.html#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.unknowns_to_vector" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.unknowns_to_vector">unknowns_to_vector</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_solve" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_solve">vector_solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_to_unknowns" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_to_unknowns">vector_to_unknowns</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution"><code class="flex name class">
+<span>class <span class="ident">Solution</span></span>
+<span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, sample_thickness_meters: float, heating_source_radius_meters: float, outer_boundary_radius_meters: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Implements equations for Kil's 1D Solution for Cylindrical Coordinates.</p>
+<p>For more details, see
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Solution(NelderMeadEquations, LsrEquations):
+    &#34;&#34;&#34;Implements equations for Kil&#39;s 1D Solution for Cylindrical Coordinates.
+    &#34;&#34;&#34;
+    def __init__(
+            self,
+            margins: Margins,
+            setup: ExperimentalSetup,
+            sample_thickness_meters: float,
+            heating_source_radius_meters: float,
+            outer_boundary_radius_meters: float,
+    ) -&gt; None:
+        &#34;&#34;&#34;For more details, see
+        https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates
+        &#34;&#34;&#34;
+        self.margins = margins
+        self.time_seconds = self.append_dims(
+            margins.seconds_elapsed,
+            len(margins.displacements_meters.shape),
+        )
+        self.radii_meters = margins.displacements_meters
+        self.sample_thickness_meters = sample_thickness_meters
+        self.heating_source_radius_meters = heating_source_radius_meters
+        self.outer_boundary_radius_meters = outer_boundary_radius_meters
+        self.setup = setup
+        self.angular_frequency_hertz = 2*np.pi*setup[&#39;heating_frequency_hertz&#39;]
+
+    def append_dims(self, arr: np.ndarray, num_dims: int) -&gt; np.ndarray:
+        num_current_dims = len(arr.shape)
+        expanded_arr = np.expand_dims(
+            arr,
+            axis=tuple(range(num_current_dims, num_current_dims + num_dims)),
+        )
+        return expanded_arr
+
+    def calc_convective_heat_transfer_term(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        h = convective_heat_transfer_coefficient_W__m2_K
+        k = calc_thermal_conductivity(
+            thermal_diffusivity_m2__s,
+            self.setup[&#39;material_properties&#39;][&#39;specific_heat_capacity_J__kg_K&#39;],
+            self.setup[&#39;material_properties&#39;][&#39;density_kg__m3&#39;],
+        )
+        d = self.sample_thickness_meters
+
+        m2 = h / (k*d)
+
+        return m2
+
+    def calc_normalized_T1(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        i = 1j
+        r = self.radii_meters
+        a = self.heating_source_radius_meters
+        b = self.outer_boundary_radius_meters
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2__s
+        m2 = self.calc_convective_heat_transfer_term(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+
+        X = i * np.sqrt(m2 + i*w/D)
+        numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
+        denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
+        T1 = 0.5 * numerator / denominator
+
+        return T1
+
+    def calc_normalized_T2(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        i = 1j
+        r = self.radii_meters
+        a = self.heating_source_radius_meters
+        b = self.outer_boundary_radius_meters
+        w = self.angular_frequency_hertz
+        D = thermal_diffusivity_m2__s
+        m2 = self.calc_convective_heat_transfer_term(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+
+        X = i * np.sqrt(m2 - i*w/D)
+        numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
+        denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
+        T2 = 0.5 * numerator / denominator
+
+        return T2
+
+    def calc_normalized_temps(
+            self,
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+    ):
+        i = 1j
+        t = self.time_seconds
+        w = self.angular_frequency_hertz
+        T1 = self.calc_normalized_T1(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+        T2 = self.calc_normalized_T2(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+
+        T = T1 * np.exp(i*w*t) + T2 * np.exp(-i*w*t)
+
+        return T
+
+    def unknowns_to_vector(
+            self,
+            unknowns: KilCircularRoomTempUnknowns,
+    ) -&gt; np.ndarray:
+        vector = np.array([
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;convective_heat_transfer_coefficient_W__m2_K&#39;],
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray
+    ) -&gt; KilCircularRoomTempUnknowns:
+        unknowns: KilCircularRoomTempUnknowns = {
+            &#39;thermal_diffusivity_m2__s&#39;: vector[0],
+            &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: KilCircularRoomTempUnknowns) -&gt; SignalProperties:
+        timestamps = pd.DatetimeIndex(
+            1e9 * self.margins.seconds_elapsed,
+            dtype=&#39;datetime64[ns]&#39;,
+        )
+        temps = self.calc_normalized_temps(
+            unknowns[&#39;thermal_diffusivity_m2__s&#39;],
+            unknowns[&#39;convective_heat_transfer_coefficient_W__m2_K&#39;],
+        )
+        region = Region(timestamps, temps, self.margins)
+        return fft_signal_processing(region, self.setup)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K = unknowns_vector
+        timestamps = pd.DatetimeIndex(
+            1e9 * self.margins.seconds_elapsed,
+            dtype=&#39;datetime64[ns]&#39;,
+        )
+        temps = self.calc_normalized_temps(
+            thermal_diffusivity_m2__s,
+            convective_heat_transfer_coefficient_W__m2_K,
+        )
+        region = Region(timestamps, temps, self.margins)
+        return fft_signal_processing(region, self.setup)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></li>
+<li><a title="pyangstrom.fitting_methods.lsr.LsrEquations" href="../fitting_methods/lsr.html#pyangstrom.fitting_methods.lsr.LsrEquations">LsrEquations</a></li>
+<li><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution">LogSolution</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.append_dims"><code class="name flex">
+<span>def <span class="ident">append_dims</span></span>(<span>self, arr: numpy.ndarray, num_dims: int) ‑> numpy.ndarray</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_dims(self, arr: np.ndarray, num_dims: int) -&gt; np.ndarray:
+    num_current_dims = len(arr.shape)
+    expanded_arr = np.expand_dims(
+        arr,
+        axis=tuple(range(num_current_dims, num_current_dims + num_dims)),
+    )
+    return expanded_arr</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_convective_heat_transfer_term"><code class="name flex">
+<span>def <span class="ident">calc_convective_heat_transfer_term</span></span>(<span>self, thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_convective_heat_transfer_term(
+        self,
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+):
+    h = convective_heat_transfer_coefficient_W__m2_K
+    k = calc_thermal_conductivity(
+        thermal_diffusivity_m2__s,
+        self.setup[&#39;material_properties&#39;][&#39;specific_heat_capacity_J__kg_K&#39;],
+        self.setup[&#39;material_properties&#39;][&#39;density_kg__m3&#39;],
+    )
+    d = self.sample_thickness_meters
+
+    m2 = h / (k*d)
+
+    return m2</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T1"><code class="name flex">
+<span>def <span class="ident">calc_normalized_T1</span></span>(<span>self, thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_normalized_T1(
+        self,
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+):
+    i = 1j
+    r = self.radii_meters
+    a = self.heating_source_radius_meters
+    b = self.outer_boundary_radius_meters
+    w = self.angular_frequency_hertz
+    D = thermal_diffusivity_m2__s
+    m2 = self.calc_convective_heat_transfer_term(
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+    )
+
+    X = i * np.sqrt(m2 + i*w/D)
+    numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
+    denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
+    T1 = 0.5 * numerator / denominator
+
+    return T1</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T2"><code class="name flex">
+<span>def <span class="ident">calc_normalized_T2</span></span>(<span>self, thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_normalized_T2(
+        self,
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+):
+    i = 1j
+    r = self.radii_meters
+    a = self.heating_source_radius_meters
+    b = self.outer_boundary_radius_meters
+    w = self.angular_frequency_hertz
+    D = thermal_diffusivity_m2__s
+    m2 = self.calc_convective_heat_transfer_term(
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+    )
+
+    X = i * np.sqrt(m2 - i*w/D)
+    numerator = -Y0(-b*X) * J0(r*X) + J0(b*X) * Y0(-r*X)
+    denominator = J0(b*X) * Y0(-a*X) - J0(a*X) * Y0(-b*X)
+    T2 = 0.5 * numerator / denominator
+
+    return T2</code></pre>
+</details>
+</dd>
+<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_temps"><code class="name flex">
+<span>def <span class="ident">calc_normalized_temps</span></span>(<span>self, thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calc_normalized_temps(
+        self,
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+):
+    i = 1j
+    t = self.time_seconds
+    w = self.angular_frequency_hertz
+    T1 = self.calc_normalized_T1(
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+    )
+    T2 = self.calc_normalized_T2(
+        thermal_diffusivity_m2__s,
+        convective_heat_transfer_coefficient_W__m2_K,
+    )
+
+    T = T1 * np.exp(i*w*t) + T2 * np.exp(-i*w*t)
+
+    return T</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.solve" href="../fit.html#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.unknowns_to_vector" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.unknowns_to_vector">unknowns_to_vector</a></code></li>
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_solve" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_solve">vector_solve</a></code></li>
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_to_unknowns" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_to_unknowns">vector_to_unknowns</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pyangstrom.sample_solutions" href="index.html">pyangstrom.sample_solutions</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.J0" href="#pyangstrom.sample_solutions.kil_circular_room_temp.J0">J0</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Y0" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Y0">Y0</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns">KilCircularRoomTempUnknowns</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns.convective_heat_transfer_coefficient_W__m2_K" href="#pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns.convective_heat_transfer_coefficient_W__m2_K">convective_heat_transfer_coefficient_W__m2_K</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns.thermal_diffusivity_m2__s" href="#pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns.thermal_diffusivity_m2__s">thermal_diffusivity_m2__s</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns">LogKilCircularRoomTempUnknowns</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns.convective_heat_transfer_coefficient_log10_W__m2_K" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns.convective_heat_transfer_coefficient_log10_W__m2_K">convective_heat_transfer_coefficient_log10_W__m2_K</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns.thermal_diffusivity_log10_m2__s" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns.thermal_diffusivity_log10_m2__s">thermal_diffusivity_log10_m2__s</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution">LogSolution</a></code></h4>
+</li>
+<li>
+<h4><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution">Solution</a></code></h4>
+<ul class="">
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.append_dims" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.append_dims">append_dims</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_convective_heat_transfer_term" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_convective_heat_transfer_term">calc_convective_heat_transfer_term</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T1" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T1">calc_normalized_T1</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T2" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T2">calc_normalized_T2</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_temps" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_temps">calc_normalized_temps</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>

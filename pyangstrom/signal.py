@@ -15,16 +15,19 @@ from pyangstrom.exp_setup import ExperimentalSetup
 logger = logging.getLogger('signal')
 
 class SignalProperties(NamedTuple):
+    """Signal properties to be used in the rest of the Angstrom analysis."""
     amplitude_ratios: np.ndarray
     phase_differences: np.ndarray
 
 @dataclass
 class SignalResult:
+    """Contains signal properties and helpful metadata."""
     signal_properties: SignalProperties
     processed_region: Region
     margins: Margins
 
 class SignalProcessor(Protocol):
+    """Function signature for a valid signal processor."""
     def __call__(
             self,
             region: Region,
@@ -33,12 +36,35 @@ class SignalProcessor(Protocol):
     ) -> SignalProperties: ...
 
 class SignalProcessorInformation(TypedDict, total=False):
+    """Specifies the method to compute signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in signal processor. Names can be found on the
+        Built-in Signal Processors wiki page. Ignored if 'processor' is present.
+    processor
+        A reference to a signal processor function. Takes precedence over
+        'name'.
+    parameters
+        Arguments passed onto the chosen built-in signal processor. Check the
+        Built-in Signal Processors wiki page for exact details.
+    apply_filter
+        If set to True, applies a high-pass filter over the temperatures before
+        computing signal properties.
+
+    References
+    ----------
+    Built-in Signal Processors:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Signal-Processors
+    """
     name: str
     processor: SignalProcessor
     parameters: dict
     apply_filter: bool
 
 class SineParameters(TypedDict):
+    """Expected format of lmfit Parameters used by Sine Wave Fitting."""
     amplitude: float
     phase: float
     bias: float
@@ -199,8 +225,8 @@ def extract_processor(
         information: SignalProcessorInformation
 ) -> SignalProcessor:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -228,9 +254,11 @@ def signal_process_region(
         information: SignalProcessorInformation,
         setup: ExperimentalSetup,
 ) -> SignalResult:
-    """
-    Exceptions
-    ----------
+    """Process the temperature region into signal properties as specified by the
+    signal processor information configuration.
+
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError

@@ -16,14 +16,22 @@ logger = logging.getLogger('fit')
 
 class MetropolisHastingsEquations(EquationPackage):
     @abc.abstractmethod
-    def propose(self, unknowns: Unknowns) -> Unknowns:...
+    def propose(self, unknowns: Unknowns) -> Unknowns:
+        """Proposes a new set of values for the unknowns based on the previous
+        set.
+        """
+        ...
 
     @abc.abstractmethod
     def log_posterior(
             self,
             unknowns: Unknowns,
             observed_properties: SignalProperties,
-    ) -> float: ...
+    ) -> float:
+        """Calculates the probability of the values for the unknowns, given the
+        experimental signal properties.
+        """
+        ...
 
 def fit(
         unknowns_guesses: Unknowns,

@@ -108,7 +108,7 @@ def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
             'name': 'log_lopez-baeza',
             'guesses': {
                 'thermal_diffusivity_log10_m2__s': -5,
-                'heat_transfer_coefficient_log10_W__m2_K': -2,
+                'convective_heat_transfer_coefficient_log10_W__m2_K': -2,
             },
             'parameters': {
                 'r_meters': float(record['r']),
@@ -123,10 +123,10 @@ def record_to_lopez_baeza_short(record) -> Optional[SolverInformation]:
 def record_to_kil_circular_room_temp(record) -> Optional[SolverInformation]:
     try:
         solver: SolverInformation = {
-            'name': 'kil',
+            'name': 'log_kil',
             'guesses': {
-                'thermal_diffusivity_m2__s': 1,
-                'convective_heat_transfer_coefficient_W__m2_K': 35,
+                'thermal_diffusivity_m2__s': -5,
+                'convective_heat_transfer_coefficient_W__m2_K': 1,
             },
             'parameters': {
                 'sample_thickness_meters': 1e-3,
@@ -143,6 +143,9 @@ def record_to_lsr(record) -> Optional[FitterInformation]:
     try:
         fitter: FitterInformation = {
             'name': 'nelder-mead',
+            'parameters': {
+                'properties_to_use': 'phase-amplitude',
+            },
         }
         return fitter
     except KeyError as e:

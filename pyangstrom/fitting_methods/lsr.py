@@ -16,17 +16,28 @@ logger = logging.getLogger('fit')
 
 class LsrEquations(EquationPackage):
     @abc.abstractmethod
-    def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray: ...
+    def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray:
+        """Arranges unknowns into 1D array."""
+        ...
 
     @abc.abstractmethod
-    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns: ...
+    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns:
+        """Parses unknowns from 1D array."""
+        ...
 
     @abc.abstractmethod
-    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties: ...
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        """Calculates signal properties and metadata based on unknowns given as
+        a 1D array.
+        """
+        ...
 
 def fitting_function(signal_properties: SignalProperties) -> np.ndarray:
-    linear_data = (np.log(1/signal_properties.amplitude_ratios)
-                   * signal_properties.phase_differences)
+    linear_data = np.sqrt(
+        np.log(
+            1 / signal_properties.amplitude_ratios
+        ) * signal_properties.phase_differences
+    )
     return linear_data
 
 def fit(

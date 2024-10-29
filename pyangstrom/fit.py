@@ -14,26 +14,40 @@ Unknowns = dict
 
 @dataclass
 class FitterOutput:
+    """Contains solutions to unknowns and method-specific metadata."""
     unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
+    """Contains thermal properties and metadata for validating the results."""
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
+    """Declares methods required by the fitting method to calculate heat model
+    properties.
+    """
     @abc.abstractmethod
     def __init__(
             self,
             margins: Margins,
             setup: ExperimentalSetup,
             **kwargs,
-    ) -> None: ...
+    ) -> None:
+        """EquationPackages are expected to be initialized with only margins,
+        setup, and any constants relevant to its heat model.
+        """
+        ...
 
     @abc.abstractmethod
-    def solve(self, unknowns: Unknowns) -> SignalResult: ...
+    def solve(self, unknowns: Unknowns) -> SignalResult:
+        """Calculates signal properties and metadata based on the given values
+        for the unknowns.
+        """
+        ...
 
 class Fitter(Protocol):
+    """Function signature for a valid fitting method."""
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -43,12 +57,50 @@ class Fitter(Protocol):
     ) -> FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
+    """Specifies all heat model details.
+
+    Attributes
+    ----------
+    name
+        The name of a sample solution. Names can be found on the Sample
+        Solutions wiki page. Ignored if 'solution' is present.
+    solution
+        A reference to an EquationPackage class. Takes precedence over 'name'.
+    guesses
+        Initial guess values for the the heat model's unknowns.
+    parameters
+        Arguments passed onto the chosen sample solution. Check the Sample
+        Solutions wiki page for exact details.
+
+    References
+    ----------
+    Sample Solutions:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions
+    """
     name: str
     solution: EquationPackage
     guesses: Unknowns
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
+    """Specifies how to fit to the signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in fitting method. Names can be found on the
+        Built-in Fitting Methods wiki page. Ignored if 'fitter' is present.
+    fitter
+        A reference to a fitter function. Takes precedence over 'name'.
+    parameters
+        Arguments passed onto the chosen built-in fitting method. Check the
+        Build-in Fitting Methods wiki page for exact details.
+
+    References
+    ----------
+    Built-in Fitting Methods:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Fitting-Methods
+    """
     name: str
     fitter: Fitter
     parameters: dict
@@ -58,8 +110,8 @@ def extract_solution_class(
 ) -> Optional[Type[EquationPackage]]:
     """Returns None if 'name' not in solver_information.
 
-    Exceptions
-    ----------
+    Raises
+    ------
     ValueError
         Named solver not found.
     """
@@ -84,8 +136,8 @@ def extract_solution(
         setup: ExperimentalSetup,
 ) -> EquationPackage:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -105,8 +157,8 @@ def extract_solution(
 
 def extract_fit(fitter_information: FitterInformation) -> Fitter:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError
@@ -134,9 +186,11 @@ def autofit(
         fitter_information: FitterInformation,
         setup: ExperimentalSetup,
 ) -> FittingResult:
-    """
-    Exceptions
-    ----------
+    """Fits the specified heat model to the experimental signal properties as
+    specified by fitter information configuration.
+
+    Raises
+    ------
     KeyError
         Field not found in information.
     ValueError

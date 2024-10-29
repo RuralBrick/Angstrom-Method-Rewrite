@@ -17,6 +17,7 @@ TEMPERATURE_OFFSET = {
 }
 
 class Direction(Enum):
+    """The direction from which the sample is heated."""
     LESSER_X = auto()
     GREATER_X = auto()
     LESSER_Y = auto()
@@ -24,10 +25,30 @@ class Direction(Enum):
 
 
 class Point(TypedDict):
+    """The coordinates of one pixel in the recording."""
     x_pixels: int | float
     y_pixels: int | float
 
 class CartesianGeometry(TypedDict, total=False):
+    """The bounds of a rectangle and from where it is being heated.
+
+    Attributes
+    ----------
+    min_x_pixels
+        Lower x bound.
+    max_x_pixels
+        Upper x bound.
+    min_y_pixels
+        Lower y bound.
+    max_y_pixels
+        Upper y bound.
+    heat_source_x_pixels
+        The x-position of a vertical line heat source. Mutually exclusive from
+        heat_source_y_pixels.
+    heat_source_y_pixels
+        The y-position of a horizontal line heat source. Mutually exclusive from
+        heat_source_x_pixels.
+    """
     min_x_pixels: int
     max_x_pixels: int
     min_y_pixels: int
@@ -36,6 +57,25 @@ class CartesianGeometry(TypedDict, total=False):
     heat_source_y_pixels: int
 
 class PolarGeometry(TypedDict):
+    """The bounds of an annular sector, centered on a point heat source.
+
+    Attributes
+    ----------
+    center
+        The coordinates of the point heat source.
+    min_r_pixels
+        Inner radius.
+    max_r_pixels
+        Outer radius.
+    num_r
+        Number of radial subdivisions to use.
+    min_theta_degrees
+        Starting angle.
+    max_theta_degrees
+        Ending angle.
+    num_theta
+        Number of angular subdivisions to use.
+    """
     center: Point
     min_r_pixels: int | float
     max_r_pixels: int | float
@@ -47,15 +87,48 @@ class PolarGeometry(TypedDict):
 Geometry = CartesianGeometry | PolarGeometry
 
 class RegionStructure(TypedDict, total=False):
+    """Various options by which to to restructure a region's temperatures.
+
+    Attributes
+    ----------
+    subtract_temperatures_by
+        If set to one of:
+
+        - 'mean'
+        - 'avg'
+        - 'average'
+
+        Temperatures will be subtracted by the average of all temperature
+        measurements.
+
+        If, instead, set to one of:
+
+        - 'min'
+        - 'minimum'
+        - 'lowest'
+
+        Temperatures will by subtracted by the lowest of all temperature
+        measurements.
+
+        Does not affect total number of dimensions present.
+    average_out_span
+        Whether temperatures with the same displacement from the heat source
+        should be averaged together. Removes a dimension.
+    num_deinterleaving_groups
+        The number of groups the temperatures should be separated into by way of
+        deinterleaving. Adds a dimension.
+    """
     subtract_temperatures_by: str
     average_out_span: bool
     num_deinterleaving_groups: int
 
 class RegionConfig(TypedDict, total=False):
+    """Specifications to extract a single region from the recording."""
     geometry: Geometry
     structure: RegionStructure
 
 class RegionBatchConfig(TypedDict, total=False):
+    """Specifications to extract multiple related regions from the recording."""
     geometries: list[Geometry]
     structure: RegionStructure
     average_over_regions: bool
@@ -65,6 +138,18 @@ RegionInformation = RegionConfig | RegionBatchConfig | list[RegionConfig] | list
 
 @dataclass
 class Margins:
+    """Spatiotemporal measurements of each temperature data point off
+    standardized references.
+
+    Attributes
+    ----------
+    seconds_elapsed
+        A 1-dimensional array of the time offsets of each recording frame from
+        the first frame's time.
+    displacements_meters
+        An N-dimensional array of the positional offset of each temperature
+        measurement from the heat source.
+    """
     seconds_elapsed: np.ndarray
     displacements_meters: np.ndarray
 
@@ -93,23 +178,22 @@ class Margins:
 
 @dataclass
 class Region:
-    """A bounded region of IR temperature camera data after undergoing
-    transformations and changes of basis until
+    """Temperature data from a bounded region of the recording, transformed into
+    a standardized format.
 
     Attributes
     ----------
     timestamps
-        The timestamps of the original IR camera frames.
+        The timestamps of the original recording frames.
     temperatures_kelvin
         An N-dimensional array of temperatures grouped by time, displacement
-        from heating source, and other factors based on its axes.
+        from the heat source, and other factors based on the order of its axes.
     margins
-        The range of each corresponding axis of temperatures_kelvin. Always
-        in (time_span, displacement_range_meters, ...) order.
+        Spatiotemporal metadata of the temperatures.
     """
     timestamps: pd.DatetimeIndex
     temperatures_kelvin: np.ndarray
-    margins: Margins # TODO: Update docstring
+    margins: Margins
 
 
 def convert_temperatures_to_kelvin(
@@ -128,8 +212,8 @@ def convert_temperatures_to_kelvin(
 
 def find_heat_source_direction(geometry: CartesianGeometry) -> Direction:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -173,8 +257,8 @@ def extract_cartesian_region(
         setup: ExperimentalSetup,
 ) -> Region:
     """
-    Exceptions
-    ----------
+    Raises
+    ------
     KeyError
         Field not found in geometry.
     ValueError
@@ -393,9 +477,11 @@ def fully_extract_region(
         information: RegionInformation,
         setup: ExperimentalSetup,
 ) -> Region | list[Region] | list[list[Region]]:
-    """
-    Exceptions
-    ----------
+    """Extract all regions of temperature from the recording as specified by the
+    region information configuration.
+
+    Raises
+    ------
     ValueError
         Malformed information.
     """
@@ -450,6 +536,9 @@ def fully_extract_region(
             raise ValueError(f"Invalid information format: {information}")
 
 def collapse_region(region: Region) -> Region:
+    """Reduce the temperatures to a 2-dimensional array, representing time
+    offsets and displacements.
+    """
     num_times, num_disp, *_ = region.temperatures_kelvin.shape
     new_temps = (region.temperatures_kelvin
                        .reshape(num_times, num_disp, -1)

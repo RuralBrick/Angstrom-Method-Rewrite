@@ -16,6 +16,11 @@ def convert_old_csv_to_new_config(
         exp_condition_path: str | Path,
         config_directory_path: Optional[str | Path] = None,
 ) -> dict[str, Config]:
+    """Translates the CSV into its equivalent Config format(s).
+
+    Creates a single Config for each recording referenced in the CSV and uses
+    their names as keys.
+    """
     p_exp_cond = Path(exp_condition_path)
     exp_cond = load_exp_condition(p_exp_cond)
     logger.debug(f'{exp_cond=}')
@@ -39,8 +44,8 @@ def hu_batch_process(
 ):
     """Compute thermal conductivity using old configuration.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     df_exp_condition_filename
         Name of the CSV file containing batch processing information; equivalent
         to HT's df_exp_condition_spreadsheet_filename and RT's
@@ -54,10 +59,15 @@ def hu_batch_process(
         Path to the directory holding data files; equivalent to HT's
         data_directory, but also supports Path objects.
 
-    Keyword Arguments
-    -----------------
-    verbose
-        If True, print status messages while processing data.
+    Other Parameters
+    ----------------
+    debug
+        If set to True, stops analyze_recording from catching general
+        Exceptions, allowing errors to fall through and exposing the full stack
+        trace.
+    return_visualization
+        If set to True, each analyze_recording result will be paired with the
+        visualizations it generated as tuples nested in the returned list.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
