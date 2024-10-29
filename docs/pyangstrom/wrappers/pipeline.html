@@ -44,7 +44,11 @@ def convert_old_csv_to_new_config(
         exp_condition_path: str | Path,
         config_directory_path: Optional[str | Path] = None,
 ) -&gt; dict[str, Config]:
-    # TODO: Docstring (maybe)
+    &#34;&#34;&#34;Translates the CSV into its equivalent Config format(s).
+
+    Creates a single Config for each recording referenced in the CSV and uses
+    their names as keys.
+    &#34;&#34;&#34;
     p_exp_cond = Path(exp_condition_path)
     exp_cond = load_exp_condition(p_exp_cond)
     logger.debug(f&#39;{exp_cond=}&#39;)
@@ -85,6 +89,13 @@ def hu_batch_process(
 
     Other Parameters
     ----------------
+    debug
+        If set to True, stops analyze_recording from catching general
+        Exceptions, allowing errors to fall through and exposing the full stack
+        trace.
+    return_visualization
+        If set to True, each analyze_recording result will be paired with the
+        visualizations it generated as tuples nested in the returned list.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
@@ -93,7 +104,6 @@ def hu_batch_process(
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     &#34;&#34;&#34;
-    # TODO: debug, return_visualization
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)
@@ -132,7 +142,9 @@ def hu_batch_process(
 <span>def <span class="ident">convert_old_csv_to_new_config</span></span>(<span>exp_condition_path: str | pathlib.Path, config_directory_path: Union[str, pathlib.Path, NoneType] = None) ‑> dict[str, <a title="pyangstrom.config.Config" href="../config.html#pyangstrom.config.Config">Config</a>]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Translates the CSV into its equivalent Config format(s).</p>
+<p>Creates a single Config for each recording referenced in the CSV and uses
+their names as keys.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -141,7 +153,11 @@ def hu_batch_process(
         exp_condition_path: str | Path,
         config_directory_path: Optional[str | Path] = None,
 ) -&gt; dict[str, Config]:
-    # TODO: Docstring (maybe)
+    &#34;&#34;&#34;Translates the CSV into its equivalent Config format(s).
+
+    Creates a single Config for each recording referenced in the CSV and uses
+    their names as keys.
+    &#34;&#34;&#34;
     p_exp_cond = Path(exp_condition_path)
     exp_cond = load_exp_condition(p_exp_cond)
     logger.debug(f&#39;{exp_cond=}&#39;)
@@ -175,6 +191,13 @@ data_directory, but also supports Path objects.</dd>
 </dl>
 <h2 id="other-parameters">Other Parameters</h2>
 <dl>
+<dt><strong><code>debug</code></strong></dt>
+<dd>If set to True, stops analyze_recording from catching general
+Exceptions, allowing errors to fall through and exposing the full stack
+trace.</dd>
+<dt><strong><code>return_visualization</code></strong></dt>
+<dd>If set to True, each analyze_recording result will be paired with the
+visualizations it generated as tuples nested in the returned list.</dd>
 <dt><strong><code>memory_cache</code></strong></dt>
 <dd>Holds intermediate results in memory, allowing for faster reruns.</dd>
 <dt><strong><code>config_directory_path</code></strong></dt>
@@ -217,6 +240,13 @@ df_exp_condition_filename will be saved.</dd>
 
     Other Parameters
     ----------------
+    debug
+        If set to True, stops analyze_recording from catching general
+        Exceptions, allowing errors to fall through and exposing the full stack
+        trace.
+    return_visualization
+        If set to True, each analyze_recording result will be paired with the
+        visualizations it generated as tuples nested in the returned list.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     config_directory_path
@@ -225,7 +255,6 @@ df_exp_condition_filename will be saved.</dd>
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     &#34;&#34;&#34;
-    # TODO: debug, return_visualization
     code_directory = Path(code_directory)
     if data_directory:
         data_directory = Path(data_directory)

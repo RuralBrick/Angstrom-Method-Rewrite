@@ -142,12 +142,19 @@ def analyze_recording(
 
     Other Parameters
     ----------------
+    debug
+        If set to True, stops analyze_recording from catching general
+        Exceptions, allowing errors to fall through and exposing the full stack
+        trace.
+    return_visualization
+        If set to True, analyze_recording returns a tuple in which the normal
+        results are the first element and their corresponding Matplotlib Figures
+        are in the second element.
     memory_cache
         Holds intermediate results in memory, allowing for faster reruns.
     recording_cache_path
         Path to a directory in which cached IR camera data will be saved.
     """
-    # TODO: debug, return_visualization
     logger.info("Loading recording")
     if recording_cache_path:
         recording_path = PurePath(recording_path)

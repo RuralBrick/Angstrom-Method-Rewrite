@@ -12,12 +12,14 @@ from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEqu
 
 
 class LopezBaezaShortUnknowns(TypedDict):
-    # TODO: Docstring
+    """The unknowns in Lopez-Baeza's Solution for Short Samples."""
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 class LogLopezBaezaShortUnknowns(TypedDict):
-    # TODO: Docstring
+    """The log variants of the unknowns in Lopez-Baeza's Solution for Short
+    Samples.
+    """
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
@@ -26,8 +28,7 @@ class Solution(
     LsrEquations,
     MetropolisHastingsEquations,
 ):
-    # TODO: Docstring
-
+    """Implements equations for Lopez-Baeza's Solution for Short Samples."""
     def __init__(
             self,
             margins: Margins,
@@ -35,6 +36,9 @@ class Solution(
             r_meters: float,
             length_meters: float,
     ) -> None:
+        """For more details, see
+        https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#lopez-baezas-solution-for-short-samples
+        """
         mp = setup['material_properties']
         self.specific_heat_capacity_J__kg_K = mp['specific_heat_capacity_J__kg_K']
         self.density_kg__m3 = mp['density_kg__m3']
@@ -143,8 +147,9 @@ class Solution(
         raise NotImplementedError()
 
 class LogSolution(Solution):
-    # TODO: Docstring
-
+    """Implements equations for the log variant of Lopez-Baeza's Solution for
+    Short Samples.
+    """
     def unknowns_to_vector(
             self,
             unknowns: LogLopezBaezaShortUnknowns,

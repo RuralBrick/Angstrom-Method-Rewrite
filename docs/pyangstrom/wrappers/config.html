@@ -136,7 +136,7 @@ def record_to_lopez_baeza_short(record) -&gt; Optional[SolverInformation]:
             &#39;name&#39;: &#39;log_lopez-baeza&#39;,
             &#39;guesses&#39;: {
                 &#39;thermal_diffusivity_log10_m2__s&#39;: -5,
-                &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: -2,
+                &#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;: -2,
             },
             &#39;parameters&#39;: {
                 &#39;r_meters&#39;: float(record[&#39;r&#39;]),
@@ -439,7 +439,7 @@ def exp_condition_to_config(exp_condition: list[dict]) -&gt; dict[str, Config]:
             &#39;name&#39;: &#39;log_lopez-baeza&#39;,
             &#39;guesses&#39;: {
                 &#39;thermal_diffusivity_log10_m2__s&#39;: -5,
-                &#39;heat_transfer_coefficient_log10_W__m2_K&#39;: -2,
+                &#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;: -2,
             },
             &#39;parameters&#39;: {
                 &#39;r_meters&#39;: float(record[&#39;r&#39;]),

@@ -15,16 +15,22 @@ from pyangstrom.fit import (
 logger = logging.getLogger('fit')
 
 class LsrEquations(EquationPackage):
-    # TODO: Docstring
+    @abc.abstractmethod
+    def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray:
+        """Arranges unknowns into 1D array."""
+        ...
 
     @abc.abstractmethod
-    def unknowns_to_vector(self, unknowns: Unknowns) -> np.ndarray: ...
+    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns:
+        """Parses unknowns from 1D array."""
+        ...
 
     @abc.abstractmethod
-    def vector_to_unknowns(self, vector: np.ndarray) -> Unknowns: ...
-
-    @abc.abstractmethod
-    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties: ...
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        """Calculates signal properties and metadata based on unknowns given as
+        a 1D array.
+        """
+        ...
 
 def fitting_function(signal_properties: SignalProperties) -> np.ndarray:
     linear_data = np.sqrt(
@@ -40,8 +46,6 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -> FitterOutput:
-    # TODO: Docstring (maybe)
-
     level = logger.getEffectiveLevel()
     if level <= logging.DEBUG:
         verbosity = 2

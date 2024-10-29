@@ -42,13 +42,13 @@ class SignalProcessorInformation(TypedDict, total=False):
     ----------
     name
         The name of a built-in signal processor. Names can be found on the
-        Signal Processors wiki page. Ignored if 'processor' is present.
+        Built-in Signal Processors wiki page. Ignored if 'processor' is present.
     processor
         A reference to a signal processor function. Takes precedence over
         'name'.
     parameters
-        Arguments passed onto the chosen signal processor. Check the Signal
-        Processors wiki page for exact details.
+        Arguments passed onto the chosen built-in signal processor. Check the
+        Built-in Signal Processors wiki page for exact details.
     apply_filter
         If set to True, applies a high-pass filter over the temperatures before
         computing signal properties.

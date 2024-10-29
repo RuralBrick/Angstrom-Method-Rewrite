@@ -42,32 +42,40 @@ Unknowns = dict
 
 @dataclass
 class FitterOutput:
-    # TODO: Docstring
+    &#34;&#34;&#34;Contains solutions to unknowns and method-specific metadata.&#34;&#34;&#34;
     unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
-    # TODO: Docstring
+    &#34;&#34;&#34;Contains thermal properties and metadata for validating the results.&#34;&#34;&#34;
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Declares methods required by the fitting method to calculate heat model
+    properties.
+    &#34;&#34;&#34;
     @abc.abstractmethod
     def __init__(
             self,
             margins: Margins,
             setup: ExperimentalSetup,
             **kwargs,
-    ) -&gt; None: ...
+    ) -&gt; None:
+        &#34;&#34;&#34;EquationPackages are expected to be initialized with only margins,
+        setup, and any constants relevant to its heat model.
+        &#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
-    def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...
+    def solve(self, unknowns: Unknowns) -&gt; SignalResult:
+        &#34;&#34;&#34;Calculates signal properties and metadata based on the given values
+        for the unknowns.
+        &#34;&#34;&#34;
+        ...
 
 class Fitter(Protocol):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Function signature for a valid fitting method.&#34;&#34;&#34;
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -77,18 +85,50 @@ class Fitter(Protocol):
     ) -&gt; FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * list valid names
-    #       * link to wiki page
+    &#34;&#34;&#34;Specifies all heat model details.
+
+    Attributes
+    ----------
+    name
+        The name of a sample solution. Names can be found on the Sample
+        Solutions wiki page. Ignored if &#39;solution&#39; is present.
+    solution
+        A reference to an EquationPackage class. Takes precedence over &#39;name&#39;.
+    guesses
+        Initial guess values for the the heat model&#39;s unknowns.
+    parameters
+        Arguments passed onto the chosen sample solution. Check the Sample
+        Solutions wiki page for exact details.
+
+    References
+    ----------
+    Sample Solutions:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions
+    &#34;&#34;&#34;
     name: str
     solution: EquationPackage
     guesses: Unknowns
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * list valid names
-    #       * link to wiki page
+    &#34;&#34;&#34;Specifies how to fit to the signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in fitting method. Names can be found on the
+        Built-in Fitting Methods wiki page. Ignored if &#39;fitter&#39; is present.
+    fitter
+        A reference to a fitter function. Takes precedence over &#39;name&#39;.
+    parameters
+        Arguments passed onto the chosen built-in fitting method. Check the
+        Build-in Fitting Methods wiki page for exact details.
+
+    References
+    ----------
+    Built-in Fitting Methods:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Fitting-Methods
+    &#34;&#34;&#34;
     name: str
     fitter: Fitter
     parameters: dict
@@ -174,7 +214,9 @@ def autofit(
         fitter_information: FitterInformation,
         setup: ExperimentalSetup,
 ) -&gt; FittingResult:
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Fits the specified heat model to the experimental signal properties as
+    specified by fitter information configuration.
+
     Raises
     ------
     KeyError
@@ -182,7 +224,6 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     &#34;&#34;&#34;
-    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information[&#39;parameters&#39;]
@@ -212,7 +253,9 @@ def autofit(
 <span>def <span class="ident">autofit</span></span>(<span>signal_result: <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a>, solver_information: <a title="pyangstrom.fit.SolverInformation" href="#pyangstrom.fit.SolverInformation">SolverInformation</a>, fitter_information: <a title="pyangstrom.fit.FitterInformation" href="#pyangstrom.fit.FitterInformation">FitterInformation</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>) ‑> <a title="pyangstrom.fit.FittingResult" href="#pyangstrom.fit.FittingResult">FittingResult</a></span>
 </code></dt>
 <dd>
-<div class="desc"><h2 id="raises">Raises</h2>
+<div class="desc"><p>Fits the specified heat model to the experimental signal properties as
+specified by fitter information configuration.</p>
+<h2 id="raises">Raises</h2>
 <dl>
 <dt><code>KeyError</code></dt>
 <dd>Field not found in information.</dd>
@@ -229,7 +272,9 @@ def autofit(
         fitter_information: FitterInformation,
         setup: ExperimentalSetup,
 ) -&gt; FittingResult:
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Fits the specified heat model to the experimental signal properties as
+    specified by fitter information configuration.
+
     Raises
     ------
     KeyError
@@ -237,7 +282,6 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     &#34;&#34;&#34;
-    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information[&#39;parameters&#39;]
@@ -388,25 +432,36 @@ def autofit(
 <span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Helper class that provides a standard way to create an ABC using
-inheritance.</p></div>
+<div class="desc"><p>Declares methods required by the fitting method to calculate heat model
+properties.</p>
+<p>EquationPackages are expected to be initialized with only margins,
+setup, and any constants relevant to its heat model.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class EquationPackage(abc.ABC):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Declares methods required by the fitting method to calculate heat model
+    properties.
+    &#34;&#34;&#34;
     @abc.abstractmethod
     def __init__(
             self,
             margins: Margins,
             setup: ExperimentalSetup,
             **kwargs,
-    ) -&gt; None: ...
+    ) -&gt; None:
+        &#34;&#34;&#34;EquationPackages are expected to be initialized with only margins,
+        setup, and any constants relevant to its heat model.
+        &#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
-    def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...</code></pre>
+    def solve(self, unknowns: Unknowns) -&gt; SignalResult:
+        &#34;&#34;&#34;Calculates signal properties and metadata based on the given values
+        for the unknowns.
+        &#34;&#34;&#34;
+        ...</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -424,13 +479,18 @@ inheritance.</p></div>
 <span>def <span class="ident">solve</span></span>(<span>self, unknowns: dict) ‑> <a title="pyangstrom.signal.SignalResult" href="signal.html#pyangstrom.signal.SignalResult">SignalResult</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Calculates signal properties and metadata based on the given values
+for the unknowns.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...</code></pre>
+def solve(self, unknowns: Unknowns) -&gt; SignalResult:
+    &#34;&#34;&#34;Calculates signal properties and metadata based on the given values
+    for the unknowns.
+    &#34;&#34;&#34;
+    ...</code></pre>
 </details>
 </dd>
 </dl>
@@ -440,38 +500,13 @@ def solve(self, unknowns: Unknowns) -&gt; SignalResult: ...</code></pre>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for protocol classes.</p>
-<p>Protocol classes are defined as::</p>
-<pre><code>class Proto(Protocol):
-    def meth(self) -&gt; int:
-        ...
-</code></pre>
-<p>Such classes are primarily used with static type checkers that recognize
-structural subtyping (static duck-typing), for example::</p>
-<pre><code>class C:
-    def meth(self) -&gt; int:
-        return 0
-
-def func(x: Proto) -&gt; int:
-    return x.meth()
-
-func(C())  # Passes static type check
-</code></pre>
-<p>See PEP 544 for details. Protocol classes decorated with
-@typing.runtime_checkable act as simple-minded runtime protocols that check
-only the presence of given attributes, ignoring their type signatures.
-Protocol classes can be generic, they are defined as::</p>
-<pre><code>class GenProto(Protocol[T]):
-    def meth(self) -&gt; T:
-        ...
-</code></pre></div>
+<div class="desc"><p>Function signature for a valid fitting method.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Fitter(Protocol):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Function signature for a valid fitting method.&#34;&#34;&#34;
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -491,25 +526,44 @@ Protocol classes can be generic, they are defined as::</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Specifies how to fit to the signal properties.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of a built-in fitting method. Names can be found on the
+Built-in Fitting Methods wiki page. Ignored if 'fitter' is present.</dd>
+<dt><strong><code>fitter</code></strong></dt>
+<dd>A reference to a fitter function. Takes precedence over 'name'.</dd>
+<dt><strong><code>parameters</code></strong></dt>
+<dd>Arguments passed onto the chosen built-in fitting method. Check the
+Build-in Fitting Methods wiki page for exact details.</dd>
+</dl>
+<h2 id="references">References</h2>
+<p>Built-in Fitting Methods:
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Fitting-Methods">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Fitting-Methods</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class FitterInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * list valid names
-    #       * link to wiki page
+    &#34;&#34;&#34;Specifies how to fit to the signal properties.
+
+    Attributes
+    ----------
+    name
+        The name of a built-in fitting method. Names can be found on the
+        Built-in Fitting Methods wiki page. Ignored if &#39;fitter&#39; is present.
+    fitter
+        A reference to a fitter function. Takes precedence over &#39;name&#39;.
+    parameters
+        Arguments passed onto the chosen built-in fitting method. Check the
+        Build-in Fitting Methods wiki page for exact details.
+
+    References
+    ----------
+    Built-in Fitting Methods:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Built%E2%80%90in-Fitting-Methods
+    &#34;&#34;&#34;
     name: str
     fitter: Fitter
     parameters: dict</code></pre>
@@ -539,14 +593,14 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>unknowns_solutions: dict)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>FitterOutput(unknowns_solutions: dict)</p></div>
+<div class="desc"><p>Contains solutions to unknowns and method-specific metadata.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
 class FitterOutput:
-    # TODO: Docstring
+    &#34;&#34;&#34;Contains solutions to unknowns and method-specific metadata.&#34;&#34;&#34;
     unknowns_solutions: Unknowns</code></pre>
 </details>
 <h3>Class variables</h3>
@@ -562,14 +616,14 @@ class FitterOutput:
 <span>(</span><span>unknowns_solutions: dict, theoretical_properties: <a title="pyangstrom.signal.SignalProperties" href="signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>FittingResult(unknowns_solutions: dict, theoretical_properties: pyangstrom.signal.SignalProperties)</p></div>
+<div class="desc"><p>Contains thermal properties and metadata for validating the results.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@dataclass
 class FittingResult:
-    # TODO: Docstring
+    &#34;&#34;&#34;Contains thermal properties and metadata for validating the results.&#34;&#34;&#34;
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties</code></pre>
 </details>
@@ -590,25 +644,48 @@ class FittingResult:
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>Specifies all heat model details.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of a sample solution. Names can be found on the Sample
+Solutions wiki page. Ignored if 'solution' is present.</dd>
+<dt><strong><code>solution</code></strong></dt>
+<dd>A reference to an EquationPackage class. Takes precedence over 'name'.</dd>
+<dt><strong><code>guesses</code></strong></dt>
+<dd>Initial guess values for the the heat model's unknowns.</dd>
+<dt><strong><code>parameters</code></strong></dt>
+<dd>Arguments passed onto the chosen sample solution. Check the Sample
+Solutions wiki page for exact details.</dd>
+</dl>
+<h2 id="references">References</h2>
+<p>Sample Solutions:
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class SolverInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * list valid names
-    #       * link to wiki page
+    &#34;&#34;&#34;Specifies all heat model details.
+
+    Attributes
+    ----------
+    name
+        The name of a sample solution. Names can be found on the Sample
+        Solutions wiki page. Ignored if &#39;solution&#39; is present.
+    solution
+        A reference to an EquationPackage class. Takes precedence over &#39;name&#39;.
+    guesses
+        Initial guess values for the the heat model&#39;s unknowns.
+    parameters
+        Arguments passed onto the chosen sample solution. Check the Sample
+        Solutions wiki page for exact details.
+
+    References
+    ----------
+    Sample Solutions:
+    https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions
+    &#34;&#34;&#34;
     name: str
     solution: EquationPackage
     guesses: Unknowns

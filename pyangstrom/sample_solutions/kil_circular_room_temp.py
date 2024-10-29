@@ -13,12 +13,14 @@ from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
-    # TODO: Docstring
+    """The unknowns in Kil's 1D Solution for Cylindrical Coordinates."""
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 class LogKilCircularRoomTempUnknowns(TypedDict):
-    # TODO: Docstring
+    """The log variants of the unknowns in Kil's 1D Solution for Cylindrical
+    Coordinates.
+    """
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
@@ -29,8 +31,8 @@ def Y0(x):
     return yv(0, x)
 
 class Solution(NelderMeadEquations, LsrEquations):
-    # TODO: Docstring
-
+    """Implements equations for Kil's 1D Solution for Cylindrical Coordinates.
+    """
     def __init__(
             self,
             margins: Margins,
@@ -39,6 +41,9 @@ class Solution(NelderMeadEquations, LsrEquations):
             heating_source_radius_meters: float,
             outer_boundary_radius_meters: float,
     ) -> None:
+        """For more details, see
+        https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates
+        """
         self.margins = margins
         self.time_seconds = self.append_dims(
             margins.seconds_elapsed,
@@ -189,8 +194,9 @@ class Solution(NelderMeadEquations, LsrEquations):
         return fft_signal_processing(region, self.setup)
 
 class LogSolution(Solution):
-    # TODO: Docstring
-
+    """Implements equations for the log variant of Kil's 1D Solution for
+    Cylindrical Coordinates.
+    """
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,

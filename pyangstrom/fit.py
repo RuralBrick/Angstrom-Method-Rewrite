@@ -14,26 +14,18 @@ Unknowns = dict
 
 @dataclass
 class FitterOutput:
-    # TODO: Docstring
-    """"""
+    """Contains solutions to unknowns and method-specific metadata."""
     unknowns_solutions: Unknowns
 
 @dataclass
 class FittingResult:
-    # TODO: Docstring
-    """"""
+    """Contains thermal properties and metadata for validating the results."""
     unknowns_solutions: Unknowns
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
-    # TODO: Docstring
-    #       - maybe see what docs generated from method docstring
-    """
-
-    Methods
-    -------
-    solve(unknowns)
-        lorem ipsum
+    """Declares methods required by the fitting method to calculate heat model
+    properties.
     """
     @abc.abstractmethod
     def __init__(
@@ -41,14 +33,21 @@ class EquationPackage(abc.ABC):
             margins: Margins,
             setup: ExperimentalSetup,
             **kwargs,
-    ) -> None: ...
+    ) -> None:
+        """EquationPackages are expected to be initialized with only margins,
+        setup, and any constants relevant to its heat model.
+        """
+        ...
 
     @abc.abstractmethod
-    def solve(self, unknowns: Unknowns) -> SignalResult: ...
+    def solve(self, unknowns: Unknowns) -> SignalResult:
+        """Calculates signal properties and metadata based on the given values
+        for the unknowns.
+        """
+        ...
 
 class Fitter(Protocol):
-    # TODO: Docstring
-    """"""
+    """Function signature for a valid fitting method."""
     def __call__(
             self,
             unknowns_guesses: Unknowns,
@@ -58,21 +57,20 @@ class Fitter(Protocol):
     ) -> FitterOutput: ...
 
 class SolverInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * list valid names
-    #       * link to wiki page
-    """
+    """Specifies all heat model details.
 
     Attributes
     ----------
     name
-        lorem ipsum
+        The name of a sample solution. Names can be found on the Sample
+        Solutions wiki page. Ignored if 'solution' is present.
     solution
-        lorem ipsum
+        A reference to an EquationPackage class. Takes precedence over 'name'.
     guesses
-        lorem ipsum
+        Initial guess values for the the heat model's unknowns.
     parameters
-        lorem ipsum
+        Arguments passed onto the chosen sample solution. Check the Sample
+        Solutions wiki page for exact details.
 
     References
     ----------
@@ -85,19 +83,18 @@ class SolverInformation(TypedDict, total=False):
     parameters: dict
 
 class FitterInformation(TypedDict, total=False):
-    # TODO: Docstring
-    #       * list valid names
-    #       * link to wiki page
-    """
+    """Specifies how to fit to the signal properties.
 
     Attributes
     ----------
     name
-        lorem ipsum
+        The name of a built-in fitting method. Names can be found on the
+        Built-in Fitting Methods wiki page. Ignored if 'fitter' is present.
     fitter
-        lorem ipsum
+        A reference to a fitter function. Takes precedence over 'name'.
     parameters
-        lorem ipsum
+        Arguments passed onto the chosen built-in fitting method. Check the
+        Build-in Fitting Methods wiki page for exact details.
 
     References
     ----------
@@ -189,7 +186,8 @@ def autofit(
         fitter_information: FitterInformation,
         setup: ExperimentalSetup,
 ) -> FittingResult:
-    """
+    """Fits the specified heat model to the experimental signal properties as
+    specified by fitter information configuration.
 
     Raises
     ------
@@ -198,7 +196,6 @@ def autofit(
     ValueError
         Named solver or fitter not found.
     """
-    # TODO: Improve docstring
     solution = extract_solution(solver_information, signal_result, setup)
     fit = extract_fit(fitter_information)
     fitter_params = (fitter_information['parameters']

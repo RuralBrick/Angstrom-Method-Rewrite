@@ -41,12 +41,14 @@ from pyangstrom.helpers import calc_thermal_conductivity
 
 
 class KilCircularRoomTempUnknowns(TypedDict):
-    # TODO: Docstring
+    &#34;&#34;&#34;The unknowns in Kil&#39;s 1D Solution for Cylindrical Coordinates.&#34;&#34;&#34;
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float
 
 class LogKilCircularRoomTempUnknowns(TypedDict):
-    # TODO: Docstring
+    &#34;&#34;&#34;The log variants of the unknowns in Kil&#39;s 1D Solution for Cylindrical
+    Coordinates.
+    &#34;&#34;&#34;
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
@@ -57,8 +59,8 @@ def Y0(x):
     return yv(0, x)
 
 class Solution(NelderMeadEquations, LsrEquations):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Implements equations for Kil&#39;s 1D Solution for Cylindrical Coordinates.
+    &#34;&#34;&#34;
     def __init__(
             self,
             margins: Margins,
@@ -67,6 +69,9 @@ class Solution(NelderMeadEquations, LsrEquations):
             heating_source_radius_meters: float,
             outer_boundary_radius_meters: float,
     ) -&gt; None:
+        &#34;&#34;&#34;For more details, see
+        https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates
+        &#34;&#34;&#34;
         self.margins = margins
         self.time_seconds = self.append_dims(
             margins.seconds_elapsed,
@@ -217,8 +222,9 @@ class Solution(NelderMeadEquations, LsrEquations):
         return fft_signal_processing(region, self.setup)
 
 class LogSolution(Solution):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Implements equations for the log variant of Kil&#39;s 1D Solution for
+    Cylindrical Coordinates.
+    &#34;&#34;&#34;
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,
@@ -290,23 +296,13 @@ class LogSolution(Solution):
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The unknowns in Kil's 1D Solution for Cylindrical Coordinates.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class KilCircularRoomTempUnknowns(TypedDict):
-    # TODO: Docstring
+    &#34;&#34;&#34;The unknowns in Kil&#39;s 1D Solution for Cylindrical Coordinates.&#34;&#34;&#34;
     thermal_diffusivity_m2__s: float
     convective_heat_transfer_coefficient_W__m2_K: float</code></pre>
 </details>
@@ -331,23 +327,16 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>dict() -&gt; new empty dictionary
-dict(mapping) -&gt; new dictionary initialized from a mapping object's
-(key, value) pairs
-dict(iterable) -&gt; new dictionary initialized as if via:
-d = {}
-for k, v in iterable:
-d[k] = v
-dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs
-in the keyword argument list.
-For example:
-dict(one=1, two=2)</p></div>
+<div class="desc"><p>The log variants of the unknowns in Kil's 1D Solution for Cylindrical
+Coordinates.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LogKilCircularRoomTempUnknowns(TypedDict):
-    # TODO: Docstring
+    &#34;&#34;&#34;The log variants of the unknowns in Kil&#39;s 1D Solution for Cylindrical
+    Coordinates.
+    &#34;&#34;&#34;
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float</code></pre>
 </details>
@@ -372,15 +361,18 @@ dict(one=1, two=2)</p></div>
 <span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, sample_thickness_meters: float, heating_source_radius_meters: float, outer_boundary_radius_meters: float)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Helper class that provides a standard way to create an ABC using
-inheritance.</p></div>
+<div class="desc"><p>Implements equations for the log variant of Kil's 1D Solution for
+Cylindrical Coordinates.</p>
+<p>For more details, see
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LogSolution(Solution):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Implements equations for the log variant of Kil&#39;s 1D Solution for
+    Cylindrical Coordinates.
+    &#34;&#34;&#34;
     def unknowns_to_vector(
             self,
             unknowns: LogKilCircularRoomTempUnknowns,
@@ -416,91 +408,33 @@ inheritance.</p></div>
 <li><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></li>
 <li>abc.ABC</li>
 </ul>
-<h3>Methods</h3>
-<dl>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.solve"><code class="name flex">
-<span>def <span class="ident">solve</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns">LogKilCircularRoomTempUnknowns</a>) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def solve(self, unknowns: LogKilCircularRoomTempUnknowns) -&gt; SignalProperties:
-    unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
-    return super().vector_solve(unknowns_vector)</code></pre>
-</details>
-</dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.unknowns_to_vector"><code class="name flex">
-<span>def <span class="ident">unknowns_to_vector</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns">LogKilCircularRoomTempUnknowns</a>) ‑> numpy.ndarray</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def unknowns_to_vector(
-        self,
-        unknowns: LogKilCircularRoomTempUnknowns,
-) -&gt; np.ndarray:
-    vector = np.array([
-        unknowns[&#39;thermal_diffusivity_log10_m2__s&#39;],
-        unknowns[&#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;]
-    ])
-    return vector</code></pre>
-</details>
-</dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.vector_solve"><code class="name flex">
-<span>def <span class="ident">vector_solve</span></span>(<span>self, unknowns_vector: numpy.ndarray) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
-    return super().vector_solve(np.power(10.0, unknowns_vector))</code></pre>
-</details>
-</dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.vector_to_unknowns"><code class="name flex">
-<span>def <span class="ident">vector_to_unknowns</span></span>(<span>self, vector: numpy.ndarray) ‑> <a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogKilCircularRoomTempUnknowns">LogKilCircularRoomTempUnknowns</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vector_to_unknowns(
-        self,
-        vector: np.ndarray,
-) -&gt; LogKilCircularRoomTempUnknowns:
-    unknowns: LogKilCircularRoomTempUnknowns = {
-        &#39;thermal_diffusivity_log10_m2__s&#39;: vector[0],
-        &#39;convective_heat_transfer_coefficient_log10_W__m2_K&#39;: vector[1],
-    }
-    return unknowns</code></pre>
-</details>
-</dd>
-</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution">Solution</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.solve" href="../fit.html#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.unknowns_to_vector" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.unknowns_to_vector">unknowns_to_vector</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_solve" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_solve">vector_solve</a></code></li>
+<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_to_unknowns" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_to_unknowns">vector_to_unknowns</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 <dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution"><code class="flex name class">
 <span>class <span class="ident">Solution</span></span>
 <span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, sample_thickness_meters: float, heating_source_radius_meters: float, outer_boundary_radius_meters: float)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Helper class that provides a standard way to create an ABC using
-inheritance.</p></div>
+<div class="desc"><p>Implements equations for Kil's 1D Solution for Cylindrical Coordinates.</p>
+<p>For more details, see
+<a href="https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates">https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates</a></p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Solution(NelderMeadEquations, LsrEquations):
-    # TODO: Docstring
-
+    &#34;&#34;&#34;Implements equations for Kil&#39;s 1D Solution for Cylindrical Coordinates.
+    &#34;&#34;&#34;
     def __init__(
             self,
             margins: Margins,
@@ -509,6 +443,9 @@ inheritance.</p></div>
             heating_source_radius_meters: float,
             outer_boundary_radius_meters: float,
     ) -&gt; None:
+        &#34;&#34;&#34;For more details, see
+        https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#kils-1d-solution-for-cylindrical-coordinates
+        &#34;&#34;&#34;
         self.margins = margins
         self.time_seconds = self.append_dims(
             margins.seconds_elapsed,
@@ -813,92 +750,18 @@ inheritance.</p></div>
     return T</code></pre>
 </details>
 </dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.solve"><code class="name flex">
-<span>def <span class="ident">solve</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns">KilCircularRoomTempUnknowns</a>) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def solve(self, unknowns: KilCircularRoomTempUnknowns) -&gt; SignalProperties:
-    timestamps = pd.DatetimeIndex(
-        1e9 * self.margins.seconds_elapsed,
-        dtype=&#39;datetime64[ns]&#39;,
-    )
-    temps = self.calc_normalized_temps(
-        unknowns[&#39;thermal_diffusivity_m2__s&#39;],
-        unknowns[&#39;convective_heat_transfer_coefficient_W__m2_K&#39;],
-    )
-    region = Region(timestamps, temps, self.margins)
-    return fft_signal_processing(region, self.setup)</code></pre>
-</details>
-</dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.unknowns_to_vector"><code class="name flex">
-<span>def <span class="ident">unknowns_to_vector</span></span>(<span>self, unknowns: <a title="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns">KilCircularRoomTempUnknowns</a>) ‑> numpy.ndarray</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def unknowns_to_vector(
-        self,
-        unknowns: KilCircularRoomTempUnknowns,
-) -&gt; np.ndarray:
-    vector = np.array([
-        unknowns[&#39;thermal_diffusivity_m2__s&#39;],
-        unknowns[&#39;convective_heat_transfer_coefficient_W__m2_K&#39;],
-    ])
-    return vector</code></pre>
-</details>
-</dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_solve"><code class="name flex">
-<span>def <span class="ident">vector_solve</span></span>(<span>self, unknowns_vector: numpy.ndarray) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
-    thermal_diffusivity_m2__s, convective_heat_transfer_coefficient_W__m2_K = unknowns_vector
-    timestamps = pd.DatetimeIndex(
-        1e9 * self.margins.seconds_elapsed,
-        dtype=&#39;datetime64[ns]&#39;,
-    )
-    temps = self.calc_normalized_temps(
-        thermal_diffusivity_m2__s,
-        convective_heat_transfer_coefficient_W__m2_K,
-    )
-    region = Region(timestamps, temps, self.margins)
-    return fft_signal_processing(region, self.setup)</code></pre>
-</details>
-</dd>
-<dt id="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_to_unknowns"><code class="name flex">
-<span>def <span class="ident">vector_to_unknowns</span></span>(<span>self, vector: numpy.ndarray) ‑> <a title="pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.KilCircularRoomTempUnknowns">KilCircularRoomTempUnknowns</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def vector_to_unknowns(
-        self,
-        vector: np.ndarray
-) -&gt; KilCircularRoomTempUnknowns:
-    unknowns: KilCircularRoomTempUnknowns = {
-        &#39;thermal_diffusivity_m2__s&#39;: vector[0],
-        &#39;convective_heat_transfer_coefficient_W__m2_K&#39;: vector[1],
-    }
-    return unknowns</code></pre>
-</details>
-</dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations">NelderMeadEquations</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.solve" href="../fit.html#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.unknowns_to_vector" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.unknowns_to_vector">unknowns_to_vector</a></code></li>
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_solve" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_solve">vector_solve</a></code></li>
+<li><code><a title="pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_to_unknowns" href="../fitting_methods/nelder_mead.html#pyangstrom.fitting_methods.nelder_mead.NelderMeadEquations.vector_to_unknowns">vector_to_unknowns</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -938,12 +801,6 @@ inheritance.</p></div>
 </li>
 <li>
 <h4><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution">LogSolution</a></code></h4>
-<ul class="">
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.solve" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.solve">solve</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.unknowns_to_vector" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.unknowns_to_vector">unknowns_to_vector</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.vector_solve" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.vector_solve">vector_solve</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.vector_to_unknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.LogSolution.vector_to_unknowns">vector_to_unknowns</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution">Solution</a></code></h4>
@@ -953,10 +810,6 @@ inheritance.</p></div>
 <li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T1" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T1">calc_normalized_T1</a></code></li>
 <li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T2" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_T2">calc_normalized_T2</a></code></li>
 <li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_temps" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.calc_normalized_temps">calc_normalized_temps</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.solve" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.solve">solve</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.unknowns_to_vector" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.unknowns_to_vector">unknowns_to_vector</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_solve" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_solve">vector_solve</a></code></li>
-<li><code><a title="pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_to_unknowns" href="#pyangstrom.sample_solutions.kil_circular_room_temp.Solution.vector_to_unknowns">vector_to_unknowns</a></code></li>
 </ul>
 </li>
 </ul>

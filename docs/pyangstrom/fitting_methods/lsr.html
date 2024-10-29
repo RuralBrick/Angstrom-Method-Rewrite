@@ -43,20 +43,29 @@ from pyangstrom.fit import (
 logger = logging.getLogger(&#39;fit&#39;)
 
 class LsrEquations(EquationPackage):
-    # TODO: Docstring
+    @abc.abstractmethod
+    def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray:
+        &#34;&#34;&#34;Arranges unknowns into 1D array.&#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
-    def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray: ...
+    def vector_to_unknowns(self, vector: np.ndarray) -&gt; Unknowns:
+        &#34;&#34;&#34;Parses unknowns from 1D array.&#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
-    def vector_to_unknowns(self, vector: np.ndarray) -&gt; Unknowns: ...
-
-    @abc.abstractmethod
-    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties: ...
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        &#34;&#34;&#34;Calculates signal properties and metadata based on unknowns given as
+        a 1D array.
+        &#34;&#34;&#34;
+        ...
 
 def fitting_function(signal_properties: SignalProperties) -&gt; np.ndarray:
-    linear_data = (np.log(1/signal_properties.amplitude_ratios)
-                   * signal_properties.phase_differences)
+    linear_data = np.sqrt(
+        np.log(
+            1 / signal_properties.amplitude_ratios
+        ) * signal_properties.phase_differences
+    )
     return linear_data
 
 def fit(
@@ -65,8 +74,6 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -&gt; FitterOutput:
-    # TODO: Docstring
-
     level = logger.getEffectiveLevel()
     if level &lt;= logging.DEBUG:
         verbosity = 2
@@ -115,8 +122,6 @@ def fit(
         observed_properties: SignalProperties,
         **least_squares_kwargs,
 ) -&gt; FitterOutput:
-    # TODO: Docstring
-
     level = logger.getEffectiveLevel()
     if level &lt;= logging.DEBUG:
         verbosity = 2
@@ -153,8 +158,11 @@ def fit(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def fitting_function(signal_properties: SignalProperties) -&gt; np.ndarray:
-    linear_data = (np.log(1/signal_properties.amplitude_ratios)
-                   * signal_properties.phase_differences)
+    linear_data = np.sqrt(
+        np.log(
+            1 / signal_properties.amplitude_ratios
+        ) * signal_properties.phase_differences
+    )
     return linear_data</code></pre>
 </details>
 </dd>
@@ -168,23 +176,31 @@ def fit(
 <span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Helper class that provides a standard way to create an ABC using
-inheritance.</p></div>
+<div class="desc"><p>Declares methods required by the fitting method to calculate heat model
+properties.</p>
+<p>EquationPackages are expected to be initialized with only margins,
+setup, and any constants relevant to its heat model.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class LsrEquations(EquationPackage):
-    # TODO: Docstring
+    @abc.abstractmethod
+    def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray:
+        &#34;&#34;&#34;Arranges unknowns into 1D array.&#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
-    def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray: ...
+    def vector_to_unknowns(self, vector: np.ndarray) -&gt; Unknowns:
+        &#34;&#34;&#34;Parses unknowns from 1D array.&#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
-    def vector_to_unknowns(self, vector: np.ndarray) -&gt; Unknowns: ...
-
-    @abc.abstractmethod
-    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties: ...</code></pre>
+    def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+        &#34;&#34;&#34;Calculates signal properties and metadata based on unknowns given as
+        a 1D array.
+        &#34;&#34;&#34;
+        ...</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -202,42 +218,59 @@ inheritance.</p></div>
 <span>def <span class="ident">unknowns_to_vector</span></span>(<span>self, unknowns: dict) ‑> numpy.ndarray</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Arranges unknowns into 1D array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray: ...</code></pre>
+def unknowns_to_vector(self, unknowns: Unknowns) -&gt; np.ndarray:
+    &#34;&#34;&#34;Arranges unknowns into 1D array.&#34;&#34;&#34;
+    ...</code></pre>
 </details>
 </dd>
 <dt id="pyangstrom.fitting_methods.lsr.LsrEquations.vector_solve"><code class="name flex">
 <span>def <span class="ident">vector_solve</span></span>(<span>self, unknowns_vector: numpy.ndarray) ‑> <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Calculates signal properties and metadata based on unknowns given as
+a 1D array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties: ...</code></pre>
+def vector_solve(self, unknowns_vector: np.ndarray) -&gt; SignalProperties:
+    &#34;&#34;&#34;Calculates signal properties and metadata based on unknowns given as
+    a 1D array.
+    &#34;&#34;&#34;
+    ...</code></pre>
 </details>
 </dd>
 <dt id="pyangstrom.fitting_methods.lsr.LsrEquations.vector_to_unknowns"><code class="name flex">
 <span>def <span class="ident">vector_to_unknowns</span></span>(<span>self, vector: numpy.ndarray) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Parses unknowns from 1D array.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def vector_to_unknowns(self, vector: np.ndarray) -&gt; Unknowns: ...</code></pre>
+def vector_to_unknowns(self, vector: np.ndarray) -&gt; Unknowns:
+    &#34;&#34;&#34;Parses unknowns from 1D array.&#34;&#34;&#34;
+    ...</code></pre>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyangstrom.fit.EquationPackage.solve" href="../fit.html#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>

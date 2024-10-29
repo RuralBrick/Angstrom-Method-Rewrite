@@ -43,17 +43,23 @@ from pyangstrom.fit import (
 logger = logging.getLogger(&#39;fit&#39;)
 
 class MetropolisHastingsEquations(EquationPackage):
-    # TODO: Docstring
-
     @abc.abstractmethod
-    def propose(self, unknowns: Unknowns) -&gt; Unknowns:...
+    def propose(self, unknowns: Unknowns) -&gt; Unknowns:
+        &#34;&#34;&#34;Proposes a new set of values for the unknowns based on the previous
+        set.
+        &#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
     def log_posterior(
             self,
             unknowns: Unknowns,
             observed_properties: SignalProperties,
-    ) -&gt; float: ...
+    ) -&gt; float:
+        &#34;&#34;&#34;Calculates the probability of the values for the unknowns, given the
+        experimental signal properties.
+        &#34;&#34;&#34;
+        ...
 
 def fit(
         unknowns_guesses: Unknowns,
@@ -61,8 +67,6 @@ def fit(
         observed_properties: SignalProperties,
         target_num_accepted_samples,
 ) -&gt; FitterOutput:
-    # TODO: Docstring
-
     accepted_samples = []
 
     current_unknowns = unknowns_guesses
@@ -107,8 +111,6 @@ def fit(
         observed_properties: SignalProperties,
         target_num_accepted_samples,
 ) -&gt; FitterOutput:
-    # TODO: Docstring
-
     accepted_samples = []
 
     current_unknowns = unknowns_guesses
@@ -141,24 +143,32 @@ def fit(
 <span>(</span><span>margins: <a title="pyangstrom.transform.Margins" href="../transform.html#pyangstrom.transform.Margins">Margins</a>, setup: <a title="pyangstrom.exp_setup.ExperimentalSetup" href="../exp_setup.html#pyangstrom.exp_setup.ExperimentalSetup">ExperimentalSetup</a>, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Helper class that provides a standard way to create an ABC using
-inheritance.</p></div>
+<div class="desc"><p>Declares methods required by the fitting method to calculate heat model
+properties.</p>
+<p>EquationPackages are expected to be initialized with only margins,
+setup, and any constants relevant to its heat model.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MetropolisHastingsEquations(EquationPackage):
-    # TODO: Docstring
-
     @abc.abstractmethod
-    def propose(self, unknowns: Unknowns) -&gt; Unknowns:...
+    def propose(self, unknowns: Unknowns) -&gt; Unknowns:
+        &#34;&#34;&#34;Proposes a new set of values for the unknowns based on the previous
+        set.
+        &#34;&#34;&#34;
+        ...
 
     @abc.abstractmethod
     def log_posterior(
             self,
             unknowns: Unknowns,
             observed_properties: SignalProperties,
-    ) -&gt; float: ...</code></pre>
+    ) -&gt; float:
+        &#34;&#34;&#34;Calculates the probability of the values for the unknowns, given the
+        experimental signal properties.
+        &#34;&#34;&#34;
+        ...</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -175,7 +185,8 @@ inheritance.</p></div>
 <span>def <span class="ident">log_posterior</span></span>(<span>self, unknowns: dict, observed_properties: <a title="pyangstrom.signal.SignalProperties" href="../signal.html#pyangstrom.signal.SignalProperties">SignalProperties</a>) ‑> float</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Calculates the probability of the values for the unknowns, given the
+experimental signal properties.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -185,23 +196,40 @@ def log_posterior(
         self,
         unknowns: Unknowns,
         observed_properties: SignalProperties,
-) -&gt; float: ...</code></pre>
+) -&gt; float:
+    &#34;&#34;&#34;Calculates the probability of the values for the unknowns, given the
+    experimental signal properties.
+    &#34;&#34;&#34;
+    ...</code></pre>
 </details>
 </dd>
 <dt id="pyangstrom.fitting_methods.metropolis_hastings.MetropolisHastingsEquations.propose"><code class="name flex">
 <span>def <span class="ident">propose</span></span>(<span>self, unknowns: dict) ‑> dict</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Proposes a new set of values for the unknowns based on the previous
+set.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abc.abstractmethod
-def propose(self, unknowns: Unknowns) -&gt; Unknowns:...</code></pre>
+def propose(self, unknowns: Unknowns) -&gt; Unknowns:
+    &#34;&#34;&#34;Proposes a new set of values for the unknowns based on the previous
+    set.
+    &#34;&#34;&#34;
+    ...</code></pre>
 </details>
 </dd>
 </dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pyangstrom.fit.EquationPackage" href="../fit.html#pyangstrom.fit.EquationPackage">EquationPackage</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pyangstrom.fit.EquationPackage.solve" href="../fit.html#pyangstrom.fit.EquationPackage.solve">solve</a></code></li>
+</ul>
+</li>
+</ul>
 </dd>
 </dl>
 </section>
