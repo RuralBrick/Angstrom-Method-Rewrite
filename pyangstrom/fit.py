@@ -40,7 +40,7 @@ class EquationPackage(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def solve(self, unknowns: Unknowns) -> SignalResult:
+    def solve(self, unknowns: Unknowns) -> SignalProperties:
         """Calculates signal properties and metadata based on the given values
         for the unknowns.
         """
