@@ -23,6 +23,17 @@ class LogLopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
+class LopezBaezaShortMcmcUnknowns(TypedDict):
+    # TODO
+    """"""
+    thermal_diffusivity_m2__s: float
+    convective_heat_transfer_coefficient_W__m2_K: float
+    # HACK
+    sigma_dA: float
+    sigma_dP: float
+    rho: float
+    # end HACK
+
 class Solution(
     NelderMeadEquations,
     LsrEquations,
@@ -39,6 +50,7 @@ class Solution(
         """For more details, see
         https://github.com/RuralBrick/Angstrom-Method-Rewrite/wiki/Sample-Solutions#lopez-baezas-solution-for-short-samples
         """
+        self.rng = np.random.default_rng()
         mp = setup['material_properties']
         self.specific_heat_capacity_J__kg_K = mp['specific_heat_capacity_J__kg_K']
         self.density_kg__m3 = mp['density_kg__m3']
@@ -135,16 +147,31 @@ class Solution(
 
     def propose(
             self,
-            unknowns: LopezBaezaShortUnknowns
-    ) -> LopezBaezaShortUnknowns:
+            unknowns: LopezBaezaShortMcmcUnknowns,
+    ) -> LopezBaezaShortMcmcUnknowns:
         raise NotImplementedError()
+        new_thermal_diffusivity_m2__s, new_convective_heat_transfer_coefficient_W__m2_K = self.rng.multivariate_normal(
+            [unknowns['thermal_diffusivity_m2__s'], unknowns['convective_heat_transfer_coefficient_W__m2_K']],
+            cov,
+        )
+
+    def manual_priors(self, unknowns: LopezBaezaShortMcmcUnknowns):
+        pass
+
+    def log_likelihood(
+            self,
+            unknowns: LopezBaezaShortMcmcUnknowns,
+            observed_properties: SignalProperties,
+    ):
+        pass
 
     def log_posterior(
             self,
-            unknowns: LopezBaezaShortUnknowns,
+            unknowns: LopezBaezaShortMcmcUnknowns,
             observed_properties: SignalProperties,
     ) -> float:
         raise NotImplementedError()
+        jac = np.log(10**(-(alpha + h + sigma_dA + sigma_dP))) + np.log((1+np.exp(2*sigma_dP)) / (4*np.exp(2*sigma_dP)))
 
 class LogSolution(Solution):
     """Implements equations for the log variant of Lopez-Baeza's Solution for
