@@ -37,7 +37,8 @@ def fit(
         unknowns_guesses: Unknowns,
         solution: MetropolisHastingsEquations,
         observed_properties: SignalProperties,
-        target_num_accepted_samples,
+        target_num_accepted_samples: int,
+        percent_burn_in: float = 0.2,
 ) -> FitterOutput:
     accepted_samples = []
 
@@ -58,4 +59,9 @@ def fit(
             current_unknowns = proposed_unknowns
             current_log_posterior = new_log_posterior
 
-    return FitterOutput(accepted_samples[-1])
+    num_burn = len(accepted_samples) * percent_burn_in
+    metadata = {
+        'accepted_samples': accepted_samples[num_burn:],
+    }
+
+    return FitterOutput(accepted_samples[-1], metadata)
