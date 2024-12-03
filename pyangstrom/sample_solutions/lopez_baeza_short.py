@@ -23,16 +23,28 @@ class LogLopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
+class LopezBaezaShortMcmcValues(TypedDict):
+    # TODO
+    """"""
+    thermal_diffusivity_log10_m2__s: float
+    convective_heat_transfer_coefficient_log10_W__m2_K: float
+    stdev_amplitude_ratio: float
+    stdev_phase_difference: float
+    signal_properties_correlation_coefficient: float
+
 class LopezBaezaShortMcmcUnknowns(TypedDict):
     # TODO
     """"""
-    thermal_diffusivity_m2__s: float
-    convective_heat_transfer_coefficient_W__m2_K: float
-    # HACK
-    sigma_dA: float
-    sigma_dP: float
-    rho: float
-    # end HACK
+    thermal_diffusivity_log10_m2__s: float
+    convective_heat_transfer_coefficient_log10_W__m2_K: float
+    stdev_amplitude_ratio: float
+    stdev_phase_difference: float
+    signal_properties_correlation_coefficient: float
+    prior_means: LopezBaezaShortMcmcValues
+    prior_stdev: LopezBaezaShortMcmcValues
+    proposal_stdev: LopezBaezaShortMcmcValues
+    signal_properties_proposal_correlation_coefficient: float
+    thermal_properties_proposal_correlation_coefficient: float
 
 class Solution(
     NelderMeadEquations,
@@ -149,11 +161,55 @@ class Solution(
             self,
             unknowns: LopezBaezaShortMcmcUnknowns,
     ) -> LopezBaezaShortMcmcUnknowns:
-        raise NotImplementedError()
-        new_thermal_diffusivity_m2__s, new_convective_heat_transfer_coefficient_W__m2_K = self.rng.multivariate_normal(
-            [unknowns['thermal_diffusivity_m2__s'], unknowns['convective_heat_transfer_coefficient_W__m2_K']],
-            cov,
+        sigma_alpha = unknowns['proposal_stdev']['thermal_diffusivity_log10_m2__s']
+        sigma_h = unknowns['proposal_stdev']['convective_heat_transfer_coefficient_log10_W__m2_K']
+        rho_alpha_h = unknowns['thermal_properties_proposal_correlation_coefficient']
+        cov_thermal_properties = [
+            [sigma_alpha * sigma_alpha, rho_alpha_h * sigma_alpha * sigma_h],
+            [rho_alpha_h * sigma_alpha * sigma_h, sigma_h * sigma_h],
+        ]
+        new_thermal_properties = self.rng.multivariate_normal(
+            [
+                unknowns['thermal_diffusivity_log10_m2__s'],
+                unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
+            ],
+            cov_thermal_properties,
         )
+
+        sigma_dA = unknowns['proposal_stdev']['stdev_amplitude_ratio']
+        sigma_dP = unknowns['proposal_stdev']['stdev_phase_difference']
+        rho_sigma_dA_dP = unknowns['signal_properties_proposal_correlation_coefficient']
+        cov_stdev_signal_properties = [
+            [sigma_dA * sigma_dA, rho_sigma_dA_dP * sigma_dA * sigma_dP],
+            [rho_sigma_dA_dP * sigma_dA * sigma_dP, sigma_dP * sigma_dP],
+        ]
+        new_stdev_signal_properties = self.rng.multivariate_normal(
+            [
+                unknowns['stdev_amplitude_ratio'],
+                unknowns['stdev_phase_difference'],
+            ],
+            cov_stdev_signal_properties,
+        )
+
+        new_signal_properties_correlation_coefficient = self.rng.normal(
+            unknowns['signal_properties_correlation_coefficient'],
+            unknowns['proposal_stdev']['signal_properties_correlation_coefficient'],
+        )
+
+        proposal: LopezBaezaShortMcmcUnknowns = {
+            'thermal_diffusivity_log10_m2__s': new_thermal_properties[0],
+            'convective_heat_transfer_coefficient_log10_W__m2_K': new_thermal_properties[1],
+            'stdev_amplitude_ratio': new_stdev_signal_properties[0],
+            'stdev_phase_difference': new_stdev_signal_properties[1],
+            'signal_properties_correlation_coefficient': new_signal_properties_correlation_coefficient,
+            'prior_means': unknowns['prior_means'],
+            'prior_stdev': unknowns['prior_stdev'],
+            'proposal_stdev': unknowns['proposal_stdev'],
+            'thermal_properties_proposal_correlation_coefficient': unknowns['thermal_properties_proposal_correlation_coefficient'],
+            'signal_properties_proposal_correlation_coefficient': unknowns['signal_properties_proposal_correlation_coefficient'],
+        }
+
+        return proposal
 
     def manual_priors(self, unknowns: LopezBaezaShortMcmcUnknowns):
         pass
