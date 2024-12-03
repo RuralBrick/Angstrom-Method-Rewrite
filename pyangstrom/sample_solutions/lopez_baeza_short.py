@@ -1,6 +1,7 @@
 from typing import TypedDict
 
 import numpy as np
+from scipy.stats import norm
 
 from pyangstrom.helpers import calc_thermal_conductivity
 from pyangstrom.exp_setup import ExperimentalSetup
@@ -28,18 +29,18 @@ class LopezBaezaShortMcmcValues(TypedDict):
     """"""
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
-    stdev_amplitude_ratio: float
-    stdev_phase_difference: float
-    signal_properties_correlation_coefficient: float
+    log_stdev_amplitude_ratio: float
+    log_stdev_phase_difference: float
+    fisher_signal_properties_correlation_coefficient: float
 
 class LopezBaezaShortMcmcUnknowns(TypedDict):
     # TODO
     """"""
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
-    stdev_amplitude_ratio: float
-    stdev_phase_difference: float
-    signal_properties_correlation_coefficient: float
+    log_stdev_amplitude_ratio: float
+    log_stdev_phase_difference: float
+    fisher_signal_properties_correlation_coefficient: float
     prior_means: LopezBaezaShortMcmcValues
     prior_stdev: LopezBaezaShortMcmcValues
     proposal_stdev: LopezBaezaShortMcmcValues
@@ -176,8 +177,8 @@ class Solution(
             cov_thermal_properties,
         )
 
-        sigma_dA = unknowns['proposal_stdev']['stdev_amplitude_ratio']
-        sigma_dP = unknowns['proposal_stdev']['stdev_phase_difference']
+        sigma_dA = unknowns['proposal_stdev']['log_stdev_amplitude_ratio']
+        sigma_dP = unknowns['proposal_stdev']['log_stdev_phase_difference']
         rho_sigma_dA_dP = unknowns['signal_properties_proposal_correlation_coefficient']
         cov_stdev_signal_properties = [
             [sigma_dA * sigma_dA, rho_sigma_dA_dP * sigma_dA * sigma_dP],
@@ -185,23 +186,23 @@ class Solution(
         ]
         new_stdev_signal_properties = self.rng.multivariate_normal(
             [
-                unknowns['stdev_amplitude_ratio'],
-                unknowns['stdev_phase_difference'],
+                unknowns['log_stdev_amplitude_ratio'],
+                unknowns['log_stdev_phase_difference'],
             ],
             cov_stdev_signal_properties,
         )
 
-        new_signal_properties_correlation_coefficient = self.rng.normal(
-            unknowns['signal_properties_correlation_coefficient'],
-            unknowns['proposal_stdev']['signal_properties_correlation_coefficient'],
+        new_fisher_signal_properties_correlation_coefficient = self.rng.normal(
+            unknowns['fisher_signal_properties_correlation_coefficient'],
+            unknowns['proposal_stdev']['fisher_signal_properties_correlation_coefficient'],
         )
 
         proposal: LopezBaezaShortMcmcUnknowns = {
             'thermal_diffusivity_log10_m2__s': new_thermal_properties[0],
             'convective_heat_transfer_coefficient_log10_W__m2_K': new_thermal_properties[1],
-            'stdev_amplitude_ratio': new_stdev_signal_properties[0],
-            'stdev_phase_difference': new_stdev_signal_properties[1],
-            'signal_properties_correlation_coefficient': new_signal_properties_correlation_coefficient,
+            'log_stdev_amplitude_ratio': new_stdev_signal_properties[0],
+            'log_stdev_phase_difference': new_stdev_signal_properties[1],
+            'fisher_signal_properties_correlation_coefficient': new_fisher_signal_properties_correlation_coefficient,
             'prior_means': unknowns['prior_means'],
             'prior_stdev': unknowns['prior_stdev'],
             'proposal_stdev': unknowns['proposal_stdev'],
@@ -212,7 +213,35 @@ class Solution(
         return proposal
 
     def manual_priors(self, unknowns: LopezBaezaShortMcmcUnknowns):
-        pass
+        p_log_alpha = norm.pdf(
+            unknowns['thermal_diffusivity_log10_m2__s'],
+            loc=unknowns['prior_means']['thermal_diffusivity_log10_m2__s'],
+            scale=unknowns['prior_stdev']['thermal_diffusivity_log10_m2__s'],
+        )
+        p_log_h = norm.pdf(
+            unknowns['convective_heat_transfer_coefficient_log10_W__m2_K'],
+            loc=unknowns['prior_means']['convective_heat_transfer_coefficient_log10_W__m2_K'],
+            scale=unknowns['prior_stdev']['convective_heat_transfer_coefficient_log10_W__m2_K'],
+        )
+
+        p_log_sigma_dA = norm.pdf(
+            unknowns['log_stdev_amplitude_ratio'],
+            loc=unknowns['prior_means']['log_stdev_amplitude_ratio'],
+            scale=unknowns['prior_stdev']['log_stdev_amplitude_ratio'],
+        )
+        p_log_sigma_dP = norm.pdf(
+            unknowns['log_stdev_phase_difference'],
+            loc=unknowns['prior_means']['log_stdev_phase_difference'],
+            scale=unknowns['prior_stdev']['log_stdev_phase_difference'],
+        )
+
+        priors_total = (
+            np.log(p_log_alpha)
+            + np.log(p_log_h)
+            + np.log(p_log_sigma_dA)
+            + np.log(p_log_sigma_dP)
+        )
+        return priors_total
 
     def log_likelihood(
             self,
