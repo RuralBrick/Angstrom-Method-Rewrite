@@ -1,7 +1,7 @@
 import logging
 from typing import TypedDict, Protocol, Optional, Type
 import abc
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from pyangstrom.exp_setup import ExperimentalSetup
 from pyangstrom.transform import Margins
@@ -16,11 +16,13 @@ Unknowns = dict
 class FitterOutput:
     """Contains solutions to unknowns and method-specific metadata."""
     unknowns_solutions: Unknowns
+    metadata: dict = field(default_factory=dict)
 
 @dataclass
 class FittingResult:
     """Contains thermal properties and metadata for validating the results."""
     unknowns_solutions: Unknowns
+    metadata: dict = field(default_factory=dict)
     theoretical_properties: SignalProperties
 
 class EquationPackage(abc.ABC):
@@ -209,6 +211,7 @@ def autofit(
     )
     result = FittingResult(
         output.unknowns_solutions,
+        output.metadata,
         solution.solve(output.unknowns_solutions),
     )
     return result
