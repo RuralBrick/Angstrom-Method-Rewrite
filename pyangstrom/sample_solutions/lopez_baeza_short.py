@@ -1,7 +1,7 @@
 from typing import TypedDict
 
 import numpy as np
-from scipy.stats import norm
+from scipy.stats import norm, multivariate_normal
 
 from pyangstrom.helpers import calc_thermal_conductivity
 from pyangstrom.exp_setup import ExperimentalSetup
@@ -248,7 +248,15 @@ class Solution(
             unknowns: LopezBaezaShortMcmcUnknowns,
             observed_properties: SignalProperties,
     ):
-        pass
+        raise NotImplementedError()
+
+        self.solve(unknowns)
+
+        # TODO: observed properties --> x
+        # TODO: theoretical properties --> mean
+        # TODO: calc covar mat
+
+        multivariate_normal.pdf()
 
     def log_posterior(
             self,
@@ -256,7 +264,14 @@ class Solution(
             observed_properties: SignalProperties,
     ) -> float:
         raise NotImplementedError()
+
+        likelihood = self.log_likelihood(unknowns, observed_properties)
+        priors = self.manual_priors(unknowns)
         jac = np.log(10**(-(alpha + h + sigma_dA + sigma_dP))) + np.log((1+np.exp(2*sigma_dP)) / (4*np.exp(2*sigma_dP)))
+
+        posterior_total = likelihood + priors + jac
+
+        return posterior_total
 
 class LogSolution(Solution):
     """Implements equations for the log variant of Lopez-Baeza's Solution for
