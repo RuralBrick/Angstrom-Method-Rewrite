@@ -14,6 +14,7 @@ dependencies = [
     "matplotlib",
     "scipy",
     "lmfit",
+    "chaospy",
     "pyangstromHT@git+https://github.com/RuralBrick/cylindrical-angstrom1.git#egg=pyangstromHT",
     "pyangstromRT@git+https://github.com/RuralBrick/cylindrical-angstrom2.git#egg=pyangstromRT",
 ]
