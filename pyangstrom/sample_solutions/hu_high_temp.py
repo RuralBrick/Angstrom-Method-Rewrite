@@ -11,9 +11,44 @@ from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
 from pyangstrom.fitting_methods.lsr import LsrEquations
 from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
 
+
+class ViewFactor(TypedDict):
+    T_LBW_C: float
+
+class SampleInformation(TypedDict):
+    R # sample radius
+    t_z # sample thickness
+    rho
+    cp_const # Cp = cp_const + cp_c1*T + cp_c2/T + cp_c3/T**2, T unit in K
+    cp_c1
+    cp_c2
+    cp_c3
+    alpha_r_A: float
+    alpha_r_B: float
+    T_initial # unit in K
+    emissivity_front # assumed to be constant
+    emissivity_back # assumed to be constant
+    absorptivity_solar
+    absorptivity_front # assumed to be constant
+    absorptivity_back # assumed to be constant
+    rec_name
+
+class NumericalSimulationSettings(TypedDict):
+    Nr_node # number of discretization along radial direction
+    N_cycle
+    N_stable_cycle_output
+    simulated_amp_phase_extraction_method
+    simulated_num_data_per_cycle
+
+class VacuumChamberSettings(TypedDict):
+    R0_node
+    focal_shift
+
+class SolarSimulatorSettings(TypedDict):
+    f_heating # periodic heating frequency
+
 class HuHighTempUnknowns(TypedDict):
     pass
-
 
 class Solution(NelderMeadEquations, LsrEquations, MetropolisHastingsEquations):
     def __init__(
