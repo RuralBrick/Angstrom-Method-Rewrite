@@ -33,11 +33,9 @@ class LopezBaezaShortMcmcValues(TypedDict):
     log_stdev_phase_difference: float
     fisher_signal_properties_correlation_coefficient: float
 
-class LopezBaezaShortMcmcUnknowns(TypedDict):
+class LopezBaezaShortMcmcUnknowns(LogLopezBaezaShortUnknowns):
     # TODO
     """"""
-    thermal_diffusivity_log10_m2__s: float
-    convective_heat_transfer_coefficient_log10_W__m2_K: float
     log_stdev_amplitude_ratio: float
     log_stdev_phase_difference: float
     fisher_signal_properties_correlation_coefficient: float
@@ -50,7 +48,6 @@ class LopezBaezaShortMcmcUnknowns(TypedDict):
 class Solution(
     NelderMeadEquations,
     LsrEquations,
-    MetropolisHastingsEquations,
 ):
     """Implements equations for Lopez-Baeza's Solution for Short Samples."""
     def __init__(
@@ -158,6 +155,40 @@ class Solution(
 
         return SignalProperties(amp_ratio, phase_diff)
 
+class LogSolution(
+    Solution,
+    MetropolisHastingsEquations,
+):
+    """Implements equations for the log variant of Lopez-Baeza's Solution for
+    Short Samples.
+    """
+    def unknowns_to_vector(
+            self,
+            unknowns: LogLopezBaezaShortUnknowns,
+    ) -> np.ndarray:
+        vector = np.array([
+            unknowns['thermal_diffusivity_log10_m2__s'],
+            unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
+        ])
+        return vector
+
+    def vector_to_unknowns(
+            self,
+            vector: np.ndarray,
+    ) -> LogLopezBaezaShortUnknowns:
+        unknowns: LogLopezBaezaShortUnknowns = {
+            'thermal_diffusivity_log10_m2__s': vector[0],
+            'convective_heat_transfer_coefficient_log10_W__m2_K': vector[1],
+        }
+        return unknowns
+
+    def solve(self, unknowns: LogLopezBaezaShortUnknowns) -> SignalProperties:
+        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
+        return super().vector_solve(unknowns_vector)
+
+    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
+        return super().vector_solve(np.power(10.0, unknowns_vector))
+
     def propose(
             self,
             unknowns: LopezBaezaShortMcmcUnknowns,
@@ -252,11 +283,20 @@ class Solution(
 
         self.solve(unknowns)
 
+        sigma_dA = unknowns['log_stdev_amplitude_ratio']
+        sigma_dP = unknowns['log_stdev_phase_difference']
+        rho_dA_dP = np.tanh(unknowns['fisher_signal_properties_correlation_coefficient'])
+
+        [
+            [sigma_dA ** 2, sigma_dA * sigma_dP * rho_dA_dP],
+            [sigma_dA * sigma_dP * rho_dA_dP, sigma_dP ** 2],
+        ]
+
         # TODO: observed properties --> x
         # TODO: theoretical properties --> mean
         # TODO: calc covar mat
 
-        multivariate_normal.pdf()
+        return np.vectorize(multivariate_normal.logpdf)(observed_properties, self.solve(unknowns), ).sum()
 
     def log_posterior(
             self,
@@ -272,34 +312,3 @@ class Solution(
         posterior_total = likelihood + priors + jac
 
         return posterior_total
-
-class LogSolution(Solution):
-    """Implements equations for the log variant of Lopez-Baeza's Solution for
-    Short Samples.
-    """
-    def unknowns_to_vector(
-            self,
-            unknowns: LogLopezBaezaShortUnknowns,
-    ) -> np.ndarray:
-        vector = np.array([
-            unknowns['thermal_diffusivity_log10_m2__s'],
-            unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
-        ])
-        return vector
-
-    def vector_to_unknowns(
-            self,
-            vector: np.ndarray,
-    ) -> LogLopezBaezaShortUnknowns:
-        unknowns: LogLopezBaezaShortUnknowns = {
-            'thermal_diffusivity_log10_m2__s': vector[0],
-            'convective_heat_transfer_coefficient_log10_W__m2_K': vector[1],
-        }
-        return unknowns
-
-    def solve(self, unknowns: LogLopezBaezaShortUnknowns) -> SignalProperties:
-        unknowns_vector = np.power(10.0, self.unknowns_to_vector(unknowns))
-        return super().vector_solve(unknowns_vector)
-
-    def vector_solve(self, unknowns_vector: np.ndarray) -> SignalProperties:
-        return super().vector_solve(np.power(10.0, unknowns_vector))
