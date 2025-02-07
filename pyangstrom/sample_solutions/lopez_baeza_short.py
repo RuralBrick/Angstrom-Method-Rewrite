@@ -24,21 +24,16 @@ class LogLopezBaezaShortUnknowns(TypedDict):
     thermal_diffusivity_log10_m2__s: float
     convective_heat_transfer_coefficient_log10_W__m2_K: float
 
-class LopezBaezaShortMcmcValues(TypedDict):
+class LopezBaezaShortMcmcValues(LogLopezBaezaShortUnknowns):
     # TODO
     """"""
-    thermal_diffusivity_log10_m2__s: float
-    convective_heat_transfer_coefficient_log10_W__m2_K: float
     log_stdev_amplitude_ratio: float
     log_stdev_phase_difference: float
     fisher_signal_properties_correlation_coefficient: float
 
-class LopezBaezaShortMcmcUnknowns(LogLopezBaezaShortUnknowns):
+class LopezBaezaShortMcmcUnknowns(LopezBaezaShortMcmcValues):
     # TODO
     """"""
-    log_stdev_amplitude_ratio: float
-    log_stdev_phase_difference: float
-    fisher_signal_properties_correlation_coefficient: float
     prior_means: LopezBaezaShortMcmcValues
     prior_stdev: LopezBaezaShortMcmcValues
     proposal_stdev: LopezBaezaShortMcmcValues
@@ -279,24 +274,38 @@ class LogSolution(
             unknowns: LopezBaezaShortMcmcUnknowns,
             observed_properties: SignalProperties,
     ):
-        raise NotImplementedError()
+        theoretical_properties = self.solve(unknowns)
 
-        self.solve(unknowns)
+        observed_pairs = np.stack(
+            (
+                observed_properties.amplitude_ratios.flatten(),
+                observed_properties.phase_differences.flatten(),
+            ),
+            axis=-1,
+        )
+        theoretical_pairs = np.stack(
+            (
+                theoretical_properties.amplitude_ratios.flatten(),
+                theoretical_properties.phase_differences.flatten(),
+            ),
+            axis=-1,
+        )
 
         sigma_dA = unknowns['log_stdev_amplitude_ratio']
         sigma_dP = unknowns['log_stdev_phase_difference']
-        rho_dA_dP = np.tanh(unknowns['fisher_signal_properties_correlation_coefficient'])
-
-        [
+        rho_dA_dP = np.tanh(
+            unknowns['fisher_signal_properties_correlation_coefficient']
+        )
+        cov_errs = [
             [sigma_dA ** 2, sigma_dA * sigma_dP * rho_dA_dP],
             [sigma_dA * sigma_dP * rho_dA_dP, sigma_dP ** 2],
         ]
 
-        # TODO: observed properties --> x
-        # TODO: theoretical properties --> mean
-        # TODO: calc covar mat
-
-        return np.vectorize(multivariate_normal.logpdf)(observed_properties, self.solve(unknowns), ).sum()
+        likelihood_total = sum(
+            multivariate_normal.logpdf(o, t, cov_errs)
+            for o, t in zip(observed_pairs, theoretical_pairs)
+        )
+        return likelihood_total
 
     def log_posterior(
             self,
