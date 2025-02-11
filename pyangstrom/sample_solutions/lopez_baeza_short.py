@@ -305,6 +305,7 @@ class LogSolution(
             multivariate_normal.logpdf(o, t, cov_errs)
             for o, t in zip(observed_pairs, theoretical_pairs)
         )
+
         return likelihood_total
 
     def log_posterior(
