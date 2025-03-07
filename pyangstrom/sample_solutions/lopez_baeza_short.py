@@ -313,11 +313,24 @@ class LogSolution(
             unknowns: LopezBaezaShortMcmcUnknowns,
             observed_properties: SignalProperties,
     ) -> float:
-        raise NotImplementedError()
-
         likelihood = self.log_likelihood(unknowns, observed_properties)
+
         priors = self.manual_priors(unknowns)
-        jac = np.log(10**(-(alpha + h + sigma_dA + sigma_dP))) + np.log((1+np.exp(2*sigma_dP)) / (4*np.exp(2*sigma_dP)))
+
+        log_alpha = unknowns['thermal_diffusivity_log10_m2__s']
+        log_h = unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
+        log_sigma_dA = unknowns['log_stdev_amplitude_ratio']
+        log_sigma_dP = unknowns['log_stdev_phase_difference']
+        z = unknowns['fisher_signal_properties_correlation_coefficient']
+        jac = (
+            np.log(
+                10 ** -(log_alpha+log_h+log_sigma_dA+log_sigma_dP)
+            )
+            + np.log(
+                (1 + np.exp(2*z))
+                / (4 * np.exp(2*z))
+            )
+        )
 
         posterior_total = likelihood + priors + jac
 

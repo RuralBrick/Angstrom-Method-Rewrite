@@ -124,6 +124,8 @@ def extract_solution_class(
             from pyangstrom.sample_solutions.lopez_baeza_short import Solution
         case 'log_lopez-baeza':
             from pyangstrom.sample_solutions.lopez_baeza_short import LogSolution as Solution
+        case 'lopez-baeza_mcmc':
+            from pyangstrom.sample_solutions.lopez_baeza_short import LogSolution as Solution
         case 'kil':
             from pyangstrom.sample_solutions.kil_circular_room_temp import Solution
         case 'log_kil':
@@ -174,6 +176,8 @@ def extract_fit(fitter_information: FitterInformation) -> Fitter:
                 from pyangstrom.fitting_methods.lsr import fit
             case 'nelder-mead':
                 from pyangstrom.fitting_methods.nelder_mead import fit
+            case 'metropolis_hastings' | 'mh':
+                from pyangstrom.fitting_methods.metropolis_hastings import fit
             case _:
                 raise ValueError(
                     f"Fitter {fitter_information['name']} not found."
