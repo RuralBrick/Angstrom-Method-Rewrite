@@ -22,8 +22,8 @@ class FitterOutput:
 class FittingResult:
     """Contains thermal properties and metadata for validating the results."""
     unknowns_solutions: Unknowns
-    metadata: dict = field(default_factory=dict)
     theoretical_properties: SignalProperties
+    metadata: dict = field(default_factory=dict)
 
 class EquationPackage(abc.ABC):
     """Declares methods required by the fitting method to calculate heat model
@@ -211,7 +211,7 @@ def autofit(
     )
     result = FittingResult(
         output.unknowns_solutions,
-        output.metadata,
         solution.solve(output.unknowns_solutions),
+        output.metadata,
     )
     return result

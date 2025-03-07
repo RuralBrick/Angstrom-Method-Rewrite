@@ -1,6 +1,7 @@
 import logging
 import abc
 import random
+from math import floor
 
 import numpy as np
 
@@ -47,7 +48,7 @@ def fit(
         current_unknowns,
         observed_properties,
     )
-    while len(accepted_samples) >= target_num_accepted_samples:
+    while len(accepted_samples) < target_num_accepted_samples:
         proposed_unknowns = solution.propose(current_unknowns)
         new_log_posterior = solution.log_posterior(
             proposed_unknowns,
@@ -59,7 +60,7 @@ def fit(
             current_unknowns = proposed_unknowns
             current_log_posterior = new_log_posterior
 
-    num_burn = len(accepted_samples) * percent_burn_in
+    num_burn = floor(len(accepted_samples) * percent_burn_in)
     metadata = {
         'accepted_samples': accepted_samples[num_burn:],
     }
