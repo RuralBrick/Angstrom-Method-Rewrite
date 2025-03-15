@@ -239,33 +239,33 @@ class LogSolution(
         return proposal
 
     def manual_priors(self, unknowns: LopezBaezaShortMcmcUnknowns):
-        p_log_alpha = norm.pdf(
+        log_p_log_alpha = norm.logpdf(
             unknowns['thermal_diffusivity_log10_m2__s'],
             loc=unknowns['prior_means']['thermal_diffusivity_log10_m2__s'],
             scale=unknowns['prior_stdev']['thermal_diffusivity_log10_m2__s'],
         )
-        p_log_h = norm.pdf(
+        log_p_log_h = norm.logpdf(
             unknowns['convective_heat_transfer_coefficient_log10_W__m2_K'],
             loc=unknowns['prior_means']['convective_heat_transfer_coefficient_log10_W__m2_K'],
             scale=unknowns['prior_stdev']['convective_heat_transfer_coefficient_log10_W__m2_K'],
         )
 
-        p_log_sigma_dA = norm.pdf(
+        log_p_log_sigma_dA = norm.logpdf(
             unknowns['log_stdev_amplitude_ratio'],
             loc=unknowns['prior_means']['log_stdev_amplitude_ratio'],
             scale=unknowns['prior_stdev']['log_stdev_amplitude_ratio'],
         )
-        p_log_sigma_dP = norm.pdf(
+        log_p_log_sigma_dP = norm.logpdf(
             unknowns['log_stdev_phase_difference'],
             loc=unknowns['prior_means']['log_stdev_phase_difference'],
             scale=unknowns['prior_stdev']['log_stdev_phase_difference'],
         )
 
         priors_total = (
-            np.log(p_log_alpha)
-            + np.log(p_log_h)
-            + np.log(p_log_sigma_dA)
-            + np.log(p_log_sigma_dP)
+            log_p_log_alpha
+            + log_p_log_h
+            + log_p_log_sigma_dA
+            + log_p_log_sigma_dP
         )
         return priors_total
 
