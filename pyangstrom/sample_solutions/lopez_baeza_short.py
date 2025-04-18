@@ -1,3 +1,5 @@
+import logging
+from random import randint
 from typing import TypedDict
 
 import numpy as np
@@ -11,6 +13,8 @@ from pyangstrom.fitting_methods.nelder_mead import NelderMeadEquations
 from pyangstrom.fitting_methods.lsr import LsrEquations
 from pyangstrom.fitting_methods.metropolis_hastings import MetropolisHastingsEquations
 
+
+logger = logging.getLogger('fit')
 
 class LopezBaezaShortUnknowns(TypedDict):
     """The unknowns in Lopez-Baeza's Solution for Short Samples."""
@@ -198,10 +202,14 @@ class LogSolution(
         new_thermal_properties = self.rng.multivariate_normal(
             [
                 unknowns['thermal_diffusivity_log10_m2__s'],
-                unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
+                unknowns['convective_heat_transfer_coefficient_log10_W__m2_K'],
             ],
             cov_thermal_properties,
         )
+
+        # HACK
+        new_thermal_properties[1] = unknowns['convective_heat_transfer_coefficient_log10_W__m2_K']
+        # end HACK
 
         sigma_dA = unknowns['proposal_stdev']['log_stdev_amplitude_ratio']
         sigma_dP = unknowns['proposal_stdev']['log_stdev_phase_difference']
@@ -291,20 +299,29 @@ class LogSolution(
             axis=-1,
         )
 
-        sigma_dA = unknowns['log_stdev_amplitude_ratio']
-        sigma_dP = unknowns['log_stdev_phase_difference']
-        rho_dA_dP = np.tanh(
-            unknowns['fisher_signal_properties_correlation_coefficient']
+        sigma_dA = max(unknowns['log_stdev_amplitude_ratio'], 1e-3)
+        sigma_dP = max(unknowns['log_stdev_phase_difference'], 1e-3)
+        rho_dA_dP = np.clip(
+            np.tanh(
+                unknowns['fisher_signal_properties_correlation_coefficient']
+            ),
+            -0.99,
+            0.99,
         )
         cov_errs = [
             [sigma_dA ** 2, sigma_dA * sigma_dP * rho_dA_dP],
             [sigma_dA * sigma_dP * rho_dA_dP, sigma_dP ** 2],
-        ]
+        ] + np.eye(2) * 1e-6
 
         likelihood_total = sum(
             multivariate_normal.logpdf(o, t, cov_errs)
             for o, t in zip(observed_pairs, theoretical_pairs)
         )
+
+        # if randint(0, 100) == 100:
+        #     logger.info(list(multivariate_normal.pdf(o, t, cov_errs)
+        #     for o, t in zip(observed_pairs, theoretical_pairs))[-1])
+        #     logger.info(list(zip(observed_pairs, theoretical_pairs))[-1])
 
         return likelihood_total
 
@@ -331,6 +348,23 @@ class LogSolution(
                 / (4 * np.exp(2*z))
             )
         )
+
+        # jac = (
+        #     np.log(10 ** (log_alpha+log_h+log_sigma_dA+log_sigma_dP))
+        #     + 2 * np.log(1 + np.exp(z))
+        #     + np.log(1 + np.exp(4 * z))
+        # )
+
+        # top = np.log(
+        #         10 ** -(log_alpha+log_h+log_sigma_dA+log_sigma_dP)
+        #     )
+        # bottom = np.log(
+        #         (1 + np.exp(2*z))
+        #         / (4 * np.exp(2*z))
+        #     )
+
+        # if randint(0, 100) == 100:
+        #     logger.info(f"{likelihood=}, {priors=}")
 
         posterior_total = likelihood + priors + jac
 
